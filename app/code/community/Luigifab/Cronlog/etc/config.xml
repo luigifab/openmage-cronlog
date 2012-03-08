@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Created W/29/02/2012
+ * Updated W/29/02/2012
+ * Version 6
+ *
+ * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ *
+ * This program is free software, you can redistribute it or modify
+ * it under the terms of the GNU General Public License (GPL) as published
+ * by the free software foundation, either version 2 of the license, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but without any warranty, without even the implied warranty of
+ * merchantability or fitness for a particular purpose. See the
+ * GNU General Public License (GPL) for more details.
+ */
+-->
+
+<config>
+	<modules>
+		<Luigifab_Cronlog>
+			<version>1.0.0</version>
+		</Luigifab_Cronlog>
+	</modules>
+	<global>
+		<blocks>
+			<cronlog>
+				<class>Luigifab_Cronlog_Block</class>
+			</cronlog>
+		</blocks>
+		<helpers>
+			<cronlog>
+				<class>Luigifab_Cronlog_Helper</class>
+			</cronlog>
+		</helpers>
+		<models>
+			<cronlog>
+				<class>Luigifab_Cronlog_Model</class>
+			</cronlog>
+		</models>
+	</global>
+	<admin>
+		<routers>
+			<cronlog>
+				<use>admin</use>
+				<args>
+					<module>Luigifab_Cronlog</module>
+					<frontName>cronlog</frontName>
+				</args>
+			</cronlog>
+		</routers>
+	</admin>
+	<adminhtml>
+		<layout>
+			<updates>
+				<cronlog>
+					<file>luigifab/cronlog.xml</file>
+				</cronlog>
+			</updates>
+		</layout>
+		<translate>
+			<modules>
+				<Luigifab_Cronlog>
+					<files>
+						<default>Luigifab_Cronlog.csv</default>
+					</files>
+				</Luigifab_Cronlog>
+			</modules>
+		</translate>
+	</adminhtml>
+</config>

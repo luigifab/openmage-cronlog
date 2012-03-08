@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>Luigifab_Cronlog</name>
+    <version>1.0.0</version>
+    <stability>stable</stability>
+    <license uri="http://www.opensource.org/licenses/GPL-2.0">GPL</license>
+    <channel>luigifab</channel>
+    <extends/>
+    <summary>Show cron jobs list in Magento backend.</summary>
+    <description>Show cron jobs list in Magento backend.</description>
+    <notes>- Show cron jobs list in Magento backend</notes>
+    <authors><author><name>Fabrice Creuzot</name><user>luigifab</user><email>code@luigifab.info</email></author></authors>
+    <date>2012-03-08</date>
+    <time>18:56:56</time>
+    <contents><target name="magecommunity"><dir name="Luigifab"><dir name="Cronlog"><dir name="Block"><dir name="Adminhtml"><dir name="History"><file name="Grid.php" hash="0e13479671a13200f10f80fb999b96c1"/></dir><file name="History.php" hash="4a1dad82b1d250815be513784dad6e5d"/><file name="Show.php" hash="0389229f3a8c38c8b46a62f6f422d1d2"/><dir name="Widget"><file name="Status.php" hash="02b7fde07a4547f743deebf8cbc7fab3"/></dir></dir><file name="Config.php" hash="00979cfffa566365bc8600231175a471"/></dir><dir name="Helper"><file name="Data.php" hash="523d628c105865e7b7621b71843f041e"/></dir><dir name="Model"><dir name="Source"><file name="Number.php" hash="c77d651ebbc8b52a8cb296ea8bdbdb19"/><file name="Status.php" hash="dfde8392ce61d15c3cd3426a685b4061"/></dir></dir><file name="changelog" hash="4875e7d3a0b8a85cf315e41f05174716"/><dir name="controllers"><file name="HistoryController.php" hash="51eef07759a27ed08d3ebe13a764ebe6"/></dir><dir name="etc"><file name="adminhtml.xml" hash="bab0b47a73a6d4473cafe2bc3607270a"/><file name="config.xml" hash="76d15dfd84ba071d2439ade791c740ef"/><file name="system.xml" hash="746908d00114312891eb6e54099c8069"/></dir><file name="license" hash="b819c62bf1b7f2d249241db9a4ab3c99"/><file name="readme" hash="076f807730c02ba16789a4bcc0ea66ab"/></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="layout"><dir name="luigifab"><file name="cronlog.xml" hash="74830cce685928b8f26f21a44506dfe7"/></dir></dir></dir></dir></dir></target><target name="mageskin"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="css"><dir name="luigifab"><dir name="cronlog"><file name="styles.css" hash="d211646c130eb9ab5aa8be1231e5f7c6"/></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Luigifab_Cronlog.xml" hash="8c686703591def61df4f0b2b5c804540"/></dir></target><target name="magelocale"><dir name="fr_FR"><file name="Luigifab_Cronlog.csv" hash="969feaebd3662ace3b91c4c1a0f8d552"/></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>5.9.9</max></php></required></dependencies>
+</package>

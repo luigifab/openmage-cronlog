@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Updated W/29/02/2012
+ * Updated S/03/03/2012
+ * Version 2
+ *
+ * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ *
+ * This program is free software, you can redistribute it or modify
+ * it under the terms of the GNU General Public License (GPL) as published
+ * by the free software foundation, either version 2 of the license, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but without any warranty, without even the implied warranty of
+ * merchantability or fitness for a particular purpose. See the
+ * GNU General Public License (GPL) for more details.
+ */
+-->
+
+<config>
+	<tabs>
+		<luigifab>
+			<label>luigifab</label>
+			<sort_order>103</sort_order>
+		</luigifab>
+	</tabs>
+	<sections>
+		<cronlog translate="label">
+			<label>Cron jobs</label>
+			<tab>luigifab</tab>
+			<sort_order>80</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>0</show_in_website>
+			<show_in_store>0</show_in_store>
+			<groups>
+				<general translate="label">
+					<label>General</label>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<filter translate="label">
+							<label>By default filter by jobs</label>
+							<frontend_type>select</frontend_type>
+							<source_model>cronlog/source_status</source_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</filter>
+						<number translate="label">
+							<label>Number of jobs per page</label>
+							<frontend_type>select</frontend_type>
+							<source_model>cronlog/source_number</source_model>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</number>
+						<config>
+							<frontend_model>cronlog/config</frontend_model>
+							<sort_order>9</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</config>
+					</fields>
+				</general>
+			</groups>
+		</cronlog>
+	</sections>
+</config>

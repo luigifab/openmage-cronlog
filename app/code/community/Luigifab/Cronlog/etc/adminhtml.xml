@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Created W/29/02/2012
+ * Updated S/03/03/2012
+ * Version 3
+ *
+ * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ *
+ * This program is free software, you can redistribute it or modify
+ * it under the terms of the GNU General Public License (GPL) as published
+ * by the free software foundation, either version 2 of the license, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but without any warranty, without even the implied warranty of
+ * merchantability or fitness for a particular purpose. See the
+ * GNU General Public License (GPL) for more details.
+ */
+-->
+
+<config>
+	<menu>
+		<tools translate="title">
+			<title>Tools</title>
+			<sort_order>101</sort_order>
+			<children>
+				<configuration translate="title">
+					<title>Configuration</title>
+					<sort_order>1</sort_order>
+					<action>adminhtml/system_config</action>
+				</configuration>
+				<cronlog translate="title">
+					<title>Cron jobs</title>
+					<action>cronlog/history</action>
+					<sort_order>80</sort_order>
+				</cronlog>
+			</children>
+		</tools>
+	</menu>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<tools translate="title">
+						<title>Tools</title>
+						<sort_order>101</sort_order>
+						<children>
+							<configuration translate="title">
+								<title>Configuration</title>
+								<sort_order>1</sort_order>
+							</configuration>
+							<cronlog translate="title">
+								<title>Cron jobs</title>
+								<sort_order>80</sort_order>
+							</cronlog>
+						</children>
+					</tools>
+					<system>
+						<children>
+							<config>
+								<children>
+									<!--luigifab>
+										<title>luigifab</title>
+										<sort_order>103</sort_order>
+										<children-->
+											<cronlog translate="title">
+												<title>Cron jobs</title>
+												<sort_order>103080</sort_order>
+											</cronlog>
+										<!--/children>
+									</luigifab-->
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config>
