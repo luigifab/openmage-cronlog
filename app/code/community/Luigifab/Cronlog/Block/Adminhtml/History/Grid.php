@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated L/05/03/2012
- * Version 5
+ * Updated W/28/03/2012
+ * Version 6
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -69,8 +69,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'    => '100px',
 			'index'    => 'status',
 			'sortable' => true,
-			'renderer' => 'cronlog/adminhtml_widget_status',
 			'type'     => 'options',
+			'renderer' => 'cronlog/adminhtml_widget_status',
 			'options'  => array(
 				'pending' => $this->__('Pending'),
 				'running' => $this->__('Running'),
@@ -85,6 +85,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'    => '185px',
 			'align'    => 'center',
 			'type'     => 'datetime',
+			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'created_at',
 			'sortable' => true,
 		));
@@ -94,6 +95,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'    => '185px',
 			'align'    => 'center',
 			'type'     => 'datetime',
+			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'scheduled_at',
 			'sortable' => true,
 		));
@@ -103,6 +105,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'    => '185px',
 			'align'    => 'center',
 			'type'     => 'datetime',
+			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'executed_at',
 			'sortable' => true,
 		));
@@ -112,6 +115,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'    => '185px',
 			'align'    => 'center',
 			'type'     => 'datetime',
+			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'finished_at',
 			'sortable' => true,
 		));
