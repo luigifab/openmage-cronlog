@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated W/28/03/2012
- * Version 6
+ * Updated V/06/04/2012
+ * Version 7
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -24,7 +24,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		parent::__construct();
 
-		$this->setId('cronloggrid');
+		$this->setId('cronlogGrid');
 		$this->setDefaultSort('schedule_id');
 		$this->setDefaultDir('DESC');
 

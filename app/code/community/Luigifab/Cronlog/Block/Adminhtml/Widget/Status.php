@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/01/03/2012
- * Updated J/01/03/2012
- * Version 1
+ * Updated V/13/04/2012
+ * Version 2
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -22,7 +22,12 @@ class Luigifab_Cronlog_Block_Adminhtml_Widget_Status extends Mage_Adminhtml_Bloc
 
 	public function render(Varien_Object $row) {
 
-		return (in_array($row->getStatus(), array('missed', 'error'))) ?
-			'<strong>'.$this->__(ucfirst($row->getStatus())).'</strong>' : $this->__(ucfirst($row->getStatus()));
+		if (in_array($row->getStatus(), array('missed', 'error')))
+			return '<strong>'.$this->__(ucfirst($row->getStatus())).'</strong>';
+
+		else if ($row->getStatus() === 'running')
+			return '<em>'.$this->__(ucfirst($row->getStatus())).'</em>';
+
+		return $this->__(ucfirst($row->getStatus()));
 	}
 }

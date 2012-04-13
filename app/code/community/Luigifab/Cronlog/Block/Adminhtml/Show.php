@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated W/28/03/2012
- * Version 4
+ * Updated V/13/04/2012
+ * Version 5
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -49,13 +49,18 @@ class Luigifab_Cronlog_Block_Adminhtml_Show extends Mage_Adminhtml_Block_Widget_
 			$html .= '<li><strong>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, false)).'</strong></li>';
 		}
 
-		if ((strlen($cron->getFinishedAt()) > 0) && ($cron->getFinishedAt() != '0000-00-00 00:00:00'))
+		if ((strlen($cron->getFinishedAt()) > 0) && ($cron->getFinishedAt() != '0000-00-00 00:00:00')) {
 			$html .= '<li>'.$this->__('Finished At: %s', $date->date($cron->getFinishedAt(), Zend_Date::ISO_8601, null, false)).'</li>';
+		}
 
 		$html .= '</ul>';
 
 		if (in_array($cron->getStatus(), array('missed', 'error'))) {
-			$html .= '<p class="status ee"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
+			$html .= '<p class="status error"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
+			$html .= '<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
+		}
+		else if ($cron->getStatus() === 'running') {
+			$html .= '<p class="status run"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
 			$html .= '<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
 		}
 		else {

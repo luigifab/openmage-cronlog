@@ -1,8 +1,8 @@
 @charset "utf-8";
 /**
  * Created W/29/02/2012
- * Updated S/03/03/2012
- * Version 2
+ * Updated V/13/04/2012
+ * Version 4
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -24,11 +24,13 @@ body.cronlog-history-index h3.icon-head, body.cronlog-history-show h3 {
 }
 
 body.cronlog-history-show div.content p.status { margin:1.2em 1em 1.8em; }
-body.cronlog-history-show div.content p.status.ee { color:red; }
+body.cronlog-history-show div.content p.status.error { color:red; }
+body.cronlog-history-show div.content p.status.run { color:green; }
 body.cronlog-history-show div.content pre { font:10px monospace; line-height:15px; white-space:pre-wrap; }
 
-#cronloggrid_table tr:hover { background-color:#DEDEDE; }
-#cronloggrid_table tr td strong { color:red; }
+#cronlogGrid_table tr:hover { background-color:#DEDEDE; }
+#cronlogGrid_table tr td strong { font-style:normal; font-weight:bold; color:red; }
+#cronlogGrid_table tr td em { font-style:normal; font-weight:bold; color:green; }
 
 #cronlog_general p { margin:9px 5px 5px; }
 
