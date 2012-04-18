@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/13/04/2012
- * Version 5
+ * Updated W/18/04/2012
+ * Version 6
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -39,18 +39,18 @@ class Luigifab_Cronlog_Block_Adminhtml_Show extends Mage_Adminhtml_Block_Widget_
 
 		$html  = '<div class="content">';
 		$html .= '<ul>';
-		$html .= '<li>'.$this->__('Created At: %s', $date->date($cron->getCreatedAt(), Zend_Date::ISO_8601, null, false)).'</li>';
+		$html .= '<li>'.$this->__('Created At: %s', $date->date($cron->getCreatedAt(), Zend_Date::ISO_8601, null, true)).'</li>';
 
 		if ((strlen($cron->getExecutedAt()) > 0) && ($cron->getExecutedAt() != '0000-00-00 00:00:00')) {
-			$html .= '<li>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, false)).'</li>';
-			$html .= '<li><strong>'.$this->__('Executed At: %s', $date->date($cron->getExecutedAt(), Zend_Date::ISO_8601, null, false)).'</strong></li>';
+			$html .= '<li>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, true)).'</li>';
+			$html .= '<li><strong>'.$this->__('Executed At: %s', $date->date($cron->getExecutedAt(), Zend_Date::ISO_8601, null, true)).'</strong></li>';
 		}
 		else {
-			$html .= '<li><strong>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, false)).'</strong></li>';
+			$html .= '<li><strong>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, true)).'</strong></li>';
 		}
 
 		if ((strlen($cron->getFinishedAt()) > 0) && ($cron->getFinishedAt() != '0000-00-00 00:00:00')) {
-			$html .= '<li>'.$this->__('Finished At: %s', $date->date($cron->getFinishedAt(), Zend_Date::ISO_8601, null, false)).'</li>';
+			$html .= '<li>'.$this->__('Finished At: %s', $date->date($cron->getFinishedAt(), Zend_Date::ISO_8601, null, true)).'</li>';
 		}
 
 		$html .= '</ul>';

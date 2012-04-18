@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
  * Created W/29/02/2012
- * Updated V/13/04/2012
+ * Updated W/18/04/2012
  * Version 8
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
@@ -21,7 +21,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
