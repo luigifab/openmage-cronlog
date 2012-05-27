@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/06/04/2012
- * Version 7
+ * Updated D/27/05/2012
+ * Version 8
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -87,7 +87,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'created_at',
-			'sortable' => true,
+			'sortable' => true
 		));
 
 		$this->addColumn('scheduled_at', array(
@@ -97,7 +97,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'scheduled_at',
-			'sortable' => true,
+			'sortable' => true
 		));
 
 		$this->addColumn('executed_at', array(
@@ -107,7 +107,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'executed_at',
-			'sortable' => true,
+			'sortable' => true
 		));
 
 		$this->addColumn('finished_at', array(
@@ -117,7 +117,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
 			'index'    => 'finished_at',
-			'sortable' => true,
+			'sortable' => true
 		));
 
 		$this->addColumn('action', array(

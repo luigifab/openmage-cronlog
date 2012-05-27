@@ -1,0 +1,27 @@
+<!--@subject Cron jobs report@-->
+<!--@vars {
+"var frequency":"Report frequency",
+"var date_period":"Report date(s)",
+"var total_cron":"Number of cron job",
+"var total_pending":"Number of pending cron job",
+"var total_running":"Number of running cron job",
+"var total_success":"Number of success cron job",
+"var total_missed":"Number of missed cron job",
+"var total_error":"Number of error cron job",
+"var config_url":"Configuration address"
+}@-->
+
+<body style="margin:1em;"
+	<p>{{var frequency}} report from the executions of cron jobs.
+	<br />Period {{var date_period}}.</p>
+
+	<p>On the <strong>{{var total_cron}}</strong> task(s) set:
+	<br />- Running task(s): {{var total_running}}
+	<br />- Pending task(s): {{var total_pending}}
+	<br />- <span style="color:red;">Missed task(s): {{var total_missed}}</span>
+	<br />- <span style="color:red;">On error task(s): {{var total_error}}</span>
+	<br />- <span style="color:green;">Complete task(s): <strong>{{var total_success}}</strong></span></p>
+
+	<p style="font-size:0.8em; line-height:1.2em; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Cron jobs
+	<br /><a href="{{var config_url}}" style="color:gray;">{{var config_url}}</a></p>
+</body>

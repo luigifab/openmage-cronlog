@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated W/18/04/2012
- * Version 6
+ * Updated J/17/05/2012
+ * Version 7
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -38,38 +38,38 @@ class Luigifab_Cronlog_Block_Adminhtml_Show extends Mage_Adminhtml_Block_Widget_
 		$cron = Mage::getModel('cron/schedule')->load($this->getRequest()->getParam('id'));
 
 		$html  = '<div class="content">';
-		$html .= '<ul>';
-		$html .= '<li>'.$this->__('Created At: %s', $date->date($cron->getCreatedAt(), Zend_Date::ISO_8601, null, true)).'</li>';
+		$html .= "\n".'<ul>';
+		$html .= "\n".'<li>'.$this->__('Created At: %s', $date->date($cron->getCreatedAt(), Zend_Date::ISO_8601, null, true)).'</li>';
 
 		if ((strlen($cron->getExecutedAt()) > 0) && ($cron->getExecutedAt() != '0000-00-00 00:00:00')) {
-			$html .= '<li>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, true)).'</li>';
-			$html .= '<li><strong>'.$this->__('Executed At: %s', $date->date($cron->getExecutedAt(), Zend_Date::ISO_8601, null, true)).'</strong></li>';
+			$html .= "\n".'<li>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, true)).'</li>';
+			$html .= "\n".'<li><strong>'.$this->__('Executed At: %s', $date->date($cron->getExecutedAt(), Zend_Date::ISO_8601, null, true)).'</strong></li>';
 		}
 		else {
-			$html .= '<li><strong>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, true)).'</strong></li>';
+			$html .= "\n".'<li><strong>'.$this->__('Scheduled At: %s', $date->date($cron->getScheduledAt(), Zend_Date::ISO_8601, null, true)).'</strong></li>';
 		}
 
 		if ((strlen($cron->getFinishedAt()) > 0) && ($cron->getFinishedAt() != '0000-00-00 00:00:00')) {
-			$html .= '<li>'.$this->__('Finished At: %s', $date->date($cron->getFinishedAt(), Zend_Date::ISO_8601, null, true)).'</li>';
+			$html .= "\n".'<li>'.$this->__('Finished At: %s', $date->date($cron->getFinishedAt(), Zend_Date::ISO_8601, null, true)).'</li>';
 		}
 
-		$html .= '</ul>';
+		$html .= "\n".'</ul>';
 
 		if (in_array($cron->getStatus(), array('missed', 'error'))) {
-			$html .= '<p class="status error"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
-			$html .= '<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
+			$html .= "\n".'<p class="status error"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
+			$html .= "\n".'<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
 		}
 		else if ($cron->getStatus() === 'running') {
-			$html .= '<p class="status run"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
-			$html .= '<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
+			$html .= "\n".'<p class="status run"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
+			$html .= "\n".'<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
 		}
 		else {
-			$html .= '<p class="status"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
-			$html .= '<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
+			$html .= "\n".'<p class="status"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($cron->getStatus())), $cron->getStatus()).'</strong>';
+			$html .= "\n".'<br />'.$this->__('Code: %s', $cron->getJobCode()).'</p>';
 		}
 
-		$html .= (strlen($cron->getMessages()) > 0) ? '<pre>'.$cron->getMessages().'</pre>' : '<pre>'.$this->__('No message.').'</pre>';
-		$html .= '</div>';
+		$html .= "\n".((strlen($cron->getMessages()) > 0) ? '<pre>'.$cron->getMessages().'</pre>' : '<pre>'.$this->__('No message.')).'</pre>';
+		$html .= "\n".'</div>';
 
 		return $html;
 	}

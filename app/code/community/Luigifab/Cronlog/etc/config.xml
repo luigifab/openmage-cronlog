@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!--
  * Created W/29/02/2012
- * Updated W/18/04/2012
- * Version 8
+ * Updated V/18/05/2012
+ * Version 10
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -21,7 +21,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>1.0.3</version>
+			<version>1.1.0</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
@@ -40,6 +40,16 @@
 				<class>Luigifab_Cronlog_Model</class>
 			</cronlog>
 		</models>
+		<template>
+			<email>
+				<!-- this name (cronlog_email_template) must be exist in configuration (cronlog/email/template) -->
+				<cronlog_email_template translate="label">
+					<label>Cron jobs report</label>
+					<file>cronlog_report.html</file>
+					<type>html</type>
+				</cronlog_email_template>
+			</email>
+		</template>
 	</global>
 	<admin>
 		<routers>
@@ -53,6 +63,16 @@
 		</routers>
 	</admin>
 	<adminhtml>
+		<events>
+			<admin_system_config_changed_section_cronlog>
+				<observers>
+					<cronlog_observer>
+						<class>cronlog/observer</class>
+						<method>updateConfig</method>
+					</cronlog_observer>
+				</observers>
+			</admin_system_config_changed_section_cronlog>
+		</events>
 		<layout>
 			<updates>
 				<cronlog>
@@ -70,4 +90,20 @@
 			</modules>
 		</translate>
 	</adminhtml>
+	<crontab>
+		<jobs>
+			<cronlog_send_report>
+				<run><model>cronlog/observer::sendMail</model></run>
+			</cronlog_send_report>
+		</jobs>
+	</crontab>
+	<default>
+		<cronlog>
+			<email>
+				<recipient_email><![CDATA[hello@example.com]]></recipient_email>
+				<sender_email_identity>general</sender_email_identity>
+				<template>cronlog_email_template</template>
+			</email>
+		</cronlog>
+	</default>
 </config>

@@ -31,3 +31,11 @@
 "Error (error)","En erreur (error)"
 "Number of jobs per page","Nombre de tâches par page"
 "Other options available in <a href=""%s"">cron jobs configuration</a>.","Autres options disponibles dans la <a href=""%s"">configuration des tâches cron</a>."
+
+"Email reports","Rapports par email"
+"Cron jobs report","Rapport des tâches cron"
+"daily","quotidien"
+"weekly","hebdomadaire"
+"monthly","menusel"
+"from <strong>%s</strong>","du <strong>%s</strong>"
+"from <strong>%s</strong> to <strong>%s</strong> included","du <strong>%s</strong> au <strong>%s</strong> inclus"

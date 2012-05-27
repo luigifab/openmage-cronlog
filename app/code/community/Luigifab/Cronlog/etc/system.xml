@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!--
  * Created W/29/02/2012
- * Updated W/28/03/2012
- * Version 3
+ * Updated J/17/05/2012
+ * Version 4
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -68,6 +68,59 @@
 						</config>
 					</fields>
 				</general>
+				<email translate="label">
+					<label>Email reports</label>
+					<sort_order>2</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<enabled translate="label">
+							<label>Enable</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</enabled>
+						<frequency translate="label">
+							<label>Frequency</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_cron_frequency</source_model>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</frequency>
+						<recipient_email translate="label">
+							<label>Send Emails To</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</recipient_email>
+						<sender_email_identity translate="label">
+							<label>Email Sender</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_email_identity</source_model>
+							<sort_order>4</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sender_email_identity>
+						<template translate="label">
+							<label>Email Template</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_email_template</source_model>
+							<sort_order>5</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</template>
+					</fields>
+				</email>
 			</groups>
 		</cronlog>
 	</sections>
