@@ -1,8 +1,8 @@
 @charset "utf-8";
 /**
  * Created W/29/02/2012
- * Updated V/13/04/2012
- * Version 4
+ * Updated J/26/07/2012
+ * Version 5
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,15 +18,15 @@
  * GNU General Public License (GPL) for more details.
  */
 
-body.cronlog-history-index h3.icon-head, body.cronlog-history-show h3 {
+body.adminhtml-cronlog-history-index h3.icon-head, body.adminhtml-cronlog-history-show h3 {
 	min-height:18px; padding-left:22px;
 	background:url("../../../images/fam_calendar.gif") no-repeat left center;
 }
 
-body.cronlog-history-show div.content p.status { margin:1.2em 1em 1.8em; }
-body.cronlog-history-show div.content p.status.error { color:red; }
-body.cronlog-history-show div.content p.status.run { color:green; }
-body.cronlog-history-show div.content pre { font:10px monospace; line-height:15px; white-space:pre-wrap; }
+body.adminhtml-cronlog-history-show div.content p.status { margin:1.2em 1em 1.8em; }
+body.adminhtml-cronlog-history-show div.content p.status.error { color:red; }
+body.adminhtml-cronlog-history-show div.content p.status.run { color:green; }
+body.adminhtml-cronlog-history-show div.content pre { font:10px monospace; line-height:15px; white-space:pre-wrap; }
 
 #cronlogGrid_table tr:hover { background-color:#DEDEDE; }
 #cronlogGrid_table tr td strong { font-style:normal; font-weight:bold; color:red; }

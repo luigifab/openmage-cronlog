@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!--
  * Created W/29/02/2012
- * Updated V/18/05/2012
- * Version 10
+ * Updated J/26/07/2012
+ * Version 11
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -21,7 +21,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
@@ -53,13 +53,13 @@
 	</global>
 	<admin>
 		<routers>
-			<cronlog>
-				<use>admin</use>
+			<adminhtml>
 				<args>
-					<module>Luigifab_Cronlog</module>
-					<frontName>cronlog</frontName>
+					<modules>
+						<luigifab_cronlog before="Mage_Adminhtml">Luigifab_Cronlog</luigifab_cronlog>
+					</modules>
 				</args>
-			</cronlog>
+			</adminhtml>
 		</routers>
 	</admin>
 	<adminhtml>
@@ -100,7 +100,7 @@
 	<default>
 		<cronlog>
 			<email>
-				<recipient_email><![CDATA[hello@example.com]]></recipient_email>
+				<recipient_email>hello@example.com</recipient_email>
 				<sender_email_identity>general</sender_email_identity>
 				<template>cronlog_email_template</template>
 			</email>

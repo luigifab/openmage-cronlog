@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated D/27/05/2012
- * Version 5
+ * Updated V/03/08/2012
+ * Version 10
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -21,14 +21,18 @@
 class Luigifab_Cronlog_Model_Observer {
 
 	// #### Envoi du rapport par email ###################################### i18n ## public ### //
-	// = révision : 5
-	// » Génère le rapport en fonction de la configuration (quotidien/hebdomadaire/mensuel)
+	// = révision : 12
+	// » Génère le rapport pour la veille en fonction de la configuration (quotidien/hebdomadaire/mensuel)
+	// » S'assure que la langue soit correctement définie
 	// » Envoi le rapport via un email transactionnel
 	public function sendMail() {
 
+		$lang = Mage::getStoreConfig('general/locale/code');
+		Mage::getSingleton('core/translate')->setLocale($lang)->init('adminhtml', true);
+
 		$frequency = Mage::getStoreConfig('cronlog/email/frequency');
 		$locale = Mage::getSingleton('core/locale');
-		$helper = Mage::helper('compressor');
+		$helper = Mage::helper('cronlog');
 
 		$daily = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_DAILY;
 		$weekly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY;
@@ -37,44 +41,25 @@ class Luigifab_Cronlog_Model_Observer {
 		$texts = array($daily => $helper->__('daily'), $weekly => $helper->__('weekly'), $monthly => $helper->__('monthly'));
 		$stats = array();
 
-		// récupération des dates
-		// ici on travaille avec les dates UTC
+		// chargement des tâches cron de la période
 		if ($frequency === $daily) {
-			$from = date('Y-m-d H:i:s', strtotime('yesterday'));
-			$to = date('Y-m-d H:i:s', strtotime('yesterday') + 86399);
-
-			//echo '<p>',$from,' » ',$to;
-			//$from = $locale->date($from, Zend_Date::ISO_8601, null, false);
-			//$to = $locale->date($to, Zend_Date::ISO_8601, null, false);
-			//echo '<br />',$from,' » ',$to,'</p>';
+			$range = $this->getDateRange('24h');
+			$collection = Mage::getResourceModel('cron/schedule_collection');
+			$collection->addFieldToFilter('created_at', $range);
 		}
 		else if ($frequency === $weekly) {
-			$from = date('Y-m-d H:i:s', strtotime('last monday'));
-			$to = date('Y-m-d H:i:s', strtotime('yesterday') + 86399);
-
-			//echo '<p>',$from,' » ',$to;
-			//$from = $locale->date($from, Zend_Date::ISO_8601, null, false);
-			//$to = $locale->date($to, Zend_Date::ISO_8601, null, false);
-			//echo '<br />',$from,' » ',$to,'</p>';
+			$range = $this->getDateRange('7d');
+			$collection = Mage::getResourceModel('cron/schedule_collection');
+			$collection->addFieldToFilter('created_at', $range);
 		}
 		else if ($frequency === $monthly) {
-			$from = date('Y-m-d H:i:s', mktime(0, 0, 0, date('m')-1, 1, date('y')));
-			$to = date('Y-m-t H:i:s', mktime(0, 0, 0, date('m')-1, 1, date('y')) + 86399);
-
-			//echo '<p>',$from,' » ',$to;
-			//$from = $locale->date($from, Zend_Date::ISO_8601, null, false);
-			//$to = $locale->date($to, Zend_Date::ISO_8601, null, false);
-			//echo '<br />',$from,' » ',$to,'</p>';
+			$range = $this->getDateRange('1m');
+			$collection = Mage::getResourceModel('cron/schedule_collection');
+			$collection->addFieldToFilter('created_at', $range);
 		}
 
-		// chargement des tâches cron de la période
-		// ici on travaille avec les dates UTC en prenant soin d'y soustraire le décalage horaire de la locale
-		// si maintenant à +2.00 on est Lundi 00h00, à +0.00 il est encore Dimanche 22h00
-		$offset = Mage::getModel('core/date')->timestamp(time()) - time();
-
-		$collection = Mage::getResourceModel('cron/schedule_collection');
-		$collection->addFieldToFilter('created_at', array('gt' => date('c', strtotime($from) - $offset)));
-		$collection->addFieldToFilter('created_at', array('lt' => date('c', strtotime($to) - $offset)));
+		//echo '<p>',$collection->getSelect(),'</p>';
+		//echo '<p>',count($collection),'</p>';
 
 		foreach ($collection as $job) {
 
@@ -86,39 +71,45 @@ class Luigifab_Cronlog_Model_Observer {
 
 		// envoie de l'email
 		// sendTransactional($templateId, $sender, $recipient, $name, $vars = array(), $storeId = null)
-		// ici on travaille avec les dates UTC même si à l'affichage les dates seront par rapport à la locale
-		$from = $locale->date($from, Zend_Date::ISO_8601, null, false);
-		$to = $locale->date($to, Zend_Date::ISO_8601, null, false);
+		$offset = Mage::getModel('core/date')->timestamp(time()) - time();
+
+		$from = $locale->date(date('c', $range['fromTime'] + $offset), Zend_Date::ISO_8601, null, false);
+		$to = $locale->date(date('c', $range['toTime'] + $offset), Zend_Date::ISO_8601, null, false);
 
 		$from = substr($from, 0, strrpos($from, ' '));
 		$to = substr($to, 0, strrpos($to, ' '));
 
-		$email = Mage::getModel('core/email_template');
-		$email->sendTransactional(
-			Mage::getStoreConfig('cronlog/email/template'),
-			Mage::getStoreConfig('cronlog/email/sender_email_identity'),
-			Mage::getStoreConfig('cronlog/email/recipient_email'),
-			null,
-			array(
-				'frequency'  => $texts[$frequency],
-				'total_cron' => count($collection),
-				'total_pending' => (isset($stats['pending'])) ? count($stats['pending']) : 0,
-				'total_running' => (isset($stats['running'])) ? count($stats['running']) : 0,
-				'total_success' => (isset($stats['success'])) ? count($stats['success']) : 0,
-				'total_missed'  => (isset($stats['missed'])) ? count($stats['missed']) : 0,
-				'total_error'   => (isset($stats['error'])) ? count($stats['error']) : 0,
-				'config_url'  => Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit', array('section' => 'cronlog')),
-				'date_period' => ($from !== $to) ? $helper->__('from <strong>%s</strong> to <strong>%s</strong> included', $from, $to) : $helper->__('from <strong>%s</strong>', $from)
-			)
-		);
+		$emailsAddresses = explode(' ', trim(Mage::getStoreConfig('cronlog/email/recipient_email')));
 
-		if (!$email->getSentSuccess())
-			throw new Exception('Can not send cronlog mail report');
+		foreach ($emailsAddresses as $emailAddress) {
+
+			$email = Mage::getModel('core/email_template');
+			$email->sendTransactional(
+				Mage::getStoreConfig('cronlog/email/template'),
+				Mage::getStoreConfig('cronlog/email/sender_email_identity'),
+				trim($emailAddress),
+				null,
+				array(
+					'frequency'  => $texts[$frequency],
+					'total_cron' => count($collection),
+					'total_pending' => (isset($stats['pending'])) ? count($stats['pending']) : 0,
+					'total_running' => (isset($stats['running'])) ? count($stats['running']) : 0,
+					'total_success' => (isset($stats['success'])) ? count($stats['success']) : 0,
+					'total_missed'  => (isset($stats['missed'])) ? count($stats['missed']) : 0,
+					'total_error'   => (isset($stats['error'])) ? count($stats['error']) : 0,
+					'config_url'  => str_replace('//admin', '/admin', Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit', array('section' => 'cronlog'))),
+					'date_period' => ($from !== $to) ? $helper->__('from <strong>%s</strong> to <strong>%s</strong> included', $from, $to) : $helper->__('from <strong>%s</strong>', $from)
+				)
+			);
+
+			if (!$email->getSentSuccess())
+				throw new Exception('Can not send cronlog mail report for '.$emailAddress.'.');
+		}
 	}
 
 
 	// #### Programmation de la tâche cron ########################################## public ### //
-	// = révision : 5
+	// = révision : 7
 	// » Quotidien : tous les jours à 01h15 (daily)
 	// » Hebdomadaire : tous les lundi à 01h15 (weekly)
 	// » Mensuel : chaque premier jour du mois à 01h15 (monthly)
@@ -130,14 +121,15 @@ class Luigifab_Cronlog_Model_Observer {
 
 			if (Mage::getStoreConfig('cronlog/email/enabled') === '1') {
 
+				// configuration de la tâche
 				$frequency = Mage::getStoreConfig('cronlog/email/frequency');
 				$weekly  = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY;
 				$monthly = Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY;
 
 				// minute hour day-of-month month-of-year day-of-week (Dimanche = 0, Lundi = 1...)
-				// 15     01   1            *             *           => monthly
-				// 15     01   *            *             0|1         => weekly
-				// 15     01   *            *             *           => daily
+				// 15	 01   1			*			 *		   => monthly
+				// 15	 01   *			*			 0|1		 => weekly
+				// 15	 01   *			*			 *		   => daily
 				if ($frequency === $monthly)
 					$config->setValue('15 01 1 * *');
 				else if ($frequency === $weekly)
@@ -147,13 +139,53 @@ class Luigifab_Cronlog_Model_Observer {
 
 				$config->setPath('crontab/jobs/cronlog_send_report/schedule/cron_expr');
 				$config->save();
+
+				// envoi d'un email de test
+				$this->sendMail();
 			}
 			else {
 				$config->delete();
 			}
 		}
 		catch (Exception $e) {
-			throw new Exception('Unable to save the cron expression for cronlog.');
+			throw new Exception($e->getMessage());
 		}
+	}
+
+
+	// #### Génération des périodes ################################################ private ### //
+	// = révision : 6
+	// » Renvoie une période : hier, la semaine dernière ou le mois dernier
+	// » Doit être appelé pour la veille
+	private function getDateRange($range) {
+
+		$dateStart = Mage::app()->getLocale()->date();
+		$dateEnd = Mage::app()->getLocale()->date();
+
+		$dateStart->setHour(0);
+		$dateStart->setMinute(0);
+		$dateStart->setSecond(0);
+
+		$dateEnd->setHour(23);
+		$dateEnd->setMinute(59);
+		$dateEnd->setSecond(59);
+
+		if ($range === '24h') {
+			$dateStart->subDay(1);
+			$dateEnd->subDay(1);
+		}
+		else if ($range === '7d') {
+			$dateStart->subDay(7);
+			$dateEnd->subDay(1);
+		}
+		else if ($range === '1m') {
+			$dateStart->subDay(date('t', mktime(0,0,0, date('n') - 1)));
+			$dateEnd->subDay(1);
+		}
+
+		$dateStart->setTimezone('Etc/UTC');
+		$dateEnd->setTimezone('Etc/UTC');
+
+		return array('from' => $dateStart, 'to' => $dateEnd, 'datetime' => true, 'fromTime' => $dateStart->getTimestamp(), 'toTime' => $dateEnd->getTimestamp());
 	}
 }

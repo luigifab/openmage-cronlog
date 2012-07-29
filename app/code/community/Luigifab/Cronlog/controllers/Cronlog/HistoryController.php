@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated W/29/02/2012
- * Version 1
+ * Updated J/26/07/2012
+ * Version 2
  *
  * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,7 +18,7 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_HistoryController extends Mage_Adminhtml_Controller_Action {
+class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controller_Action {
 
 	protected function _initAction() {
 		$this->loadLayout()->_setActiveMenu('tools/cronlog');
@@ -36,6 +36,6 @@ class Luigifab_Cronlog_HistoryController extends Mage_Adminhtml_Controller_Actio
 		if (is_numeric($cron->getScheduleId()) && ($cron->getScheduleId() != 0))
 			$this->_initAction()->renderLayout();
 		else
-			$this->_redirect('cronlog/history');
+			$this->_redirect('*/*/index');
 	}
 }
