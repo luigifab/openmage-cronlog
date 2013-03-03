@@ -1,10 +1,10 @@
 <?php
 /**
- * Created S/03/03/2012
- * Updated S/03/03/2012
- * Version 4
+ * Created D/10/02/2013
+ * Updated D/10/02/2013
+ * Version 1
  *
- * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,9 +18,19 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Config extends Mage_Adminhtml_Block_Abstract implements Varien_Data_Form_Element_Renderer_Interface {
+class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
 
-	public function render(Varien_Data_Form_Element_Abstract $element) {
-		return '<tr><td colspan="4"><p>'.$this->__('Other options available in <a href="%s">cron jobs configuration</a>.', $this->getUrl('adminhtml/system_config/edit', array('section' => 'system'))).'</p></td></tr>';
+	protected function _prepareForm() {
+
+		$form = new Varien_Data_Form(array(
+			'id'     => 'edit_form',
+			'action' => $this->getUrl('*/*/save'),
+			'method' => 'post'
+		));
+
+		$form->setUseContainer(true);
+		$this->setForm($form);
+
+		return parent::_prepareForm();
 	}
 }

@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/27/05/2012
- * Version 8
+ * Updated S/02/03/2013
+ * Version 10
  *
- * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -63,23 +63,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'sortable' => true
 		));
 
-		$this->addColumn('status', array(
-			'header'   => $this->helper('adminhtml')->__('Status'),
-			'align'    => 'center',
-			'width'    => '100px',
-			'index'    => 'status',
-			'sortable' => true,
-			'type'     => 'options',
-			'renderer' => 'cronlog/adminhtml_widget_status',
-			'options'  => array(
-				'pending' => $this->__('Pending'),
-				'running' => $this->__('Running'),
-				'success' => $this->__('Success'),
-				'missed'  => $this->__('Missed'),
-				'error'   => $this->__('Error')
-			)
-		));
-
 		$this->addColumn('created_at', array(
 			'header'   => $this->__('Created At'),
 			'width'    => '185px',
@@ -120,16 +103,33 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'sortable' => true
 		));
 
+		$this->addColumn('status', array(
+			'header'   => $this->helper('adminhtml')->__('Status'),
+			'align'    => 'center',
+			'width'    => '125px',
+			'index'    => 'status',
+			'sortable' => true,
+			'type'     => 'options',
+			'renderer' => 'cronlog/adminhtml_widget_status',
+			'options'  => array(
+				'pending' => $this->__('Pending'),
+				'running' => $this->__('Running'),
+				'success' => $this->__('Success'),
+				'missed'  => $this->__('Missed'),
+				'error'   => $this->__('Error')
+			)
+		));
+
 		$this->addColumn('action', array(
 			'header'  =>  $this->helper('adminhtml')->__('Action'),
 			'width'   => '50px',
 			'align'   => 'center',
 			'type'    => 'action',
-			'getter'  => 'getScheduleId',
+			'getter'  => 'getId',
 			'actions' => array(
 				array(
 					'caption' => $this->__('Show'),
-					'url'     => array('base' => '*/*/show'),
+					'url'     => array('base' => '*/*/view'),
 					'field'   => 'id'
 				)
 			),
@@ -142,6 +142,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	}
 
 	public function getRowUrl($row) {
-		return $this->getUrl('*/*/show', array('id' => $row->getScheduleId()));
+		return $this->getUrl('*/*/view', array('id' => $row->getId()));
 	}
 }

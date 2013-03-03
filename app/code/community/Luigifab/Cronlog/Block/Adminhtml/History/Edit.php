@@ -1,10 +1,10 @@
 <?php
 /**
- * Created W/29/02/2012
- * Updated D/10/02/2013
+ * Created D/10/02/2013
+ * Updated S/02/03/2013
  * Version 2
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,7 +18,7 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widget_Grid_Container {
+class Luigifab_Cronlog_Block_Adminhtml_History_Edit extends Mage_Adminhtml_Block_Widget_Form_Container {
 
 	public function __construct() {
 
@@ -27,6 +27,12 @@ class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widg
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
 
-		$this->_headerText = $this->__('Cron jobs');
+		$this->_removeButton('reset');
+		$this->_removeButton('delete');
+		$this->_updateButton('save', 'label', $this->helper('adminhtml')->__('Add'));
+	}
+
+	public function getHeaderText() {
+		return $this->__('New cron job');
 	}
 }

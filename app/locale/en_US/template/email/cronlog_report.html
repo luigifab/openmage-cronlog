@@ -11,17 +11,17 @@
 "var config_url":"Configuration address"
 }@-->
 
-<body style="margin:1em;"
+<body style="margin:1em;">
 	<p>{{var frequency}} report from the executions of cron jobs.
 	<br />Period {{var date_period}}.</p>
 
 	<p>On the <strong>{{var total_cron}}</strong> tasks set:
 	<br />- Running task(s): {{var total_running}}
 	<br />- Pending task(s): {{var total_pending}}
-	<br />- <span style="color:red;">Missed task(s): {{var total_missed}}</span>
-	<br />- <span style="color:red;">On error task(s): {{var total_error}}</span>
+	<br />- <span style="color:red;">Missed task(s): <strong>{{var total_missed}}</strong></span>
+	<br />- <span style="color:red;">On error task(s): <strong>{{var total_error}}</strong></span>
 	<br />- <span style="color:green;">Complete task(s): <strong>{{var total_success}}</strong></span></p>
 
-	<p style="font-size:0.8em; line-height:1.2em; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Cron jobs
+	<p style="font-size:0.8em; line-height:130%; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Cron jobs
 	<br /><a href="{{var config_url}}" style="color:gray;">{{var config_url}}</a></p>
 </body>

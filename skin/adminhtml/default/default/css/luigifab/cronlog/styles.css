@@ -1,32 +1,32 @@
 @charset "utf-8";
 /**
- * Created W/29/02/2012
- * Updated J/26/07/2012
- * Version 5
- *
- * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * File created W/29/02/2012, updated S/02/03/2013, version 8
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
- * it under the terms of the GNU General Public License (GPL) as published
- * by the free software foundation, either version 2 of the license, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but without any warranty, without even the implied warranty of
- * merchantability or fitness for a particular purpose. See the
- * GNU General Public License (GPL) for more details.
+ * it under the terms of the GNU General Public License (GPL).
  */
 
-body.adminhtml-cronlog-history-index h3.icon-head, body.adminhtml-cronlog-history-show h3 {
+body.adminhtml-cronlog-history-index h3.icon-head, body.adminhtml-cronlog-history-new h3.icon-head,
+body.adminhtml-cronlog-history-view h3 {
 	min-height:18px; padding-left:22px;
 	background:url("../../../images/fam_calendar.gif") no-repeat left center;
 }
 
-body.adminhtml-cronlog-history-show div.content p.status { margin:1.2em 1em 1.8em; }
-body.adminhtml-cronlog-history-show div.content p.status.error { color:red; }
-body.adminhtml-cronlog-history-show div.content p.status.run { color:green; }
-body.adminhtml-cronlog-history-show div.content pre { font:10px monospace; line-height:15px; white-space:pre-wrap; }
+body.adminhtml-cronlog-history-new div.columns { background:none; }
+body.adminhtml-cronlog-history-new div.side-col { display:none; }
+body.adminhtml-cronlog-history-new div.main-col { margin:0; padding:0; }
+body.adminhtml-cronlog-history-new div.main-col td.label { text-align:right; vertical-align:middle; }
+body.adminhtml-cronlog-history-new div.main-col td.value { padding-left:0 !important; width:425px; }
+body.adminhtml-cronlog-history-new div.main-col select { width:100%; padding:4px; }
+body.adminhtml-cronlog-history-new div.main-col span.required { display:none; }
+
+body.adminhtml-cronlog-history-view div.content ul { font-size:13px; }
+body.adminhtml-cronlog-history-view div.content p.status { margin:1.2em 1em 1.8em; font-size:13px; }
+body.adminhtml-cronlog-history-view div.content p.status.error { color:red; }
+body.adminhtml-cronlog-history-view div.content p.status.run { color:green; }
+body.adminhtml-cronlog-history-view div.content pre { font:10px monospace; line-height:15px; white-space:pre-wrap; }
 
 #cronlogGrid_table tr:hover { background-color:#DEDEDE; }
 #cronlogGrid_table tr td strong { font-style:normal; font-weight:bold; color:red; }

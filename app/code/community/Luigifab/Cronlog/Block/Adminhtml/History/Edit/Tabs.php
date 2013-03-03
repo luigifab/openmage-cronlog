@@ -1,10 +1,10 @@
 <?php
 /**
- * Created W/29/02/2012
+ * Created D/10/02/2013
  * Updated D/10/02/2013
- * Version 2
+ * Version 1
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,15 +18,25 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widget_Grid_Container {
+class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs {
 
 	public function __construct() {
 
 		parent::__construct();
 
-		$this->_controller = 'adminhtml_history';
-		$this->_blockGroup = 'cronlog';
+		$this->setId('cronlogTabs');
+		$this->setTitle($this->__('Informations'));
+		$this->setDestElementId('edit_form');
+	}
 
-		$this->_headerText = $this->__('Cron jobs');
+	protected function _beforeToHtml() {
+
+		$this->addTab('general_section', array(
+			'label'   => $this->__('Job'),
+			'content' => $this->getLayout()->createBlock('cronlog/adminhtml_history_edit_tab_general')->toHtml(),
+			'active'  => true
+		));
+
+		return parent::_beforeToHtml();
 	}
 }

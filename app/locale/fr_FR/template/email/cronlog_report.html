@@ -18,10 +18,10 @@
 	<p>Sur les <strong>{{var total_cron}}</strong> tâches prévues :
 	<br />- Tâche(s) en cours : {{var total_running}}
 	<br />- Tâche(s) en attente(s) : {{var total_pending}}
-	<br />- <span style="color:red;">Tâche(s) manquée(s) : {{var total_missed}}</span>
-	<br />- <span style="color:red;">Tâche(s) en erreur(s) : {{var total_error}}</span>
+	<br />- <span style="color:red;">Tâche(s) manquée(s) : <strong>{{var total_missed}}</strong></span>
+	<br />- <span style="color:red;">Tâche(s) en erreur(s) : <strong>{{var total_error}}</strong></span>
 	<br />- <span style="color:green;">Tâche(s) terminée(s) : <strong>{{var total_success}}</strong></span></p>
 
-	<p style="font-size:0.8em; line-height:1.2em; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Tâches cron
+	<p style="font-size:0.8em; line-height:130%; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Tâches cron
 	<br /><a href="{{var config_url}}" style="color:gray;">{{var config_url}}</a></p>
 </body>

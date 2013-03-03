@@ -1,10 +1,10 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated V/03/08/2012
- * Version 10
+ * Updated L/04/03/2013
+ * Version 12
  *
- * Copyright 2012 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -21,7 +21,7 @@
 class Luigifab_Cronlog_Model_Observer {
 
 	// #### Envoi du rapport par email ###################################### i18n ## public ### //
-	// = révision : 12
+	// = révision : 13
 	// » Génère le rapport pour la veille en fonction de la configuration (quotidien/hebdomadaire/mensuel)
 	// » S'assure que la langue soit correctement définie
 	// » Envoi le rapport via un email transactionnel
@@ -66,7 +66,7 @@ class Luigifab_Cronlog_Model_Observer {
 			if (!isset($stats[$job->getStatus()]))
 				$stats[$job->getStatus()] = array();
 
-			$stats[$job->getStatus()][] = $job->getScheduleId();
+			$stats[$job->getStatus()][] = $job->getId();
 		}
 
 		// envoie de l'email
@@ -80,6 +80,7 @@ class Luigifab_Cronlog_Model_Observer {
 		$to = substr($to, 0, strrpos($to, ' '));
 
 		$emailsAddresses = explode(' ', trim(Mage::getStoreConfig('cronlog/email/recipient_email')));
+		$backendUrl = Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit', array('section' => 'cronlog'));
 
 		foreach ($emailsAddresses as $emailAddress) {
 
@@ -97,22 +98,22 @@ class Luigifab_Cronlog_Model_Observer {
 					'total_success' => (isset($stats['success'])) ? count($stats['success']) : 0,
 					'total_missed'  => (isset($stats['missed'])) ? count($stats['missed']) : 0,
 					'total_error'   => (isset($stats['error'])) ? count($stats['error']) : 0,
-					'config_url'  => str_replace('//admin', '/admin', Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit', array('section' => 'cronlog'))),
+					'config_url'  => str_replace('//admin', '/admin', $backendUrl),
 					'date_period' => ($from !== $to) ? $helper->__('from <strong>%s</strong> to <strong>%s</strong> included', $from, $to) : $helper->__('from <strong>%s</strong>', $from)
 				)
 			);
 
 			if (!$email->getSentSuccess())
-				throw new Exception('Can not send cronlog mail report for '.$emailAddress.'.');
+				throw new Exception($helper->__('Can not send email report to %s.', $emailAddress));
 		}
 	}
 
 
 	// #### Programmation de la tâche cron ########################################## public ### //
-	// = révision : 7
-	// » Quotidien : tous les jours à 01h15 (daily)
-	// » Hebdomadaire : tous les lundi à 01h15 (weekly)
-	// » Mensuel : chaque premier jour du mois à 01h15 (monthly)
+	// = révision : 8
+	// » Quotidien : tous les jours à 01h15 (quotidien/daily)
+	// » Hebdomadaire : tous les lundi à 01h15 (hebdomadaire/weekly)
+	// » Mensuel : chaque premier jour du mois à 01h15 (mensuel/monthly)
 	public function updateConfig() {
 
 		try {
@@ -154,9 +155,9 @@ class Luigifab_Cronlog_Model_Observer {
 
 
 	// #### Génération des périodes ################################################ private ### //
-	// = révision : 6
+	// = révision : 7
 	// » Renvoie une période : hier, la semaine dernière ou le mois dernier
-	// » Doit être appelé pour la veille
+	// » Doit être appelé pour le calcul des dates de la veille uniquement
 	private function getDateRange($range) {
 
 		$dateStart = Mage::app()->getLocale()->date();
@@ -186,6 +187,9 @@ class Luigifab_Cronlog_Model_Observer {
 		$dateStart->setTimezone('Etc/UTC');
 		$dateEnd->setTimezone('Etc/UTC');
 
-		return array('from' => $dateStart, 'to' => $dateEnd, 'datetime' => true, 'fromTime' => $dateStart->getTimestamp(), 'toTime' => $dateEnd->getTimestamp());
+		return array(
+			'from' => $dateStart, 'to' => $dateEnd, 'datetime' => true,
+			'fromTime' => $dateStart->getTimestamp(), 'toTime' => $dateEnd->getTimestamp()
+		);
 	}
 }
