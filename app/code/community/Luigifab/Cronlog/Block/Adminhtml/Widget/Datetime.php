@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/28/03/2012
- * Updated W/28/03/2012
+ * Updated S/26/04/2014
  * Version 1
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,23 +18,9 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_Widget_Datetime extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract {
+class Luigifab_Cronlog_Block_Adminhtml_Widget_Datetime extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Datetime {
 
 	public function render(Varien_Object $row) {
-
-		$data = $this->_getValue($row);
-
-		if ((strlen($data) > 0) && ($data != '0000-00-00 00:00:00')) {
-
-			try {
-				$data = Mage::app()->getLocale()->date($data, Varien_Date::DATETIME_INTERNAL_FORMAT)->toString(Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM));
-			}
-			catch (Exception $e) { }
-
-			return $data;
-		}
-		else {
-			return '';
-		}
+		return ($this->_getValue($row) != '0000-00-00 00:00:00') ? parent::render($row) : '';
 	}
 }

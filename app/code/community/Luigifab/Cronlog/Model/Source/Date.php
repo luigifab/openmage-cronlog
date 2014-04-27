@@ -4,7 +4,7 @@
  * Updated W/13/02/2013
  * Version 1
  *
- * Copyright 2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2013-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify

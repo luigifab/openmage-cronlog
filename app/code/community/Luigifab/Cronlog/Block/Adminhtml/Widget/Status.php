@@ -1,10 +1,10 @@
 <?php
 /**
  * Created J/01/03/2012
- * Updated S/02/03/2013
- * Version 4
+ * Updated S/26/04/2014
+ * Version 5
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -21,14 +21,6 @@
 class Luigifab_Cronlog_Block_Adminhtml_Widget_Status extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract {
 
 	public function render(Varien_Object $row) {
-
-		if (in_array($row->getStatus(), array('missed', 'error')))
-			return '<span class="grid-severity-critical"><span>'.$this->__(ucfirst($row->getStatus())).'</span></span>';
-		else if ($row->getStatus() === 'running')
-			return '<span class="grid-severity-minor"><span>'.$this->__(ucfirst($row->getStatus())).'</span></span>';
-		else
-			return '<span class="grid-severity-notice"><span>'.$this->__(ucfirst($row->getStatus())).'</span></span>';
-
-		return $this->__(ucfirst($row->getStatus()));
+		return '<span class="grid-'.$row->getStatus().'">'.$this->__(ucfirst($row->getStatus())).'</span>';
 	}
 }

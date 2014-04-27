@@ -1,19 +1,24 @@
 @charset "utf-8";
 /**
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * File created W/29/02/2012, updated S/02/03/2013, version 8
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * File created W/29/02/2012, updated S/26/04/2014, version 10
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL).
  */
 
-body.adminhtml-cronlog-history-index h3.icon-head, body.adminhtml-cronlog-history-new h3.icon-head,
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& global &&& */
+body.adminhtml-cronlog-history-index h3.icon-head,
+body.adminhtml-cronlog-history-new h3.icon-head,
 body.adminhtml-cronlog-history-view h3 {
 	min-height:18px; padding-left:22px;
 	background:url("../../../images/fam_calendar.gif") no-repeat left center;
 }
 
+#cronlog_general p.note { white-space:nowrap; }
+
+/* &&&&&&&&&&&&&&&&&&& création d'une tâche &&& */
 body.adminhtml-cronlog-history-new div.columns { background:none; }
 body.adminhtml-cronlog-history-new div.side-col { display:none; }
 body.adminhtml-cronlog-history-new div.main-col { margin:0; padding:0; }
@@ -22,15 +27,39 @@ body.adminhtml-cronlog-history-new div.main-col td.value { padding-left:0 !impor
 body.adminhtml-cronlog-history-new div.main-col select { width:100%; padding:4px; }
 body.adminhtml-cronlog-history-new div.main-col span.required { display:none; }
 
-body.adminhtml-cronlog-history-view div.content ul { font-size:13px; }
-body.adminhtml-cronlog-history-view div.content p.status { margin:1.2em 1em 1.8em; font-size:13px; }
-body.adminhtml-cronlog-history-view div.content p.status.error { color:red; }
-body.adminhtml-cronlog-history-view div.content p.status.run { color:green; }
-body.adminhtml-cronlog-history-view div.content pre { font:10px monospace; line-height:15px; white-space:pre-wrap; }
+/* &&&&&&&&&&&&&&&&&&&&& détail d'une tâche &&& */
+body.adminhtml-cronlog-history-view div.content ul, body.adminhtml-cronlog-history-view div.content p {
+	display:inline-block; margin:0.2em 0.5em 1.4em; width:27.5em; height:7.2em; padding:0.7em 1em; vertical-align:middle;
+	font-size:13px; border-radius:1em; border:1px solid #DDD; background-color:#EFEFEF; background-clip:padding-box;
+}
 
-#cronlogGrid_table tr:hover { background-color:#DEDEDE; }
-#cronlogGrid_table tr td strong { font-style:normal; font-weight:bold; color:red; }
-#cronlogGrid_table tr td em { font-style:normal; font-weight:bold; color:green; }
+body.adminhtml-cronlog-history-view div.content pre {
+	margin:0.2em 0.5em 1.4em; min-height:20em; padding:1.2em 1.4em;
+	font:10px monospace; line-height:15px; white-space:pre-wrap;
+	border-radius:1em; border:1px solid #DDD; background-color:#EFEFEF; background-clip:padding-box;
+}
 
-#cronlog_general p { margin:9px 5px 5px; }
+/* &&&&&&&&&&&&&&&&&&&&&&& liste des tâches &&& */
+#cronlog_grid_table tr:hover { background-color:#DEDEDE; }
+#cronlog_grid_table tr td strong { color:red; }
 
+#cronlog_grid_table tr td.a-status span {
+	display:block; height:17px; line-height:17px; text-align:center;
+	font-size:10px; font-weight:bold; text-transform:uppercase; color:white; border-radius:10px;
+}
+
+#cronlog_grid_table tr td.a-status span.grid-pending { background-color:#87E990; }
+#cronlog_grid_table tr td.a-status span.grid-running { background-color:#FF9C00; }
+#cronlog_grid_table tr td.a-status span.grid-success { background-color:#3CB861; }
+#cronlog_grid_table tr td.a-status span.grid-missed { background-color:black; }
+#cronlog_grid_table tr td.a-status span.grid-error { background-color:#E41101; }
+
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& animation &&& */
+body.adminhtml-cronlog-history-view div.content p.status-error strong, body.adminhtml-cronlog-history-view div.content p.status-missed strong,
+#cronlog_grid_table tr td.a-status span.grid-error, #cronlog_grid_table tr td.a-status span.grid-missed {
+	animation:blink 1s step-start 0s infinite; -moz-animation:blink 1s step-start 0s infinite; -webkit-animation:blink 1s step-start 0s infinite;
+}
+
+@keyframes blink { 30% { color:transparent; } }
+@-moz-keyframes blink { 30% { color:transparent; } }
+@-webkit-keyframes blink { 30% { color:transparent; } }

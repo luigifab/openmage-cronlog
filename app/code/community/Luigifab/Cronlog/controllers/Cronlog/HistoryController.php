@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/03/03/2013
- * Version 7
+ * Updated S/26/04/2014
+ * Version 10
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -21,34 +21,35 @@
 class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controller_Action {
 
 	public function indexAction() {
-		$this->loadLayout();
-		$this->_setActiveMenu('tools/cronlog');
-		$this->renderLayout();
+
+		if ($this->getRequest()->getParam('isAjax', false))
+			$this->getResponse()->setBody($this->getLayout()->createBlock('cronlog/adminhtml_history_grid')->toHtml());
+		else
+			$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
 	}
 
 	public function newAction() {
+
 		$this->loadLayout();
 		$this->_setActiveMenu('tools/cronlog');
+
 		$this->_addLeft($this->getLayout()->createBlock('cronlog/adminhtml_history_edit_tabs'));
 		$this->_addContent($this->getLayout()->createBlock('cronlog/adminhtml_history_edit'));
+
 		$this->renderLayout();
 	}
 
 	public function viewAction() {
 
-		$id = $this->getRequest()->getParam('id', 0);
+		$id = intval($this->getRequest()->getParam('id', 0));
 
-		if (is_numeric($id) && ($id > 0)) {
+		if ($id > 0) {
 
 			$job = Mage::getModel('cron/schedule')->load($id);
 
-			if (is_numeric($job->getId()) && ($job->getId() > 0)) {
-
+			if ($job->getId() > 0) {
 				Mage::register('current_job', $job);
-
-				$this->loadLayout();
-				$this->_setActiveMenu('tools/cronlog');
-				$this->renderLayout();
+				$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
 			}
 			else {
 				$this->_redirect('*/*/index');
@@ -62,36 +63,39 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 	public function saveAction() {
 
 		try {
-			// préparation
-			$code = $this->getRequest()->getPost('job_code', false);
+			if (Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
+				$this->_redirect('*/*/index');
+			}
+			else {
+				// préparation
+				if (($code = $this->getRequest()->getPost('job_code', false)) === false)
+					throw new Exception(Mage::helper('cronlog')->__('The <em>job_code</em> field is a required value.'));
 
-			if ($code === false)
-				throw new Exception(Mage::helper('cronlog')->__('The <em>job_code</em> field is a required value.'));
+				// dates
+				$dateCreated = Mage::app()->getLocale()->date();
+				$dateCreated->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
 
-			// dates
-			$dateCreated = Mage::app()->getLocale()->date();
-			$dateCreated->setTimezone('Etc/UTC');
+				$dateScheduled = Mage::app()->getLocale()->date();
+				$dateScheduled->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
+				$dateScheduled->addMinute($this->getRequest()->getPost('scheduled_at', 1));
 
-			$dateScheduled = Mage::app()->getLocale()->date();
-			$dateScheduled->addMinute($this->getRequest()->getPost('scheduled_at', 1));
-			$dateScheduled->setTimezone('Etc/UTC');
+				// enregistrement
+				$job = Mage::getModel('cron/schedule');
+				$job->setJobCode($code);
+				$job->setCreatedAt(Mage::helper('cronlog')->getDateToUtc($dateCreated->toString(Zend_Date::RFC_3339)));
+				$job->setScheduledAt(Mage::helper('cronlog')->getDateToUtc($dateScheduled->toString(Zend_Date::RFC_3339)));
+				$job->save();
 
-			// enregistrement
-			$job = Mage::getModel('cron/schedule');
-			$job->setJobCode($code);
-			$job->setCreatedAt($dateCreated);
-			$job->setScheduledAt($dateScheduled);
-			$job->save();
+				$id = $job->getId();
 
-			// redirection
-			Mage::getSingleton('adminhtml/session')->addSuccess(
-				Mage::helper('cronlog')->__('Job number %d has been successfully scheduled.', $job->getId()));
-
-			$this->_redirect('*/*/index');
+				// redirection
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('cronlog')->__('Job number %d has been successfully scheduled.', $id));
+				$this->_redirect('*/*/index');
+			}
 		}
 		catch (Exception $e) {
-			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 			Mage::getSingleton('adminhtml/session')->setFormData($this->getRequest()->getPost());
+			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 			$this->_redirect('*/*/new');
 		}
 	}
@@ -99,19 +103,22 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 	public function cancelAction() {
 
 		try {
-			// préparation
-			$id = $this->getRequest()->getParam('id', false);
+			if (Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
+				$this->_redirect('*/*/index');
+			}
+			else {
+				// préparation
+				if (($id = $this->getRequest()->getParam('id', false)) === false)
+					throw new Exception(Mage::helper('cronlog')->__('The <em>job_id</em> field is a required value.'));
 
-			if ($id === false)
-				throw new Exception(Mage::helper('cronlog')->__('The <em>job_id</em> field is a required value.'));
+				// suppression
+				$job = Mage::getModel('cron/schedule')->load($id);
+				$job->delete();
 
-			// suppression
-			$job = Mage::getModel('cron/schedule')->load($id);
-			$job->delete();
-
-			// redirection
-			Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('cronlog')->__('Job number %d has been successfully deleted.', $id));
-			$this->_redirect('*/*/index');
+				// redirection
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('cronlog')->__('Job number %d has been successfully deleted.', $id));
+				$this->_redirect('*/*/index');
+			}
 		}
 		catch (Exception $e) {
 			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());

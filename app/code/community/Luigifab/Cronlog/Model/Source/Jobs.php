@@ -1,10 +1,10 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated S/02/03/2013
- * Version 3
+ * Updated S/26/04/2014
+ * Version 4
  *
- * Copyright 2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2013-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -23,14 +23,8 @@ class Luigifab_Cronlog_Model_Source_Jobs {
 	public function toOptionArray() {
 
 		return array(
-			array(
-				'label' => Mage::helper('cronlog')->__('Recent jobs'),
-				'value' => $this->getRecentJobs()
-			),
-			array(
-				'label' => Mage::helper('cronlog')->__('All jobs'),
-				'value' => $this->getAllJobs()
-			)
+			array('label' => Mage::helper('cronlog')->__('Recent jobs'), 'value' => $this->getRecentJobs()),
+			array('label' => Mage::helper('cronlog')->__('All jobs'),    'value' => $this->getAllJobs())
 		);
 	}
 
@@ -38,7 +32,7 @@ class Luigifab_Cronlog_Model_Source_Jobs {
 
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
 		$jobs->setOrder('executed_at', 'desc');
-		$jobs->setPageSize(200);
+		$jobs->setPageSize(400);
 
 		$data = array();
 		$date = Mage::getSingleton('core/locale');
@@ -59,13 +53,13 @@ class Luigifab_Cronlog_Model_Source_Jobs {
 		return $data;
 	}
 
-	private function getAllJobs() {
+	public function getAllJobs($simple = false) {
 
 		$jobs = (array) Mage::getConfig()->getNode('crontab/jobs');
 		$data = array();
 
 		foreach ($jobs as $job => $config)
-			$data[$job] = array('value' => $job, 'label' => $job);
+			$data[$job] = ($simple) ? $job : array('value' => $job, 'label' => $job);
 
 		ksort($data);
 		return $data;

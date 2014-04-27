@@ -1,10 +1,10 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated S/02/03/2013
- * Version 3
+ * Updated S/26/04/2014
+ * Version 4
  *
- * Copyright 2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2013-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -22,8 +22,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 
 	protected function _prepareForm() {
 
-		$sessionData = Mage::getSingleton('adminhtml/session')->getFormData();
-
+		// formulaire
 		$form = new Varien_Data_Form();
 		$this->setForm($form);
 
@@ -47,14 +46,15 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 			'values'   => Mage::getModel('cronlog/source_date')->toOptionArray()
 		));
 
-		if (is_array($sessionData) && !empty($sessionData)) {
+		// sélection par défaut
+		$session = Mage::getSingleton('adminhtml/session')->getFormData();
 
-			$form->setValues(array(
-				'job_code' => trim($sessionData['job_code']),
-				'scheduled_at' => trim($sessionData['scheduled_at'])
-			));
-
+		if (is_array($session) && !empty($session)) {
+			$form->setValues(array('job_code' => trim($session['job_code']), 'scheduled_at' => trim($session['scheduled_at'])));
 			Mage::getSingleton('adminhtml/session')->unsFormData();
+		}
+		else if ($this->getRequest()->getParam('code', false)) {
+			$form->setValues(array('job_code' => $this->getRequest()->getParam('code')));
 		}
 
 		return parent::_prepareForm();

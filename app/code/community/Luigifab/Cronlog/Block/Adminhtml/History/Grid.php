@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/02/03/2013
- * Version 10
+ * Updated S/26/04/2014
+ * Version 12
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -24,11 +24,12 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		parent::__construct();
 
-		$this->setId('cronlogGrid');
+		$this->setId('cronlog_grid');
 		$this->setDefaultSort('schedule_id');
 		$this->setDefaultDir('DESC');
 
-		$this->setSaveParametersInSession(false);
+		$this->setUseAjax(true);
+		$this->setSaveParametersInSession(true);
 		$this->setPagerVisibility(true);
 		$this->setFilterVisibility(true);
 		$this->setDefaultLimit(max($this->_defaultLimit, intval(Mage::getStoreConfig('cronlog/general/number'))));
@@ -51,21 +52,33 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		$this->addColumn('schedule_id', array(
 			'header'   => $this->helper('adminhtml')->__('Id'),
 			'align'    => 'center',
-			'width'    => '85px',
+			'width'    => '80px',
 			'index'    => 'schedule_id',
 			'sortable' => true
 		));
 
-		$this->addColumn('job_code', array(
-			'header'   => $this->__('Job'),
-			'align'    => 'center',
-			'index'    => 'job_code',
-			'sortable' => true
-		));
+		if (Mage::getStoreConfig('cronlog/general/textmode') !== '1') {
+			$this->addColumn('job_code', array(
+				'header'   => $this->__('Job'),
+				'align'    => 'center',
+				'index'    => 'job_code',
+				'type'     => 'options',
+				'options'  => Mage::getModel('cronlog/source_jobs')->getAllJobs(true),
+				'sortable' => true
+			));
+		}
+		else {
+			$this->addColumn('job_code', array(
+				'header'   => $this->__('Job'),
+				'align'    => 'center',
+				'index'    => 'job_code',
+				'sortable' => true
+			));
+		}
 
 		$this->addColumn('created_at', array(
 			'header'   => $this->__('Created At'),
-			'width'    => '185px',
+			'width'    => '180px',
 			'align'    => 'center',
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
@@ -75,7 +88,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		$this->addColumn('scheduled_at', array(
 			'header'   => $this->__('Scheduled At'),
-			'width'    => '185px',
+			'width'    => '180px',
 			'align'    => 'center',
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
@@ -85,7 +98,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		$this->addColumn('executed_at', array(
 			'header'   => $this->__('Executed At'),
-			'width'    => '185px',
+			'width'    => '180px',
 			'align'    => 'center',
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
@@ -95,7 +108,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		$this->addColumn('finished_at', array(
 			'header'   => $this->__('Finished At'),
-			'width'    => '185px',
+			'width'    => '180px',
 			'align'    => 'center',
 			'type'     => 'datetime',
 			'renderer' => 'cronlog/adminhtml_widget_datetime',
@@ -103,10 +116,21 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'sortable' => true
 		));
 
+		$this->addColumn('duration', array(
+			'header'   => $this->__('Duration'),
+			'width'    => '50px',
+			'align'    => 'center',
+			'renderer' => 'cronlog/adminhtml_widget_duration',
+			'index'    => 'duration',
+			'sortable' => false,
+			'filter'   => false
+		));
+
 		$this->addColumn('status', array(
 			'header'   => $this->helper('adminhtml')->__('Status'),
 			'align'    => 'center',
 			'width'    => '125px',
+			'align'    => 'status',
 			'index'    => 'status',
 			'sortable' => true,
 			'type'     => 'options',
@@ -121,8 +145,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		));
 
 		$this->addColumn('action', array(
-			'header'  =>  $this->helper('adminhtml')->__('Action'),
-			'width'   => '50px',
+			'header'  =>  '',
+			'width'   => '40px',
 			'align'   => 'center',
 			'type'    => 'action',
 			'getter'  => 'getId',

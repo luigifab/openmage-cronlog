@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/03/03/2012
- * Updated D/10/02/2013
+ * Updated S/26/04/2014
  * Version 5
  *
- * Copyright 2012-2013 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -21,6 +21,6 @@
 class Luigifab_Cronlog_Block_Adminhtml_Config_Notice extends Mage_Adminhtml_Block_Abstract implements Varien_Data_Form_Element_Renderer_Interface {
 
 	public function render(Varien_Data_Form_Element_Abstract $element) {
-		return '<tr><td colspan="4"><p>'.$this->__('Other options available in <a href="%s">cron jobs configuration</a>.', $this->getUrl('adminhtml/system_config/edit', array('section' => 'system'))).'</p></td></tr>';
+		return '<tr><td colspan="4"><p style="margin:9px 5px 5px;">'.$this->__('Other options available in <a href="%s">cron jobs configuration</a>.', $this->getUrl('adminhtml/system_config/edit', array('section' => 'system'))).'</p></td></tr>';
 	}
 }
