@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated D/27/04/2014
- * Version 10
+ * Updated S/04/10/2014
+ * Version 16
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -29,17 +29,25 @@
 		<cronlog translate="label">
 			<label>Cron jobs</label>
 			<tab>luigifab</tab>
-			<sort_order>89</sort_order>
+			<sort_order>53</sort_order>
 			<show_in_default>1</show_in_default>
 			<show_in_website>0</show_in_website>
 			<show_in_store>0</show_in_store>
 			<groups>
+				<help>
+					<sort_order>0</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<frontend_model>cronlog/adminhtml_config_help</frontend_model>
+				</help>
 				<general translate="label">
 					<label>General</label>
 					<sort_order>1</sort_order>
 					<show_in_default>1</show_in_default>
 					<show_in_website>0</show_in_website>
 					<show_in_store>0</show_in_store>
+					<expanded>1</expanded>
 					<fields>
 						<filter translate="label">
 							<label>By default filter by jobs</label>
@@ -61,7 +69,7 @@
 						</number>
 						<textmode translate="label comment">
 							<label>Use text filter</label>
-							<comment>Please reset filter after change this option</comment>
+							<comment>Please reset filter after change this option.</comment>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_yesno</source_model>
 							<sort_order>3</sort_order>
@@ -69,21 +77,25 @@
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
 						</textmode>
-						<config>
-							<frontend_model>cronlog/adminhtml_config_notice</frontend_model>
-							<sort_order>9</sort_order>
+						<lifetime translate="label comment">
+							<label>History lifetime</label>
+							<comment><![CDATA[Replace cron jobs history lifetime (see Advanced &gt; System &gt; Cron).]]></comment>
+							<frontend_type>select</frontend_type>
+							<source_model>cronlog/source_lifetime</source_model>
+							<sort_order>4</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
-						</config>
+						</lifetime>
 					</fields>
 				</general>
 				<email translate="label">
 					<label>Email reports</label>
-					<sort_order>2</sort_order>
+					<sort_order>3</sort_order>
 					<show_in_default>1</show_in_default>
 					<show_in_website>0</show_in_website>
 					<show_in_store>0</show_in_store>
+					<expanded>1</expanded>
 					<fields>
 						<enabled translate="label">
 							<label>Enable</label>
@@ -105,7 +117,7 @@
 						</frequency>
 						<recipient_email translate="label comment">
 							<label>Send Emails To</label>
-							<comment>Emails separated by space</comment>
+							<comment>Emails separated by space.</comment>
 							<frontend_type>text</frontend_type>
 							<!--backend_model>adminhtml/system_config_backend_email_address</backend_model-->
 							<sort_order>3</sort_order>
@@ -136,5 +148,22 @@
 				</email>
 			</groups>
 		</cronlog>
+		<system>
+			<groups>
+				<cron>
+					<fields>
+						<history_cleanup_every translate="comment">
+							<comment><![CDATA[Disabled if you use cronlog module lifetime (see Cron jobs &gt; Lifetime).]]></comment>
+						</history_cleanup_every>
+						<history_success_lifetime translate="comment">
+							<comment><![CDATA[Disabled if you use cronlog module lifetime (see Cron jobs &gt; Lifetime).]]></comment>
+						</history_success_lifetime>
+						<history_failure_lifetime translate="comment">
+							<comment><![CDATA[Disabled if you use cronlog module lifetime (see Cron jobs &gt; Lifetime).]]></comment>
+						</history_failure_lifetime>
+					</fields>
+				</cron>
+			</groups>
+		</system>
 	</sections>
 </config>

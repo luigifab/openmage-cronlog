@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated S/02/03/2013
- * Version 4
+ * Updated D/01/06/2014
+ * Version 5
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -23,6 +23,9 @@
 		<Luigifab_Cronlog>
 			<active>true</active>
 			<codePool>community</codePool>
+			<depends>
+				<Mage_Cron />
+			</depends>
 			<!-- see https://redmine.luigifab.info/projects/magento/wiki/modules for more information -->
 			<update>http://www.luigifab.info/magento/rss.xml</update>
 		</Luigifab_Cronlog>

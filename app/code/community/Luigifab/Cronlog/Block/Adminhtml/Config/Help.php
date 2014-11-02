@@ -1,8 +1,8 @@
 <?php
 /**
- * Created D/10/02/2013
+ * Created V/23/05/2014
  * Updated D/01/06/2014
- * Version 1
+ * Version 2
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,19 +18,10 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
+class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_Abstract implements Varien_Data_Form_Element_Renderer_Interface {
 
-	protected function _prepareForm() {
-
-		$form = new Varien_Data_Form(array(
-			'id'     => 'edit_form',
-			'action' => $this->getUrl('*/*/save'),
-			'method' => 'post'
-		));
-
-		$form->setUseContainer(true);
-		$this->setForm($form);
-
-		return parent::_prepareForm();
+	public function render(Varien_Data_Form_Element_Abstract $element) {
+		$url = 'https://redmine.luigifab.info/projects/magento/wiki/cronlog';
+		return '<p class="box">Luigifab/Cronlog '.$this->helper('cronlog')->getVersion().' <a href="'.$url.'" onclick="window.open(this.href); return false;" style="float:right;">'.$url.'</a></p>';
 	}
 }

@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/10/02/2013
- * Version 2
+ * Updated D/01/06/2014
+ * Version 4
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -26,7 +26,12 @@ class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widg
 
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
-
 		$this->_headerText = $this->__('Cron jobs');
+
+		$this->_addButton('config', array(
+			'label'   => $this->__('Manage cron jobs'),
+			'onclick' => "setLocation('".$this->getUrl('*/cronlog_config/index')."');",
+			'class'   => 'go'
+		));
 	}
 }

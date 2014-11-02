@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated D/27/04/2014
- * Version 9
+ * Updated M/19/08/2014
+ * Version 10
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -32,7 +32,7 @@
 				<cronlog translate="title">
 					<title>Cron jobs</title>
 					<action>adminhtml/cronlog_history/index</action>
-					<sort_order>89</sort_order>
+					<sort_order>63</sort_order>
 				</cronlog>
 			</children>
 		</tools>
@@ -51,7 +51,7 @@
 							</configuration>
 							<cronlog translate="title">
 								<title>Cron jobs</title>
-								<sort_order>89</sort_order>
+								<sort_order>63</sort_order>
 							</cronlog>
 						</children>
 					</tools>
@@ -65,7 +65,7 @@
 										<children-->
 											<cronlog translate="title">
 												<title>Cron jobs</title>
-												<sort_order>103089</sort_order>
+												<sort_order>103063</sort_order>
 											</cronlog>
 										<!--/children>
 									</luigifab-->

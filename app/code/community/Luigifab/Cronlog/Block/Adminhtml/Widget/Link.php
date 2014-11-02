@@ -1,8 +1,8 @@
 <?php
 /**
- * Created D/10/02/2013
- * Updated D/01/06/2014
- * Version 1
+ * Created S/31/05/2014
+ * Updated D/31/08/2014
+ * Version 7
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,19 +18,14 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
+class Luigifab_Cronlog_Block_Adminhtml_Widget_Link extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract {
 
-	protected function _prepareForm() {
+	public function render(Varien_Object $row) {
 
-		$form = new Varien_Data_Form(array(
-			'id'     => 'edit_form',
-			'action' => $this->getUrl('*/*/save'),
-			'method' => 'post'
-		));
+		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
+		$txt = $this->helper('adminhtml')->__(($row->getData('status') === 'disabled') ? 'Enable' : 'Disable');
+		$act = 'new Ajax.Updater(\'cronlog_grid_rw\', this.href); return false;';
 
-		$form->setUseContainer(true);
-		$this->setForm($form);
-
-		return parent::_prepareForm();
+		return (!$row->getData('is_read_only')) ? '<a href="'.$url.'" onclick="'.$act.'">'.$txt.'</a>' : '';
 	}
 }

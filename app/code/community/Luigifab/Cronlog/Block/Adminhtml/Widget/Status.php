@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/01/03/2012
- * Updated S/26/04/2014
- * Version 5
+ * Updated D/31/08/2014
+ * Version 8
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,9 +18,13 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_Widget_Status extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract {
+class Luigifab_Cronlog_Block_Adminhtml_Widget_Status extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Options {
 
 	public function render(Varien_Object $row) {
-		return '<span class="grid-'.$row->getStatus().'">'.$this->__(ucfirst($row->getStatus())).'</span>';
+
+		$value = parent::render($row);
+		$value = (strpos($value, ' (') !== false) ? substr($value, 0, strpos($value, ' (')) : $value;
+
+		return '<span class="grid-'.$row->getData('status').'">'.trim($value).'</span>';
 	}
 }

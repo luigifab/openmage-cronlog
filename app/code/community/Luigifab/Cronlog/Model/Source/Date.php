@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/13/02/2013
- * Updated W/13/02/2013
- * Version 1
+ * Updated D/31/08/2014
+ * Version 5
  *
- * Copyright 2013-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,22 +18,22 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Model_Source_Date {
+class Luigifab_Cronlog_Model_Source_Date extends Luigifab_Cronlog_Helper_Data {
 
 	public function toOptionArray() {
 
 		return array(
-			array('label' => Mage::helper('cronlog')->__('%d minute', 1), 'value' => '1'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 2), 'value' => '2'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 3), 'value' => '3'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 4), 'value' => '4'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 5), 'value' => '5'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 10), 'value' => '10'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 15), 'value' => '15'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 20), 'value' => '20'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 30), 'value' => '30'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 45), 'value' => '45'),
-			array('label' => Mage::helper('cronlog')->__('%d minutes', 60), 'value' => '60')
+			array('value' => 1,  'label' => $this->__('%d minute', 1)),
+			array('value' => 2,  'label' => $this->__('%d minutes', 2)),
+			array('value' => 3,  'label' => $this->__('%d minutes', 3)),
+			array('value' => 4,  'label' => $this->__('%d minutes', 4)),
+			array('value' => 5,  'label' => $this->__('%d minutes', 5)),
+			array('value' => 10, 'label' => $this->__('%d minutes', 10)),
+			array('value' => 15, 'label' => $this->__('%d minutes', 15)),
+			array('value' => 20, 'label' => $this->__('%d minutes', 20)),
+			array('value' => 30, 'label' => $this->__('%d minutes', 30)),
+			array('value' => 45, 'label' => $this->__('%d minutes', 45)),
+			array('value' => 60, 'label' => $this->__('%d minutes', 60))
 		);
 	}
 }

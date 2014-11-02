@@ -1,8 +1,8 @@
 <?php
 /**
- * Created D/10/02/2013
- * Updated D/01/06/2014
- * Version 1
+ * Created S/31/05/2014
+ * Updated D/31/08/2014
+ * Version 5
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,19 +18,9 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
+class Luigifab_Cronlog_Block_Adminhtml_Widget_Code extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Options {
 
-	protected function _prepareForm() {
-
-		$form = new Varien_Data_Form(array(
-			'id'     => 'edit_form',
-			'action' => $this->getUrl('*/*/save'),
-			'method' => 'post'
-		));
-
-		$form->setUseContainer(true);
-		$this->setForm($form);
-
-		return parent::_prepareForm();
+	public function render(Varien_Object $row) {
+		return $row->getData('job_code');
 	}
 }

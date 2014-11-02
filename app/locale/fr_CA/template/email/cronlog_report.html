@@ -25,8 +25,7 @@
 	<br />- <span style="color:green;">Tâche(s) terminée(s) : <strong>{{var total_success}}</strong></span></p>
 
 	{{depend errors_list}}
-		<p style="margin-top:2em;">Ci-dessous la liste des tâches cron manquée(s) ({{var total_missed}}) et en erreur(s) ({{var total_error}}).</p>
-		<ul style="margin:0.6em 0 1.4em; padding:0; font-size:0.9em; list-style:none;">
+		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; list-style:none; border-top:1px dashed #777;">
 			{{var errors_list}}
 		</ul>
 	{{/depend}}

@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/26/04/2014
- * Updated S/26/04/2014
- * Version 1
+ * Updated D/31/08/2014
+ * Version 8
  *
- * Copyright 2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -22,7 +22,8 @@ class Luigifab_Cronlog_Block_Adminhtml_Widget_Duration extends Mage_Adminhtml_Bl
 
 	public function render(Varien_Object $row) {
 
-		if ((strlen($row->getData('finished_at')) > 0) && ($row->getData('finished_at') != '0000-00-00 00:00:00')) {
+		if (!in_array($row->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
+		    !in_array($row->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
 
 			$duration = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
 
@@ -33,7 +34,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Widget_Duration extends Mage_Adminhtml_Bl
 			else if ($duration > 0)
 				$data = ($duration > 9) ? '00:'.$duration : '00:0'.$duration;
 			else
-				$data = '00:00';
+				$data = '&lt; 1';
 
 			return ($duration > 180) ? '<strong>'.$data.'</strong>' : $data;
 		}

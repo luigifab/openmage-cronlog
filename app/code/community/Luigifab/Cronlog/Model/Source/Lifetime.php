@@ -1,8 +1,8 @@
 <?php
 /**
- * Created D/10/02/2013
- * Updated D/01/06/2014
- * Version 1
+ * Created D/31/08/2014
+ * Updated S/06/09/2014
+ * Version 3
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,19 +18,17 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
+class Luigifab_Cronlog_Model_Source_Lifetime extends Luigifab_Cronlog_Helper_Data {
 
-	protected function _prepareForm() {
+	public function toOptionArray() {
 
-		$form = new Varien_Data_Form(array(
-			'id'     => 'edit_form',
-			'action' => $this->getUrl('*/*/save'),
-			'method' => 'post'
-		));
-
-		$form->setUseContainer(true);
-		$this->setForm($form);
-
-		return parent::_prepareForm();
+		return array(
+			array('value' => 0, 'label' => '--'),
+			array('value' => 5 * 24 * 60,  'label' => $this->__('%d days', 5)),
+			array('value' => 7 * 24 * 60,  'label' => $this->__('%d days', 7)),
+			array('value' => 14 * 24 * 60, 'label' => $this->__('%d days', 14)),
+			array('value' => 28 * 24 * 60, 'label' => $this->__('%d days', 28)),
+			array('value' => 31 * 24 * 60, 'label' => $this->__('%d days', 31))
+		);
 	}
 }

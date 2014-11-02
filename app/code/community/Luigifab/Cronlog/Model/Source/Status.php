@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated W/29/02/2012
- * Version 1
+ * Updated D/01/06/2014
+ * Version 2
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -27,8 +27,8 @@ class Luigifab_Cronlog_Model_Source_Status {
 			array('value' => 'pending', 'label' => Mage::helper('cronlog')->__('Pending (pending)')),
 			array('value' => 'running', 'label' => Mage::helper('cronlog')->__('Running (running)')),
 			array('value' => 'success', 'label' => Mage::helper('cronlog')->__('Success (success)')),
-			array('value' => 'missed', 'label' => Mage::helper('cronlog')->__('Missed (missed)')),
-			array('value' => 'error', 'label' => Mage::helper('cronlog')->__('Error (error)'))
+			array('value' => 'missed',  'label' => Mage::helper('cronlog')->__('Missed (missed)')),
+			array('value' => 'error',   'label' => Mage::helper('cronlog')->__('Error (error)'))
 		);
 	}
 }

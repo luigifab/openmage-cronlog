@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated S/26/04/2012
- * Version 13
+ * Updated S/30/08/2014
+ * Version 16
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -21,7 +21,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>2.1.0</version>
+			<version>3.0.0</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
@@ -39,6 +39,11 @@
 			<cronlog>
 				<class>Luigifab_Cronlog_Model</class>
 			</cronlog>
+			<cron>
+				<rewrite>
+					<observer>Luigifab_Cronlog_Model_Rewrite_Cron</observer>
+				</rewrite>
+			</cron>
 		</models>
 		<template>
 			<email>
@@ -93,13 +98,22 @@
 	<crontab>
 		<jobs>
 			<cronlog_send_report>
-				<run><model>cronlog/observer::sendMail</model></run>
+				<run>
+					<model>cronlog/observer::sendMail</model>
+				</run>
 			</cronlog_send_report>
+			<!-- EXAMPLE TO DISABLE A CRON JOB -->
+			<!--catalog_product_alert>
+				<schedule>
+					<disabled>1</disabled>
+				</schedule>
+			</catalog_product_alert-->
 		</jobs>
 	</crontab>
 	<default>
 		<cronlog>
 			<email>
+				<enabled>0</enabled>
 				<recipient_email>hello@example.com</recipient_email>
 				<sender_email_identity>general</sender_email_identity>
 				<template>cronlog_email_template</template>

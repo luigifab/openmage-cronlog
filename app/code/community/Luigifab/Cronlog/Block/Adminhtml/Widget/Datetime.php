@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/28/03/2012
- * Updated S/26/04/2014
- * Version 1
+ * Updated D/31/08/2014
+ * Version 3
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -21,6 +21,6 @@
 class Luigifab_Cronlog_Block_Adminhtml_Widget_Datetime extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Datetime {
 
 	public function render(Varien_Object $row) {
-		return ($this->_getValue($row) != '0000-00-00 00:00:00') ? parent::render($row) : '';
+		return (!in_array($this->_getValue($row), array('', '0000-00-00 00:00:00', null))) ? parent::render($row) : '';
 	}
 }
