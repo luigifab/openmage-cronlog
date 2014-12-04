@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated S/30/08/2014
+ * Updated D/23/11/2014
  * Version 16
  *
  * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
@@ -21,7 +21,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>3.0.0</version>
+			<version>3.0.1</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
@@ -47,7 +47,6 @@
 		</models>
 		<template>
 			<email>
-				<!-- this name (cronlog_email_template) must be exist in configuration (cronlog/email/template) -->
 				<cronlog_email_template translate="label">
 					<label>Cron jobs report</label>
 					<file>cronlog_report.html</file>

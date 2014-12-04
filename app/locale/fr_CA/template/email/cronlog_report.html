@@ -6,11 +6,11 @@
 "var total_cron":"Nombre de tâches cron",
 "var total_pending":"Nombre de tâche cron en attente",
 "var total_running":"Nombre de tâche cron en cours",
-"var total_success":"Nombre de tâche cron en terminée",
+"var total_success":"Nombre de tâche cron terminée",
 "var total_missed":"Nombre de tâche cron manquée",
 "var total_error":"Nombre de tâche cron en erreur",
-"var errors_list":"Liste des tâches cron en erreur",
-"var config_url":"Adresse de configuration"
+"var list":"Liste des tâches cron en erreur",
+"var config":"Adresse de configuration"
 }@-->
 
 <body style="margin:1em;">
@@ -24,12 +24,12 @@
 	<br />- <span style="color:red;">Tâche(s) en erreur(s) : <strong>{{var total_error}}</strong></span>
 	<br />- <span style="color:green;">Tâche(s) terminée(s) : <strong>{{var total_success}}</strong></span></p>
 
-	{{depend errors_list}}
+	{{depend list}}
 		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; list-style:none; border-top:1px dashed #777;">
-			{{var errors_list}}
+			<li style="margin:0.8em 0 0.5em;">{{var list}}</li>
 		</ul>
 	{{/depend}}
 
-	<p style="font-size:0.8em; line-height:130%; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Tâches cron
-	<br /><a href="{{var config_url}}" style="color:gray;">{{var config_url}}</a></p>
+	<p style="font-size:0.8em; line-height:130%; font-style:italic; color:gray;">{{config path='design/head/default_title'}} - Rapport des tâches cron
+	<br /><a href="{{var config}}" style="color:gray;">{{var config}}</a></p>
 </body>
