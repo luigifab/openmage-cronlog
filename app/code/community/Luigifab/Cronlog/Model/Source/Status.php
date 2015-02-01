@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/01/06/2014
- * Version 2
+ * Updated S/24/01/2015
+ * Version 3
  *
- * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,17 +18,17 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Model_Source_Status {
+class Luigifab_Cronlog_Model_Source_Status extends Luigifab_Modules_Helper_Data {
 
 	public function toOptionArray() {
 
 		return array(
 			array('value' => '', 'label' => '--'),
-			array('value' => 'pending', 'label' => Mage::helper('cronlog')->__('Pending (pending)')),
-			array('value' => 'running', 'label' => Mage::helper('cronlog')->__('Running (running)')),
-			array('value' => 'success', 'label' => Mage::helper('cronlog')->__('Success (success)')),
-			array('value' => 'missed',  'label' => Mage::helper('cronlog')->__('Missed (missed)')),
-			array('value' => 'error',   'label' => Mage::helper('cronlog')->__('Error (error)'))
+			array('value' => 'pending', 'label' => $this->__('Pending (pending)')),
+			array('value' => 'running', 'label' => $this->__('Running (running)')),
+			array('value' => 'success', 'label' => $this->__('Success (success)')),
+			array('value' => 'missed',  'label' => $this->__('Missed (missed)')),
+			array('value' => 'error',   'label' => $this->__('Error (error)'))
 		);
 	}
 }

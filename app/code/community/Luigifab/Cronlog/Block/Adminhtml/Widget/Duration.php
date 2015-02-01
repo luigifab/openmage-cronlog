@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/26/04/2014
- * Updated D/31/08/2014
- * Version 8
+ * Updated S/24/01/2015
+ * Version 4
  *
- * Copyright 2012-2014 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -27,9 +27,9 @@ class Luigifab_Cronlog_Block_Adminhtml_Widget_Duration extends Mage_Adminhtml_Bl
 
 			$duration = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
 
-			if ($duration > 600)
+			if ($duration > 599)
 				$data = (($duration % 60) > 9) ? intval($duration / 60).':'.($duration % 60) : intval($duration / 60).':0'.($duration % 60);
-			else if ($duration > 60)
+			else if ($duration > 59)
 				$data = (($duration % 60) > 9) ? '0'.intval($duration / 60).':'.($duration % 60) : '0'.intval($duration / 60).':0'.($duration % 60);
 			else if ($duration > 0)
 				$data = ($duration > 9) ? '00:'.$duration : '00:0'.$duration;
