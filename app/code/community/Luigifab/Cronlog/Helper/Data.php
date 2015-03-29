@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/29/11/2014
- * Version 7
+ * Updated L/23/03/2015
+ * Version 9
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -24,9 +24,10 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		return (string) Mage::getConfig()->getModuleConfig('Luigifab_Cronlog')->version;
 	}
 
-	public function getUrl($url, $params = null) {
-		return Mage::helper('adminhtml')->getUrl($url, $params);
+	public function _($data, $a = null, $b = null) {
+		return (strpos($txt = $this->__(' '.$data, $a, $b), ' ') === 0) ? $this->__($data, $a, $b) : $txt;
 	}
+
 
 	public function getDateToUtc($date) {
 

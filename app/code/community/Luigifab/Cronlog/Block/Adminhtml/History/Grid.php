@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/29/08/2014
- * Version 12
+ * Updated W/25/03/2015
+ * Version 15
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -65,7 +65,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 			if (isset($filter['job_code']) && (strlen($filter['job_code']) > 0)) {
 				$jobs->addFieldToFilter('job_code', array('like' => '%'.$filter['job_code'].'%'));
-				$filter = (in_array($filter['job_code'], $codes)) ? true : false;
+				$filter = (in_array($filter['job_code'], $codes));
 			}
 			else {
 				$filter = true;
@@ -73,7 +73,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		}
 
 		// comptage des tâches
-		// en fonction du filtrage par jobcode
+		// en fonction de l'éventuel filtrage par jobcode
 		$pending = count($jobs->getItemsByColumnValue('status', 'pending'));
 		$running = count($jobs->getItemsByColumnValue('status', 'running'));
 		$missed  = count($jobs->getItemsByColumnValue('status', 'missed'));
@@ -85,8 +85,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('adminhtml')->__('Id'),
 			'index'     => 'schedule_id',
 			'align'     => 'center',
-			'width'     => '80px',
-			'sortable'  => true
+			'width'     => '80px'
 		));
 
 		if ($filter && (Mage::getStoreConfig('cronlog/general/textmode') !== '1')) {
@@ -96,57 +95,51 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'type'      => 'options',
 				'renderer'  => 'cronlog/adminhtml_widget_code',
 				'options'   => $codes,
-				'align'     => 'center',
-				'sortable'  => true
+				'align'     => 'center'
 			));
 		}
 		else {
 			$this->addColumn('job_code', array(
 				'header'    => $this->__('Job'),
 				'index'     => 'job_code',
-				'align'     => 'center',
-				'sortable'  => true
+				'align'     => 'center'
 			));
 		}
 
 		$this->addColumn('created_at', array(
-			'header'    => $this->__('Created At'),
+			'header'    => $this->helper('cronlog')->_('Created At'),
 			'index'     => 'created_at',
 			'type'      => 'datetime',
 			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px',
-			'sortable'  => true
+			'width'     => '180px'
 		));
 
 		$this->addColumn('scheduled_at', array(
-			'header'    => $this->__('Scheduled At'),
+			'header'    => $this->helper('cronlog')->_('Scheduled At'),
 			'index'     => 'scheduled_at',
 			'type'      => 'datetime',
 			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px',
-			'sortable'  => true
+			'width'     => '180px'
 		));
 
 		$this->addColumn('executed_at', array(
-			'header'    => $this->__('Executed At'),
+			'header'    => $this->helper('cronlog')->_('Executed At'),
 			'index'     => 'executed_at',
 			'type'      => 'datetime',
 			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px',
-			'sortable'  => true
+			'width'     => '180px'
 		));
 
 		$this->addColumn('finished_at', array(
-			'header'    => $this->__('Finished At'),
+			'header'    => $this->helper('cronlog')->_('Finished At'),
 			'index'     => 'finished_at',
 			'type'      => 'datetime',
 			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px',
-			'sortable'  => true
+			'width'     => '180px'
 		));
 
 		$this->addColumn('duration', array(
@@ -172,8 +165,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'error'   => $this->__('Error (%d)', $error)
 			),
 			'align'     => 'status',
-			'width'     => '125px',
-			'sortable'  => true
+			'width'     => '125px'
 		));
 
 		$this->addColumn('action', array(

@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated S/29/11/2014
- * Version 26
+ * Updated L/23/03/2015
+ * Version 29
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -44,6 +44,11 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			$dateStart->subMonth(1)->setDay(1);
 			$dateEnd->subMonth(1)->setDay(1);
 			$dateEnd->setDay(date('t', $dateEnd->getTimestamp()));
+			// Évite ce genre de chose... (date(n) = numéro du mois, date(t) = nombre de jour du mois)
+			// Période du dimanche 1 mars 2015 00:00:00 Europe/Paris au samedi 28 février 2015 23:59:59 Europe/Paris
+			// Il est étrange que la variable dateEnd ne soit pas affectée
+			if (date('n', $dateStart->getTimestamp()) == date('n', $dateEnd->getTimestamp()))
+				$dateStart->subDay(date('t', $dateStart->getTimestamp()));
 		}
 		else if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
 			$frequency = $this->__('weekly');
@@ -71,9 +76,9 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			if (!in_array($job->getStatus(), array('error', 'missed')))
 				continue;
 
-			$link  = str_replace('//admin', '/admin', '<a href="'.$this->getUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:bold; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getJobCode()).'</a>');
+			$link  = str_replace('//admin', '/admin', '<a href="'.Mage::helper('adminhtml')->getUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:bold; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getJobCode()).'</a>');
 
-			$hour  = $this->__('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601));
+			$hour  = $this->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601));
 			$state = $this->__('Status: %s (%s)', $this->__(ucfirst($job->getStatus())), $job->getStatus());
 			$error = '<pre style="margin:0.5em; font-size:0.9em; color:gray; white-space:pre-wrap;">'.$job->getMessages().'</pre>';
 
@@ -93,12 +98,13 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			'total_missed'  => count($jobs->getItemsByColumnValue('status', 'missed')),
 			'total_error'   => count($jobs->getItemsByColumnValue('status', 'error')),
 			'list'   => (count($errors) > 0) ? implode('</li><li style="margin:0.8em 0 0.5em;">', $errors) : '',
-			'config' => str_replace('//admin', '/admin', $this->getUrl('adminhtml/system_config/edit', array('section' => 'cronlog')))
+			'config' => str_replace('//admin', '/admin', Mage::helper('adminhtml')->getUrl('adminhtml/system_config/edit', array('section' => 'cronlog')))
 		));
 	}
 
 	public function updateConfig() {
 
+		// EVENT admin_system_config_changed_section_cronlog
 		try {
 			$config = Mage::getModel('core/config_data');
 			$config->load('crontab/jobs/cronlog_send_report/schedule/cron_expr', 'path');
@@ -130,6 +136,11 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			else {
 				$config->delete();
 			}
+
+			// réinitialise le filtre de la grille
+			// oui, tout le temps... même si ce n'est pas utile (ie pas de filtre, pas de changement de l'option)
+			// car il semble peu probable de modifier la configuration plusieurs fois par jour
+			Mage::getSingleton('adminhtml/session')->unsetData('cronlog_gridfilter');
 		}
 		catch (Exception $e) {
 			Mage::throwException($e->getMessage());

@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/24/01/2015
- * Version 3
+ * Updated L/23/03/2015
+ * Version 4
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,7 +18,7 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Model_Source_Status extends Luigifab_Modules_Helper_Data {
+class Luigifab_Cronlog_Model_Source_Status extends Luigifab_Cronlog_Helper_Data {
 
 	public function toOptionArray() {
 

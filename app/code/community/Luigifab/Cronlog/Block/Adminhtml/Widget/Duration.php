@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/26/04/2014
- * Updated S/24/01/2015
+ * Updated D/22/03/2015
  * Version 4
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
@@ -25,18 +25,18 @@ class Luigifab_Cronlog_Block_Adminhtml_Widget_Duration extends Mage_Adminhtml_Bl
 		if (!in_array($row->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
 		    !in_array($row->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
 
-			$duration = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
+			$data = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
 
-			if ($duration > 599)
-				$data = (($duration % 60) > 9) ? intval($duration / 60).':'.($duration % 60) : intval($duration / 60).':0'.($duration % 60);
-			else if ($duration > 59)
-				$data = (($duration % 60) > 9) ? '0'.intval($duration / 60).':'.($duration % 60) : '0'.intval($duration / 60).':0'.($duration % 60);
-			else if ($duration > 0)
-				$data = ($duration > 9) ? '00:'.$duration : '00:0'.$duration;
+			if ($data > 599)
+				$data = (($data % 60) > 9) ? intval($data / 60).':'.($data % 60) : intval($data / 60).':0'.($data % 60);
+			else if ($data > 59)
+				$data = (($data % 60) > 9) ? '0'.intval($data / 60).':'.($data % 60) : '0'.intval($data / 60).':0'.($data % 60);
+			else if ($data > 0)
+				$data = ($data > 9) ? '00:'.$data : '00:0'.$data;
 			else
 				$data = '&lt; 1';
 
-			return ($duration > 180) ? '<strong>'.$data.'</strong>' : $data;
+			return ($data > 180) ? '<strong>'.$data.'</strong>' : $data;
 		}
 	}
 }

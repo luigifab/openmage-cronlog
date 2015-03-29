@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated W/08/10/2014
- * Version 10
+ * Updated S/07/03/2015
+ * Version 12
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -35,11 +35,13 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 			if (empty($cronExpr) && $jobConfig->schedule->cron_expr)
 				$cronExpr = (string) $jobConfig->schedule->cron_expr;
 
-			// une tâche CRON peut être désactivée soit dans le config.xml, soit dans la configuration (attention la configuration n'est pas fusionnée)
+			// une tâche CRON peut être désactivée soit dans le config.xml, soit dans la configuration
+			// (config.xml/configuration : attention la configuration n'est pas fusionnée)
 			// - config.xml, Mage::getConfig()->getNode('crontab/jobs[/../schedule/disabled]')
 			// - configuration, Mage::getConfig()->getNode('default/crontab/jobs[/../schedule/disabled]')
-			// is_string et non isset car  Cannot use isset() on the result of a function call (you can use "null !== func()" instead)
-			if (!$cronExpr || isset($jobConfig->schedule->disabled) || is_string(Mage::getStoreConfig('crontab/jobs/'.$jobCode.'/schedule/disabled')))
+			// is_string et non isset car : Cannot use isset() on the result of a function call (you can use "null !== func()" instead)
+			if (!$cronExpr || isset($jobConfig->schedule->disabled) ||
+			    is_string(Mage::getStoreConfig('crontab/jobs/'.$jobCode.'/schedule/disabled')))
 				continue;
 
 			$now = time();
@@ -66,12 +68,12 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 
 	public function cleanup() {
 
-		$lifetime = intval(Mage::getStoreConfig('cronlog/general/lifetime'));
-		if ($lifetime < 2880)
+		$lifetime = intval(Mage::getStoreConfig('cronlog/lifetime/global'));
+		if ($lifetime < 7200) // 5 jours
 			return parent::cleanup();
 
-		// check every 12 hours (720 minutes) if history cleanup is needed
-		if (Mage::app()->loadCache(self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT) > (time() - 719 * 60))
+		// check every 24 hours (1440 minutes) if history cleanup is needed
+		if (Mage::app()->loadCache(self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT) > (time() - 1440 * 60))
 			return $this;
 
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
@@ -79,7 +81,7 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.$lifetime.' MINUTE)')));
 
 		if (count($jobs) > 0) {
-			Mage::log('Deleting '.count($jobs).' old success jobs', Zend_Log::NOTICE, 'cronlog.log');
+			Mage::log('Deleting '.count($jobs).' old successful jobs', Zend_Log::NOTICE, 'cronlog.log');
 			foreach ($jobs as $job) { $job->delete(); }
 		}
 

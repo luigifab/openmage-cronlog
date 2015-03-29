@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/31/08/2014
- * Version 19
+ * Updated V/27/03/2015
+ * Version 24
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -27,7 +27,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		parent::__construct();
 
-		$this->_controller = 'adminhtml_show';
+		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
 		$this->_headerText = $this->__('Cron job number %d', $job->getId());
 
@@ -40,7 +40,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		));
 
 		$this->_addButton('action', array(
-			'label'   => ($job->getStatus() === 'pending') ? $this->helper('adminhtml')->__('Cancel') : $this->__('Restart task'),
+			'label'   => ($job->getStatus() === 'pending') ? $this->helper('adminhtml')->__('Cancel') : $this->__('Restart job'),
 			'onclick' => ($job->getStatus() === 'pending') ?
 				"deleteConfirm('".addslashes($text)."', '".$this->getUrl('*/*/cancel', array('id' => $job->getId()))."');" :
 				"setLocation('".$this->getUrl('*/*/new', array('id' => $job->getId(), 'code' => $job->getJobCode()))."');",
@@ -52,28 +52,34 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		$job = Mage::registry('current_job');
 		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null)
+		$helper = $this->helper('cronlog');
 
 		$html  = '<div class="content">';
 		$html .= "\n".'<ul>';
-		$html .= "\n".'<li>'.$this->__('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
+		$html .= "\n".'<li>'.$helper->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
 
-		if (!in_array($job->getExecutedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html .= "\n".'<li>'.$this->__('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html .= "\n".'<li><strong>'.$this->__('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
-		}
-		else {
-			$html .= "\n".'<li><strong>'.$this->__('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
-		}
 		if (!in_array($job->getFinishedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html .= "\n".'<li>'.$this->__('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
+			$html .= "\n".'<li>'.$helper->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html .= "\n".'<li><strong>'.$helper->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html .= "\n".'<li>'.$helper->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
 			$duration = Mage::getBlockSingleton('cronlog/adminhtml_widget_duration')->render($job);
 			if (strlen($duration) > 0)
 				$html .= "\n".'<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}
+		else if (!in_array($job->getExecutedAt(), array('', '0000-00-00 00:00:00', null))) {
+			$html .= "\n".'<li>'.$helper->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html .= "\n".'<li><strong>'.$helper->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+		}
+		else {
+			$html .= "\n".'<li><strong>'.$helper->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
+		}
 
 		$html .= "\n".'</ul>';
-		$html .= "\n".'<p class="status-'.$job->getStatus().'"><strong>'.$this->__('Status: %s (%s)', $this->__(ucfirst($job->getStatus())), $job->getStatus()).'</strong><br />'.$this->__('Code: %s', $job->getJobCode()).'</p>';
-		$html .= "\n".((strlen($job->getMessages()) > 0) ? '<pre>'.$job->getMessages().'</pre>' : '<pre></pre>');
+		$html .= "\n".'<ul>';
+		$html .= "\n".'<li><strong class="status-'.$job->getStatus().'">'.$this->__('Status: %s (%s)', $this->__(ucfirst($job->getStatus())), $job->getStatus()).'</strong></li>';
+		$html .= "\n".'<li>'.$this->__('Code: %s', $job->getJobCode()).'</li>';
+		$html .= "\n".'</ul>';
+		$html .= "\n".'<pre>'.$job->getMessages().'</pre>';
 		$html .= "\n".'</div>';
 
 		return $html;

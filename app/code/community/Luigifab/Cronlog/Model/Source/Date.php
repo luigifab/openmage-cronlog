@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/13/02/2013
- * Updated D/31/08/2014
- * Version 5
+ * Updated J/05/03/2015
+ * Version 6
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -24,13 +24,8 @@ class Luigifab_Cronlog_Model_Source_Date extends Luigifab_Cronlog_Helper_Data {
 
 		return array(
 			array('value' => 1,  'label' => $this->__('%d minute', 1)),
-			array('value' => 2,  'label' => $this->__('%d minutes', 2)),
-			array('value' => 3,  'label' => $this->__('%d minutes', 3)),
-			array('value' => 4,  'label' => $this->__('%d minutes', 4)),
 			array('value' => 5,  'label' => $this->__('%d minutes', 5)),
-			array('value' => 10, 'label' => $this->__('%d minutes', 10)),
 			array('value' => 15, 'label' => $this->__('%d minutes', 15)),
-			array('value' => 20, 'label' => $this->__('%d minutes', 20)),
 			array('value' => 30, 'label' => $this->__('%d minutes', 30)),
 			array('value' => 45, 'label' => $this->__('%d minutes', 45)),
 			array('value' => 60, 'label' => $this->__('%d minutes', 60))

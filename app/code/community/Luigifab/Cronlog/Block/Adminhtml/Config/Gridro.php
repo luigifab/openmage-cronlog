@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/19/08/2014
- * Version 8
+ * Updated L/23/03/2015
+ * Version 12
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -39,9 +39,17 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 
 	protected function _prepareColumns() {
 
+		$this->addColumn('module', array(
+			'header'    => $this->__('Module name'),
+			'index'     => 'module',
+			'filter'    => false,
+			'sortable'  => false
+		));
+
 		$this->addColumn('job_code', array(
 			'header'    => $this->__('Read-only job'),
 			'index'     => 'job_code',
+			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false
 		));
@@ -49,7 +57,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 		$this->addColumn('cron_expr', array(
 			'header'    => $this->__('Configuration'),
 			'index'     => 'cron_expr',
-			'width'     => '140px',
 			'filter'    => false,
 			'sortable'  => false
 		));
@@ -57,7 +64,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 		$this->addColumn('model', array(
 			'header'    => 'Model',
 			'index'     => 'model',
-			'width'     => '40%',
+			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false
 		));
@@ -68,11 +75,11 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 			'type'      => 'options',
 			'renderer'  => 'cronlog/adminhtml_widget_status',
 			'options'   => array(
-				'enabled'  => $this->helper('adminhtml')->__(' Enabled'),
-				'disabled' => $this->helper('adminhtml')->__(' Disabled'),
+				'enabled'  => $this->helper('cronlog')->_('Enabled'),
+				'disabled' => $this->helper('cronlog')->_('Disabled')
 			),
 			'align'     => 'status',
-			'width'     => '125px',
+			'width'     => '120px',
 			'filter'    => false,
 			'sortable'  => false
 		));
