@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated L/23/03/2015
- * Version 29
+ * Updated S/04/04/2015
+ * Version 30
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -20,7 +20,7 @@
 
 class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
-	public function sendMail() {
+	public function sendEmailReport() {
 
 		Mage::getSingleton('core/translate')->setLocale(Mage::getStoreConfig('general/locale/code'))->init('adminhtml', true);
 		$frequency = Mage::getStoreConfig('cronlog/email/frequency');
@@ -85,7 +85,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			array_push($errors, sprintf('(%d) %s / %s / %s %s', count($errors) + 1, $link, $hour, $state, $error));
 		}
 
-		// envoie des emails
+		// envoi des emails
 		// avec les variables du template
 		$this->send(array(
 			'frequency'        => $frequency,
@@ -131,14 +131,13 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 				$config->save();
 
 				// email de test
-				$this->sendMail();
+				$this->sendEmailReport();
 			}
 			else {
 				$config->delete();
 			}
 
-			// réinitialise le filtre de la grille
-			// oui, tout le temps... même si ce n'est pas utile (ie pas de filtre, pas de changement de l'option)
+			// réinitialise le filtre de la grille tout le temps même si ce n'est pas utile
 			// car il semble peu probable de modifier la configuration plusieurs fois par jour
 			Mage::getSingleton('adminhtml/session')->unsetData('cronlog_gridfilter');
 		}

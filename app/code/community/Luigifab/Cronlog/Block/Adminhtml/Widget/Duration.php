@@ -1,11 +1,11 @@
 <?php
 /**
  * Created S/26/04/2014
- * Updated D/22/03/2015
- * Version 4
+ * Updated W/01/04/2015
+ * Version 5
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://redmine.luigifab.info/projects/magento/wiki/cronlog (shared with maillog and versioning)
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -26,17 +26,21 @@ class Luigifab_Cronlog_Block_Adminhtml_Widget_Duration extends Mage_Adminhtml_Bl
 		    !in_array($row->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
 
 			$data = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
+			$minutes = intval($data / 60);
+			$seconds = intval($data % 60);
 
 			if ($data > 599)
-				$data = (($data % 60) > 9) ? intval($data / 60).':'.($data % 60) : intval($data / 60).':0'.($data % 60);
+				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
+			else if ($data > 119)
+				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
 			else if ($data > 59)
-				$data = (($data % 60) > 9) ? '0'.intval($data / 60).':'.($data % 60) : '0'.intval($data / 60).':0'.($data % 60);
+				$data = ($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds;
 			else if ($data > 0)
-				$data = ($data > 9) ? '00:'.$data : '00:0'.$data;
+				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
 			else
 				$data = '&lt; 1';
 
-			return ($data > 180) ? '<strong>'.$data.'</strong>' : $data;
+			return $data;
 		}
 	}
 }

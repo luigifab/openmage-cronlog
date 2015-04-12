@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/07/03/2015
- * Version 12
+ * Updated S/04/04/2015
+ * Version 13
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -68,7 +68,7 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 
 	public function cleanup() {
 
-		$lifetime = intval(Mage::getStoreConfig('cronlog/lifetime/global'));
+		$lifetime = intval(Mage::getStoreConfig('cronlog/general/lifetime'));
 		if ($lifetime < 7200) // 5 jours
 			return parent::cleanup();
 
@@ -80,10 +80,8 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 		$jobs->addFieldToFilter('status', array('in' => 'success'));
 		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.$lifetime.' MINUTE)')));
 
-		if (count($jobs) > 0) {
-			Mage::log('Deleting '.count($jobs).' old successful jobs', Zend_Log::NOTICE, 'cronlog.log');
-			foreach ($jobs as $job) { $job->delete(); }
-		}
+		foreach ($jobs as $job)
+			$job->delete();
 
 		Mage::app()->saveCache(time(), self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT, array('crontab'), null);
 		return $this;

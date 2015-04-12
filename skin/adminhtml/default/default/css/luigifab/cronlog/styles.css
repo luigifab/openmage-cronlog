@@ -1,7 +1,6 @@
-@charset "utf-8";
 /**
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * Created W/29/02/2012, updated S/28/03/2015, version 27
+ * Created W/29/02/2012, updated D/05/04/2015, version 29
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -24,7 +23,7 @@ body.adminhtml-cronlog-config-index table.data tr:hover,
 body.adminhtml-cronlog-history-index table.data tr:hover { background-color:#DEDEDE; }
 
 body.adminhtml-cronlog-config-index #loading-mask,
-body.adminhtml-cronlog-history-index #loading-mask { background-color:rgba(255, 255, 255, 0.5); }
+body.adminhtml-cronlog-history-index #loading-mask { background-color:rgba(255,255,255, 0.5); }
 body.adminhtml-cronlog-config-index #loading_mask_loader,
 body.adminhtml-cronlog-history-index #loading_mask_loader { margin-left:-120px; margin-top:-30px; }
 
@@ -45,9 +44,7 @@ body.adminhtml-cronlog-config-index #messages li[class] { margin:0 !important; }
 body.adminhtml-cronlog-config-index #messages li[class] b { padding:0 0.3em; font-size:130%; }
 
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/history/index &&& */
-body.adminhtml-cronlog-history-index table.data tr td strong { color:red; }
-
-body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-pending { background-color:#8CD9A3; }
+body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-pending { background-color:#B3B4B3; }
 body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-running { background-color:#FF9C00; }
 body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-success { background-color:#3CB861; }
 body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-missed { background-color:black; }
@@ -60,8 +57,8 @@ body.adminhtml-cronlog-history-view div.content ul {
 }
 
 body.adminhtml-cronlog-history-view div.content pre {
-	margin:0 0 1.4em; padding:1.2em 1.4em; min-height:23em;
-	font:10px monospace; line-height:15px; white-space:pre-wrap;
+	margin:0 0 1.4em; padding:1.2em 1.4em; min-height:26em;
+	font:11px "Courier New", monospace; line-height:15px; white-space:pre-wrap;
 	border-radius:1em; border:1px solid #DDD; background-color:#EFEFEF; background-clip:padding-box;
 }
 
