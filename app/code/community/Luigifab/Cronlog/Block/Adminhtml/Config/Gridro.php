@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated L/23/03/2015
- * Version 12
+ * Updated S/11/04/2015
+ * Version 20
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -73,7 +73,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 			'header'    => $this->helper('adminhtml')->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
-			'renderer'  => 'cronlog/adminhtml_widget_status',
 			'options'   => array(
 				'enabled'  => $this->helper('cronlog')->_('Enabled'),
 				'disabled' => $this->helper('cronlog')->_('Disabled')
@@ -81,27 +80,41 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 			'align'     => 'status',
 			'width'     => '120px',
 			'filter'    => false,
-			'sortable'  => false
+			'sortable'  => false,
+			'frame_callback' => array($this, 'decorateStatus')
 		));
 
 		$this->addColumn('action', array(
 			'type'      => 'action',
-			'renderer'  => 'cronlog/adminhtml_widget_link',
 			'align'     => 'center',
 			'width'     => '85px',
 			'filter'    => false,
 			'sortable'  => false,
-			'is_system' => true
+			'is_system' => true,
+			'frame_callback' => array($this, 'decorateLink')
 		));
 
 		return parent::_prepareColumns();
 	}
 
+
 	public function getRowClass($row) {
-		return ($row->getStatus() === 'disabled') ? 'readonly disabled' : 'readonly';
+		return ($row->getData('status') === 'disabled') ? 'readonly disabled' : 'readonly';
 	}
 
 	public function getRowUrl($row) {
 		return false;
+	}
+
+	public function decorateStatus($value, $row, $column, $isExport) {
+		return '<span class="grid-'.$row->getData('status').'">'.$value.'</span>';
+	}
+
+	public function decorateLink($value, $row, $column, $isExport) {
+
+		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
+		$txt = $this->helper('adminhtml')->__(($row->getData('status') === 'disabled') ? 'Enable' : 'Disable');
+
+		return (!$row->getData('is_read_only')) ? '<a href="'.$url.'" onclick="return cronlog.action(this.href);">'.$txt.'</a>' : '';
 	}
 }

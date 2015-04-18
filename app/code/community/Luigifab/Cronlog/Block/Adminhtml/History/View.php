@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/04/04/2015
- * Version 27
+ * Updated S/11/04/2015
+ * Version 28
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -75,7 +75,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 			$html .= "\n".'<li>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
 			$html .= "\n".'<li><strong>'.$help->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
 			$html .= "\n".'<li>'.$help->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
-			$duration = Mage::getBlockSingleton('cronlog/adminhtml_widget_duration')->render($job);
+			$duration = Mage::getBlockSingleton('cronlog/adminhtml_history_grid')->decorateDuration(null, $job, null, null);
 			if (strlen($duration) > 0)
 				$html .= "\n".'<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}

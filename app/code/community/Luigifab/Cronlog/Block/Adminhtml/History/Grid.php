@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated W/25/03/2015
- * Version 15
+ * Updated S/11/04/2015
+ * Version 20
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -93,9 +93,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'header'    => $this->__('Job'),
 				'index'     => 'job_code',
 				'type'      => 'options',
-				'renderer'  => 'cronlog/adminhtml_widget_code',
 				'options'   => $codes,
-				'align'     => 'center'
+				'align'     => 'center',
+				'frame_callback' => array($this, 'decorateCode')
 			));
 		}
 		else {
@@ -110,53 +110,52 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Created At'),
 			'index'     => 'created_at',
 			'type'      => 'datetime',
-			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px'
+			'width'     => '180px',
+			'frame_callback' => array($this, 'decorateDate')
 		));
 
 		$this->addColumn('scheduled_at', array(
 			'header'    => $this->helper('cronlog')->_('Scheduled At'),
 			'index'     => 'scheduled_at',
 			'type'      => 'datetime',
-			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px'
+			'width'     => '180px',
+			'frame_callback' => array($this, 'decorateDate')
 		));
 
 		$this->addColumn('executed_at', array(
 			'header'    => $this->helper('cronlog')->_('Executed At'),
 			'index'     => 'executed_at',
 			'type'      => 'datetime',
-			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px'
+			'width'     => '180px',
+			'frame_callback' => array($this, 'decorateDate')
 		));
 
 		$this->addColumn('finished_at', array(
 			'header'    => $this->helper('cronlog')->_('Finished At'),
 			'index'     => 'finished_at',
 			'type'      => 'datetime',
-			'renderer'  => 'cronlog/adminhtml_widget_datetime',
 			'align'     => 'center',
-			'width'     => '180px'
+			'width'     => '180px',
+			'frame_callback' => array($this, 'decorateDate')
 		));
 
 		$this->addColumn('duration', array(
 			'header'    => $this->__('Duration'),
 			'index'     => 'duration',
-			'renderer'  => 'cronlog/adminhtml_widget_duration',
 			'align'     => 'center',
 			'width'     => '60px',
 			'filter'    => false,
-			'sortable'  => false
+			'sortable'  => false,
+			'frame_callback' => array($this, 'decorateDuration')
 		));
 
 		$this->addColumn('status', array(
 			'header'    => $this->helper('adminhtml')->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
-			'renderer'  => 'cronlog/adminhtml_widget_status',
 			'options'   => array(
 				'pending' => $this->__('Pending (%d)', $pending),
 				'running' => $this->__('Running (%d)', $running),
@@ -165,7 +164,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'error'   => $this->__('Error (%d)', $error)
 			),
 			'align'     => 'status',
-			'width'     => '125px'
+			'width'     => '125px',
+			'frame_callback' => array($this, 'decorateStatus')
 		));
 
 		$this->addColumn('action', array(
@@ -188,7 +188,48 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		return parent::_prepareColumns();
 	}
 
+
+	public function getRowClass($row) {
+		return '';
+	}
+
 	public function getRowUrl($row) {
 		return $this->getUrl('*/*/view', array('id' => $row->getId()));
+	}
+
+	public function decorateStatus($value, $row, $column, $isExport) {
+
+		$status = (strpos($value, ' (') !== false) ? substr($value, 0, strpos($value, ' (')) : $value;
+		return '<span class="grid-'.$row->getData('status').'">'.trim($status).'</span>';
+	}
+
+	public function decorateDuration($value, $row, $column, $isExport) {
+
+		if (!in_array($row->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
+		    !in_array($row->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
+
+			$data = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
+			$minutes = intval($data / 60);
+			$seconds = intval($data % 60);
+
+			if ($data > 599)
+				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
+			else if ($data > 59)
+				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
+			else if ($data > 0)
+				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
+			else
+				$data = '&lt; 1';
+
+			return $data;
+		}
+	}
+
+	public function decorateDate($value, $row, $column, $isExport) {
+		return (!in_array($row->getData($column->getIndex()), array('', '0000-00-00 00:00:00', null))) ? $value : '';
+	}
+
+	public function decorateCode($value, $row, $column, $isExport) {
+		return $row->getData('job_code');
 	}
 }
