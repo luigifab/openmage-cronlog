@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/11/04/2015
+ * Updated J/07/05/2015
  * Version 28
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
@@ -60,31 +60,30 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$help = $this->helper('cronlog');
+		$that = $this->helper('cronlog');
 		$job  = Mage::registry('current_job');
 		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
 
-		$status = $job->getStatus();
-		$status = trim(str_replace('(0)', '', $this->__(ucfirst($status.' (%d)'), 0)));
+		$status = trim(str_replace('(0)', '', $this->__(ucfirst($job->getStatus().' (%d)'), 0)));
 
 		$html  = '<div class="content">';
 		$html .= "\n".'<ul>';
-		$html .= "\n".'<li>'.$help->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
+		$html .= "\n".'<li>'.$that->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
 
 		if (!in_array($job->getFinishedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html .= "\n".'<li>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html .= "\n".'<li><strong>'.$help->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
-			$html .= "\n".'<li>'.$help->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
-			$duration = Mage::getBlockSingleton('cronlog/adminhtml_history_grid')->decorateDuration(null, $job, null, null);
+			$html .= "\n".'<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html .= "\n".'<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html .= "\n".'<li>'.$that->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
+			$duration = Mage::getBlockSingleton('cronlog/adminhtml_history_grid')->decorateDuration(null, $job, null, false);
 			if (strlen($duration) > 0)
 				$html .= "\n".'<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}
 		else if (!in_array($job->getExecutedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html .= "\n".'<li>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html .= "\n".'<li><strong>'.$help->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html .= "\n".'<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html .= "\n".'<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
 		}
 		else {
-			$html .= "\n".'<li><strong>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html .= "\n".'<li><strong>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
 		}
 
 		$html .= "\n".'</ul>';
