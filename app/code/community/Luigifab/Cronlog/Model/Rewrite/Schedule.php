@@ -1,8 +1,8 @@
 <?php
 /**
- * Created W/29/02/2012
- * Updated L/23/03/2015
- * Version 4
+ * Created S/16/05/2015
+ * Updated S/16/05/2015
+ * Version 1
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -18,17 +18,13 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Model_Source_Status extends Luigifab_Cronlog_Helper_Data {
+class Luigifab_Cronlog_Model_Rewrite_Schedule extends Mage_Cron_Model_Schedule {
 
-	public function toOptionArray() {
+	public function setExecutedAt($date) {
 
-		return array(
-			array('value' => '', 'label' => '--'),
-			array('value' => 'pending', 'label' => $this->__('Pending (pending)')),
-			array('value' => 'running', 'label' => $this->__('Running (running)')),
-			array('value' => 'success', 'label' => $this->__('Success (success)')),
-			array('value' => 'missed',  'label' => $this->__('Missed (missed)')),
-			array('value' => 'error',   'label' => $this->__('Error (error)'))
-		);
+		$this->setData('executed_at', $date);
+		$this->setData('status', Mage_Cron_Model_Schedule::STATUS_RUNNING);
+
+		return $this;
 	}
 }

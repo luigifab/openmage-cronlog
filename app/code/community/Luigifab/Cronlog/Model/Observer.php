@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated J/14/05/2015
+ * Updated S/16/05/2015
  * Version 32
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
@@ -65,7 +65,10 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
 		$jobs->getSelect()->order('schedule_id', 'DESC');
 		$jobs->addFieldToFilter('created_at', array(
-			'datetime' => true, 'from' => $dateStart->toString(Zend_Date::RFC_3339), 'to' => $dateEnd->toString(Zend_Date::RFC_3339)));
+			'datetime' => true,
+			'from' => $dateStart->toString(Zend_Date::RFC_3339),
+			'to' => $dateEnd->toString(Zend_Date::RFC_3339)
+		));
 
 		$date = Mage::getSingleton('core/locale');
 		$errors = array();
@@ -133,10 +136,6 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			else {
 				$config->delete();
 			}
-
-			// réinitialise le filtre de la grille tout le temps même si ce n'est pas utile
-			// car il semble peu probable de modifier la configuration plusieurs fois par jour
-			Mage::getSingleton('adminhtml/session')->unsetData('cronlog_gridfilter');
 		}
 		catch (Exception $e) {
 			Mage::throwException($e->getMessage());

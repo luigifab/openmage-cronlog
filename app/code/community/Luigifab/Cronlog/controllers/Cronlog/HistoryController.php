@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/05/04/2015
- * Version 16
+ * Updated S/16/05/2015
+ * Version 17
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -26,9 +26,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 	public function indexAction() {
 
-		Mage::helper('cronlog')->checkAndCorrectRunningStatus();
-
-		if ($this->getRequest()->getParam('isAjax', false))
+		if (!is_null($this->getRequest()->getParam('isAjax')))
 			$this->getResponse()->setBody($this->getLayout()->createBlock('cronlog/adminhtml_history_grid')->toHtml());
 		else
 			$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();

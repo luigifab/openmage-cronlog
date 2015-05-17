@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/11/04/2015
- * Version 20
+ * Updated S/16/05/2015
+ * Version 21
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -38,49 +38,11 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	protected function _prepareCollection() {
 
 		$this->setCollection(Mage::getResourceModel('cron/schedule_collection'));
-
-		if ((strlen(Mage::getStoreConfig('cronlog/general/filter')) > 0) && (strlen($this->getParam($this->getVarNameFilter(), '')) < 10)) {
-			$filter = $this->getParam($this->getVarNameFilter(), array('status' => Mage::getStoreConfig('cronlog/general/filter')));
-			$this->_setFilterValues($filter);
-		}
-
 		return parent::_prepareCollection();
 	}
 
 	protected function _prepareColumns() {
 
-		$jobs = Mage::getResourceModel('cron/schedule_collection');
-
-		// filtre jobcode en mode texte ou en mode liste
-		// force le mode texte si la valeur actuelle du filtre n'est pas trouvée dans la liste des possibilités
-		// quoi qu'il arrive, utilise le filtre en liste si filter=true et si textmode=0
-		$codes = Mage::getModel('cronlog/source_jobs')->getCollection()->getColumnValues('job_code');
-		$codes = array_combine($codes, $codes);
-
-		$filter = $this->getParam($this->getVarNameFilter(), true);
-
-		if (is_string($filter)) {
-
-			$filter = $this->helper('adminhtml')->prepareFilterString($filter);
-
-			if (isset($filter['job_code']) && (strlen($filter['job_code']) > 0)) {
-				$jobs->addFieldToFilter('job_code', array('like' => '%'.$filter['job_code'].'%'));
-				$filter = (in_array($filter['job_code'], $codes));
-			}
-			else {
-				$filter = true;
-			}
-		}
-
-		// comptage des tâches
-		// en fonction de l'éventuel filtrage par jobcode
-		$pending = count($jobs->getItemsByColumnValue('status', 'pending'));
-		$running = count($jobs->getItemsByColumnValue('status', 'running'));
-		$missed  = count($jobs->getItemsByColumnValue('status', 'missed'));
-		$error   = count($jobs->getItemsByColumnValue('status', 'error'));
-		$success = count($jobs) - $pending - $running - $missed - $error;
-
-		// définition des colonnes
 		$this->addColumn('schedule_id', array(
 			'header'    => $this->helper('adminhtml')->__('Id'),
 			'index'     => 'schedule_id',
@@ -88,23 +50,13 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'     => '80px'
 		));
 
-		if ($filter && (Mage::getStoreConfig('cronlog/general/textmode') !== '1')) {
-			$this->addColumn('job_code', array(
-				'header'    => $this->__('Job'),
-				'index'     => 'job_code',
-				'type'      => 'options',
-				'options'   => $codes,
-				'align'     => 'center',
-				'frame_callback' => array($this, 'decorateCode')
-			));
-		}
-		else {
-			$this->addColumn('job_code', array(
-				'header'    => $this->__('Job'),
-				'index'     => 'job_code',
-				'align'     => 'center'
-			));
-		}
+		$this->addColumn('job_code', array(
+			'header'    => $this->__('Job'),
+			'index'     => 'job_code',
+			'type'      => 'options',
+			'align'     => 'center',
+			'frame_callback' => array($this, 'decorateCode')
+		));
 
 		$this->addColumn('created_at', array(
 			'header'    => $this->helper('cronlog')->_('Created At'),
@@ -156,13 +108,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('adminhtml')->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
-			'options'   => array(
-				'pending' => $this->__('Pending (%d)', $pending),
-				'running' => $this->__('Running (%d)', $running),
-				'success' => $this->__('Success (%d)', $success),
-				'missed'  => $this->__('Missed (%d)', $missed),
-				'error'   => $this->__('Error (%d)', $error)
-			),
 			'align'     => 'status',
 			'width'     => '125px',
 			'frame_callback' => array($this, 'decorateStatus')
@@ -184,6 +129,52 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'sortable'  => false,
 			'is_system' => true
 		));
+
+		// recherche des codes et comptage des tâches
+		// se base sur la totalité de la collection en fonction du filtre appliquée sur la grille (sauf pour les codes)
+		$filter = $this->getParam($this->getVarNameFilter(), null);
+		$jobs = Mage::getResourceModel('cron/schedule_collection');
+
+		$codes = $jobs->getColumnValues('job_code');
+		$codes = array_combine($codes, $codes);
+		$jobs->clear(); // pour permettre le rechargement de la collection
+
+		if (is_string($filter) || !empty($this->_defaultFilter)) {
+
+			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));
+
+			foreach ($filter as $field => $cond) {
+
+				$column = $this->getColumn($field)->getFilter();
+				$column->setValue($cond);
+
+				$cond = $column->getCondition();
+
+				if (isset($cond) && ($field === 'job_code') && !in_array($filter['job_code'], $codes))
+					$jobs->addFieldToFilter($field, array('like' => '%'.$filter['job_code'].'%'));
+				else if (isset($cond))
+					$jobs->addFieldToFilter($field, $cond);
+			}
+		}
+
+		$this->getColumn('status')->setData('options', array(
+			'pending' => $this->__('Pending (%d)', count($jobs->getItemsByColumnValue('status', 'pending'))),
+			'running' => $this->__('Running (%d)', count($jobs->getItemsByColumnValue('status', 'running'))),
+			'success' => $this->__('Success (%d)', count($jobs->getItemsByColumnValue('status', 'success'))),
+			'missed'  => $this->__('Missed (%d)',  count($jobs->getItemsByColumnValue('status', 'missed'))),
+			'error'   => $this->__('Error (%d)',   count($jobs->getItemsByColumnValue('status', 'error')))
+		));
+
+		if ((Mage::getStoreConfig('cronlog/general/textmode') === '1') || (isset($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
+			$this->addColumnAfter('job_code', array(
+				'header'    => $this->__('Job'),
+				'index'     => 'job_code',
+				'align'     => 'center'
+			), 'schedule_id');
+		}
+		else {
+			$this->getColumn('job_code')->setData('options', $codes);
+		}
 
 		return parent::_prepareColumns();
 	}
