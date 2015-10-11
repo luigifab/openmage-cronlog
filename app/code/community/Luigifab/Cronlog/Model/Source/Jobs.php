@@ -1,8 +1,8 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated S/21/02/2015
- * Version 14
+ * Updated J/10/09/2015
+ * Version 15
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -22,8 +22,6 @@ class Luigifab_Cronlog_Model_Source_Jobs extends Varien_Data_Collection {
 
 	public function getCollection($type = 'all') {
 
-		Mage::getConfig()->reinit();
-
 		// getName() = le nom du tag xml
 		// => /config/crontab/jobs/cronlog_send_report
 		// <crontab>
@@ -33,8 +31,7 @@ class Luigifab_Cronlog_Model_Source_Jobs extends Varien_Data_Collection {
 		//     <model>cronlog/observer::sendMail</model>
 		//    <schedule>
 		//     <disabled>1</disabled>
-		// Mage::getConfig()->getXpath('/config/crontab/jobs/*'); <= souvent vide, enculé !
-		$nodes = (array) Mage::getConfig()->getNode('crontab/jobs');
+		$nodes = Mage::getConfig()->getXpath('/config/crontab/jobs/*');
 
 		foreach ($nodes as $config) {
 

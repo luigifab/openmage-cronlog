@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/16/05/2015
- * Version 17
+ * Updated J/10/09/2015
+ * Version 18
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -33,6 +33,8 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 	}
 
 	public function newAction() {
+
+		Mage::getConfig()->reinit();
 
 		$this->loadLayout();
 		$this->_setActiveMenu('tools/cronlog');

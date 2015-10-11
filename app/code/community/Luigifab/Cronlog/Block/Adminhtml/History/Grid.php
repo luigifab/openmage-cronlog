@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/16/05/2015
- * Version 21
+ * Updated S/12/09/2015
+ * Version 27
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -108,6 +108,13 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('adminhtml')->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
+			'options'   => array(
+				'pending' => $this->__('Pending'),
+				'running' => $this->__('Running'),
+				'success' => $this->helper('cronlog')->_('Success'),
+				'missed'  => $this->__('Missed'),
+				'error'   => $this->__('Error')
+			),
 			'align'     => 'status',
 			'width'     => '125px',
 			'frame_callback' => array($this, 'decorateStatus')
@@ -130,46 +137,32 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'is_system' => true
 		));
 
-		// recherche des codes et comptage des tâches
-		// se base sur la totalité de la collection en fonction du filtre appliquée sur la grille (sauf pour les codes)
-		$filter = $this->getParam($this->getVarNameFilter(), null);
-		$jobs = Mage::getResourceModel('cron/schedule_collection');
+		// recherche des codes
+		// efficacité maximale avec la PROCEDURE ANALYSE de MySQL
+		$resource = Mage::getSingleton('core/resource');
+		$read = $resource->getConnection('core_read');
 
-		$codes = $jobs->getColumnValues('job_code');
+		$codes = $read->fetchAll('SELECT job_code FROM '.$resource->getTableName('cron_schedule').' PROCEDURE ANALYSE();');
+		$codes = (isset($codes[0]['Optimal_fieldtype'])) ?
+			explode(',', str_replace(array('ENUM(', '\'', ') NOT NULL'), '', $codes[0]['Optimal_fieldtype'])) : array();
+
 		$codes = array_combine($codes, $codes);
-		$jobs->clear(); // pour permettre le rechargement de la collection
+		ksort($codes);
 
-		if (is_string($filter) || !empty($this->_defaultFilter)) {
-
+		// mode texte ou mode liste déroulante
+		// mode texte si configuré ou si la recherche n'est pas dans la liste déroulante, sinon mode liste
+		$filter = $this->getParam($this->getVarNameFilter(), null);
+		if (is_string($filter) || !empty($this->_defaultFilter))
 			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));
 
-			foreach ($filter as $field => $cond) {
-
-				$column = $this->getColumn($field)->getFilter();
-				$column->setValue($cond);
-
-				$cond = $column->getCondition();
-
-				if (isset($cond) && ($field === 'job_code') && !in_array($filter['job_code'], $codes))
-					$jobs->addFieldToFilter($field, array('like' => '%'.$filter['job_code'].'%'));
-				else if (isset($cond))
-					$jobs->addFieldToFilter($field, $cond);
-			}
-		}
-
-		$this->getColumn('status')->setData('options', array(
-			'pending' => $this->__('Pending (%d)', count($jobs->getItemsByColumnValue('status', 'pending'))),
-			'running' => $this->__('Running (%d)', count($jobs->getItemsByColumnValue('status', 'running'))),
-			'success' => $this->__('Success (%d)', count($jobs->getItemsByColumnValue('status', 'success'))),
-			'missed'  => $this->__('Missed (%d)',  count($jobs->getItemsByColumnValue('status', 'missed'))),
-			'error'   => $this->__('Error (%d)',   count($jobs->getItemsByColumnValue('status', 'error')))
-		));
-
 		if ((Mage::getStoreConfig('cronlog/general/textmode') === '1') || (isset($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
+
 			$this->addColumnAfter('job_code', array(
 				'header'    => $this->__('Job'),
 				'index'     => 'job_code',
-				'align'     => 'center'
+				//'type'    => 'options',
+				'align'     => 'center',
+				'frame_callback' => array($this, 'decorateCode')
 			), 'schedule_id');
 		}
 		else {
@@ -189,31 +182,11 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	}
 
 	public function decorateStatus($value, $row, $column, $isExport) {
-
-		$status = (strpos($value, ' (') !== false) ? substr($value, 0, strpos($value, ' (')) : $value;
-		return '<span class="grid-'.$row->getData('status').'">'.trim($status).'</span>';
+		return '<span class="grid-'.$row->getData('status').'">'.$value.'</span>';
 	}
 
 	public function decorateDuration($value, $row, $column, $isExport) {
-
-		if (!in_array($row->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
-		    !in_array($row->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
-
-			$data = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
-			$minutes = intval($data / 60);
-			$seconds = intval($data % 60);
-
-			if ($data > 599)
-				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
-			else if ($data > 59)
-				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
-			else if ($data > 0)
-				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
-			else
-				$data = '&lt; 1';
-
-			return $data;
-		}
+		return $this->helper('cronlog')->getHumanDuration($row);
 	}
 
 	public function decorateDate($value, $row, $column, $isExport) {

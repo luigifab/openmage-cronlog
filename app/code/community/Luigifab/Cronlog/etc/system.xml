@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated S/16/05/2015
- * Version 20
+ * Updated M/01/09/2015
+ * Version 23
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -51,8 +51,9 @@
 					<fields>
 						<lifetime translate="label comment">
 							<label>History lifetime</label>
-							<comment><![CDATA[Replace cron jobs history lifetime (see System &gt; Cron).]]></comment>
+							<comment><![CDATA[Replace cron jobs history lifetime (see {{System &gt; Cron}}).]]></comment>
 							<frontend_type>select</frontend_type>
+							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
 							<source_model>cronlog/source_lifetime</source_model>
 							<sort_order>1</sort_order>
 							<show_in_default>1</show_in_default>
@@ -85,6 +86,32 @@
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
 						</textmode>
+						<stats translate="label">
+							<label>Statistics</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</stats>
+						<stats_nb translate="label">
+							<label>Number of jobs</label>
+							<frontend_type>label</frontend_type>
+							<frontend_model>cronlog/adminhtml_config_number</frontend_model>
+							<sort_order>21</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</stats_nb>
+						<stats_size translate="label">
+							<label>Table size</label>
+							<frontend_type>label</frontend_type>
+							<frontend_model>cronlog/adminhtml_config_size</frontend_model>
+							<sort_order>22</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</stats_size>
 					</fields>
 				</general>
 				<email translate="label">
@@ -151,13 +178,16 @@
 				<cron>
 					<fields>
 						<history_cleanup_every translate="comment">
-							<comment><![CDATA[Disabled if you use cronlog module lifetime (see Cron jobs &gt; Lifetime).]]></comment>
+							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
+							<comment><![CDATA[Disabled if you use <b>cronlog</b> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
 						</history_cleanup_every>
 						<history_success_lifetime translate="comment">
-							<comment><![CDATA[Disabled if you use cronlog module lifetime (see Cron jobs &gt; Lifetime).]]></comment>
+							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
+							<comment><![CDATA[Disabled if you use <b>cronlog</b> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
 						</history_success_lifetime>
 						<history_failure_lifetime translate="comment">
-							<comment><![CDATA[Disabled if you use cronlog module lifetime (see Cron jobs &gt; Lifetime).]]></comment>
+							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
+							<comment><![CDATA[Disabled if you use <b>cronlog</b> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
 						</history_failure_lifetime>
 					</fields>
 				</cron>

@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/04/10/2014
- * Version 8
+ * Updated M/22/09/2015
+ * Version 10
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -25,7 +25,12 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 	}
 
 	public function indexAction() {
-		$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
+
+		Mage::getConfig()->reinit(); // très important
+
+		$this->loadLayout();
+		$this->_setActiveMenu('tools/cronlog');
+		$this->renderLayout();
 	}
 
 	public function saveAction() {
@@ -54,7 +59,10 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 			$msg[] = '<li class="error-msg"><ul><li>'.$e->getMessage().'</li></ul></li>';
 		}
 
-		$msg = (!empty($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.implode($msg).'</ul></div> ' : '';
+		Mage::getConfig()->reinit(); // très important
+
+		$msg = (!empty($msg)) ?
+			'<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.implode($msg).'</ul></div> ' : '';
 		$this->getResponse()->setBody($msg.$this->getLayout()->createBlock('cronlog/adminhtml_config_grid')->toHtml());
 	}
 }

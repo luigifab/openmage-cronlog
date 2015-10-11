@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/16/05/2015
- * Version 10
+ * Updated S/12/09/2015
+ * Version 12
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -34,5 +34,45 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		$dt->setTimezone(new DateTimeZone('UTC'));
 
 		return $dt->format('Y-m-d H:i:s');
+	}
+
+
+	public function getNumberToHumanSize($number) {
+
+		if ($number < 1) {
+			return '';
+		}
+		else if (($number / 1024) < 1024) {
+			$size = number_format($number / 1024, 2);
+			$size = Zend_Locale_Format::toNumber($size);
+			return $this->__('%s KB', $size);
+		}
+		else {
+			$size = number_format($number / 1024 / 1024, 2);
+			$size = Zend_Locale_Format::toNumber($size);
+			return $this->__('%s MB', $size);
+		}
+	}
+
+	public function getHumanDuration($job) {
+
+		if (!in_array($job->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
+		    !in_array($job->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
+
+			$data = strtotime($job->getData('finished_at')) - strtotime($job->getData('executed_at'));
+			$minutes = intval($data / 60);
+			$seconds = intval($data % 60);
+
+			if ($data > 599)
+				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
+			else if ($data > 59)
+				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
+			else if ($data > 0)
+				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
+			else
+				$data = '&lt; 1';
+
+			return $data;
+		}
 	}
 }

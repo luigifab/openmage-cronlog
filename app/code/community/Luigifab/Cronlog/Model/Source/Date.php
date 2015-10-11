@@ -25,6 +25,7 @@ class Luigifab_Cronlog_Model_Source_Date extends Luigifab_Cronlog_Helper_Data {
 		return array(
 			array('value' => 1,  'label' => $this->__('%d minute', 1)),
 			array('value' => 5,  'label' => $this->__('%d minutes', 5)),
+			array('value' => 10, 'label' => $this->__('%d minutes', 10)),
 			array('value' => 15, 'label' => $this->__('%d minutes', 15)),
 			array('value' => 30, 'label' => $this->__('%d minutes', 30)),
 			array('value' => 45, 'label' => $this->__('%d minutes', 45)),

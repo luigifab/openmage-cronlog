@@ -1,6 +1,6 @@
 /**
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * Created W/29/02/2012, updated D/05/04/2015, version 29
+ * Created W/29/02/2012, updated S/22/08/2015, version 30
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -28,8 +28,9 @@ body.adminhtml-cronlog-config-index #loading_mask_loader,
 body.adminhtml-cronlog-history-index #loading_mask_loader { margin-left:-120px; margin-top:-30px; }
 
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& system/config &&& */
+#config_edit_form[action*="system_config/save/section/cronlog"] tr[id*="_stats_"] td.scope-label { display:none; }
 #config_edit_form[action*="system_config/save/section/cronlog"] p.note { padding-top:4px; line-height:125%; }
-#config_edit_form[action*="system_config/save/section/system"] p.note { padding-top:4px; line-height:125%; color:red; }
+#config_edit_form[action*="system_config/save/section/system"] p.note { padding-top:4px; line-height:125%; }
 
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/config/index &&& */
 body.adminhtml-cronlog-config-index table.data tr.headings th.no-link { padding:3px 4px 4px; text-align:center; }
@@ -51,15 +52,19 @@ body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-missed 
 body.adminhtml-cronlog-history-index table.data tr td.a-status span.grid-error { background-color:#E41101; }
 
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/history/view &&& */
+body.adminhtml-cronlog-history-view div.content-header td { width:auto !important; }
+body.adminhtml-cronlog-history-view div.content div { display:table; margin:1.4em auto; width:100%; border-spacing:1em 0; border-collapse:separate; }
+body.adminhtml-cronlog-history-view div.content ul + ul { width:62%; }
+
 body.adminhtml-cronlog-history-view div.content ul {
-	display:inline-block; margin:0.2em 0.5em 1.4em 0; padding:0.7em 1em; width:27.5em; height:7.2em; vertical-align:middle;
+	display:table-cell; margin:0; padding:0.7em 1em; height:7.2em;
 	font-size:13px; border-radius:1em; border:1px solid #DDD; background-color:#EFEFEF; background-clip:padding-box;
 }
 
 body.adminhtml-cronlog-history-view div.content pre {
-	margin:0 0 1.4em; padding:1.2em 1.4em; min-height:26em;
-	font:11px "Courier New", monospace; line-height:15px; white-space:pre-wrap;
-	border-radius:1em; border:1px solid #DDD; background-color:#EFEFEF; background-clip:padding-box;
+	display:block; margin:1em auto; padding:1.2em 1.4em; min-height:26em;
+	width:calc(100% - 2px - 4.8em); width:-moz-calc(100% - 2px - 4.8em); width:-webkit-calc(100% - 2px - 4.8em);
+	font:11px "Courier New", monospace; line-height:15px; white-space:pre-wrap; border-radius:1em; border:1px solid #DDD;
 }
 
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/history/new &&& */

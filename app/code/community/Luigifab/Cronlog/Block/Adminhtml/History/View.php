@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/07/05/2015
- * Version 28
+ * Updated S/12/09/2015
+ * Version 32
  *
  * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -60,41 +60,45 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$that = $this->helper('cronlog');
-		$job  = Mage::registry('current_job');
-		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
+		$that   = $this->helper('cronlog');
+		$job    = Mage::registry('current_job');
+		$date   = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
+		$status = ($job->getStatus() === 'success') ? $that->_(ucfirst($job->getStatus())) : $this->__(ucfirst($job->getStatus()));
 
-		$status = trim(str_replace('(0)', '', $this->__(ucfirst($job->getStatus().' (%d)'), 0)));
-
-		$html  = '<div class="content">';
-		$html .= "\n".'<ul>';
-		$html .= "\n".'<li>'.$that->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
+		$html = array();
+		$html[] = '<div class="content">';
+		$html[] = '<div>';
+		$html[] = '<ul>';
+		$html[] = '<li>'.$that->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
 
 		if (!in_array($job->getFinishedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html .= "\n".'<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html .= "\n".'<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
-			$html .= "\n".'<li>'.$that->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
-			$duration = Mage::getBlockSingleton('cronlog/adminhtml_history_grid')->decorateDuration(null, $job, null, false);
+
+			$html[] = '<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html[] = '<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html[] = '<li>'.$that->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
+
+			$duration = $that->getHumanDuration($job);
 			if (strlen($duration) > 0)
-				$html .= "\n".'<li>'.$this->__('Duration: %s', $duration).'</li>';
+				$html[] = '<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}
 		else if (!in_array($job->getExecutedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html .= "\n".'<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html .= "\n".'<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html[] = '<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html[] = '<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
 		}
 		else {
-			$html .= "\n".'<li><strong>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html[] = '<li><strong>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
 		}
 
-		$html .= "\n".'</ul>';
-		$html .= "\n".'<ul>';
-		$html .= "\n".'<li><strong class="status-'.$job->getStatus().'">'.$this->__('Status: %s (%s)', $status, $job->getStatus()).'</strong></li>';
-		$html .= "\n".'<li>'.$this->__('Code: %s', $job->getJobCode()).'</li>';
-		$html .= "\n".'</ul>';
-		$html .= "\n".'<pre>'.$job->getMessages().'</pre>';
-		$html .= "\n".'</div>';
+		$html[] = '</ul>';
+		$html[] = '<ul>';
+		$html[] = '<li><strong class="status-'.$job->getStatus().'">'.$this->__('Status: %s (%s)', $status, $job->getStatus()).'</strong></li>';
+		$html[] = '<li>'.$this->__('Code: %s', $job->getJobCode()).'</li>';
+		$html[] = '</ul>';
+		$html[] = '</div>';
+		$html[] = '<pre>'.$job->getMessages().'</pre>';
+		$html[] = '</div>';
 
-		return $html;
+		return implode("\n", $html);
 	}
 
 	protected function _prepareLayout() {
