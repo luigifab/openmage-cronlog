@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/12/09/2015
+ * Updated D/06/12/2015
  * Version 27
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -113,7 +113,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'running' => $this->__('Running'),
 				'success' => $this->helper('cronlog')->_('Success'),
 				'missed'  => $this->__('Missed'),
-				'error'   => $this->__('Error')
+				'error'   => $this->helper('cronlog')->_('Error')
 			),
 			'align'     => 'status',
 			'width'     => '125px',

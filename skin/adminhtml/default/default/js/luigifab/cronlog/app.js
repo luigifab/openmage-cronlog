@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * Created V/27/03/2015, updated D/05/04/2015, version 1
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *

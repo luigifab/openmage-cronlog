@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/12/09/2015
- * Version 12
+ * Updated L/21/12/2014
+ * Version 13
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -28,6 +28,7 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		return (strpos($txt = $this->__(' '.$data, $a, $b), ' ') === 0) ? $this->__($data, $a, $b) : $txt;
 	}
 
+
 	public function getDateToUtc($date) {
 
 		$dt = new DateTime($date, new DateTimeZone(Mage::app()->getStore()->getConfig('general/locale/timezone')));
@@ -35,7 +36,6 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 
 		return $dt->format('Y-m-d H:i:s');
 	}
-
 
 	public function getNumberToHumanSize($number) {
 
@@ -67,10 +67,10 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
 			else if ($data > 59)
 				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
-			else if ($data > 0)
+			else if ($data > 1)
 				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
 			else
-				$data = '&lt; 1';
+				$data = '⩽ 1';
 
 			return $data;
 		}

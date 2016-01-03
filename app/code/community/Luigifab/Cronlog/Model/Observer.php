@@ -1,10 +1,10 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated S/16/05/2015
- * Version 32
+ * Updated W/11/11/2015
+ * Version 33
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -20,6 +20,55 @@
 
 class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
+	// EVENT admin_system_config_changed_section_cronlog
+	public function updateConfig() {
+
+		try {
+			$config = Mage::getModel('core/config_data');
+			$config->load('crontab/jobs/cronlog_send_report/schedule/cron_expr', 'path');
+
+			if (Mage::getStoreConfig('cronlog/email/enabled') === '1') {
+
+				// quotidien, tous les jours à 1h00 (quotidien/daily)
+				// hebdomadaire, tous les lundi à 1h00 (hebdomadaire/weekly)
+				// mensuel, chaque premier jour du mois à 1h00 (mensuel/monthly)
+				$frequency = Mage::getStoreConfig('cronlog/email/frequency');
+
+				// minute hour day-of-month month-of-year day-of-week (Dimanche = 0, Lundi = 1...)
+				// 0	     1    1            *             *           => monthly
+				// 0	     1    *            *             0|1         => weekly
+				// 0	     1    *            *             *           => daily
+				if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY)
+					$config->setValue('0 1 1 * *');
+				else if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY)
+					$config->setValue('0 1 * * '.Mage::getStoreConfig('general/locale/firstday'));
+				else
+					$config->setValue('0 1 * * *');
+
+				$config->setPath('crontab/jobs/cronlog_send_report/schedule/cron_expr');
+				$config->save();
+
+				// email de test
+				// s'il n'a pas déjà été envoyé dans la dernière heure (3600 secondes)
+				$session = Mage::getSingleton('admin/session')->getLastCronlogReport();
+				$timestamp = Mage::getModel('core/date')->timestamp(time());
+
+				if (is_null($session) || ($timestamp > ($session + 3600))) {
+					$this->sendEmailReport();
+					Mage::getSingleton('admin/session')->setLastCronlogReport($timestamp);
+				}
+			}
+			else {
+				$config->delete();
+			}
+		}
+		catch (Exception $e) {
+			Mage::throwException($e->getMessage());
+		}
+	}
+
+
+	// CRON cronlog_send_report
 	public function sendEmailReport() {
 
 		Mage::getSingleton('core/translate')->setLocale(Mage::getStoreConfig('general/locale/code'))->init('adminhtml', true);
@@ -66,8 +115,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$jobs->getSelect()->order('schedule_id', 'DESC');
 		$jobs->addFieldToFilter('created_at', array(
 			'datetime' => true,
-			'from' => $dateStart->toString(Zend_Date::RFC_3339),
-			'to' => $dateEnd->toString(Zend_Date::RFC_3339)
+			'from' => $dateStart->toString(Zend_Date::RFC_3339), 'to' => $dateEnd->toString(Zend_Date::RFC_3339)
 		));
 
 		$date = Mage::getSingleton('core/locale');
@@ -100,46 +148,6 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			'total_error'      => count($jobs->getItemsByColumnValue('status', 'error')),
 			'list'             => (count($errors) > 0) ? implode('</li><li style="margin:0.8em 0 0.5em;">', $errors) : ''
 		));
-	}
-
-	public function updateConfig() {
-
-		// EVENT admin_system_config_changed_section_cronlog
-		try {
-			$config = Mage::getModel('core/config_data');
-			$config->load('crontab/jobs/cronlog_send_report/schedule/cron_expr', 'path');
-
-			if (Mage::getStoreConfig('cronlog/email/enabled') === '1') {
-
-				// quotidien, tous les jours à 1h00 (quotidien/daily)
-				// hebdomadaire, tous les lundi à 1h00 (hebdomadaire/weekly)
-				// mensuel, chaque premier jour du mois à 1h00 (mensuel/monthly)
-				$frequency = Mage::getStoreConfig('cronlog/email/frequency');
-
-				// minute hour day-of-month month-of-year day-of-week (Dimanche = 0, Lundi = 1...)
-				// 0	     1    1            *             *           => monthly
-				// 0	     1    *            *             0|1         => weekly
-				// 0	     1    *            *             *           => daily
-				if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY)
-					$config->setValue('0 1 1 * *');
-				else if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY)
-					$config->setValue('0 1 * * '.Mage::getStoreConfig('general/locale/firstday'));
-				else
-					$config->setValue('0 1 * * *');
-
-				$config->setPath('crontab/jobs/cronlog_send_report/schedule/cron_expr');
-				$config->save();
-
-				// email de test
-				$this->sendEmailReport();
-			}
-			else {
-				$config->delete();
-			}
-		}
-		catch (Exception $e) {
-			Mage::throwException($e->getMessage());
-		}
 	}
 
 	private function send($vars) {

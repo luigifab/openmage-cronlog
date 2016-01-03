@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/12/09/2015
+ * Updated D/06/12/2015
  * Version 32
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -60,10 +60,14 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$that   = $this->helper('cronlog');
-		$job    = Mage::registry('current_job');
-		$date   = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
-		$status = ($job->getStatus() === 'success') ? $that->_(ucfirst($job->getStatus())) : $this->__(ucfirst($job->getStatus()));
+		$that  = $this->helper('cronlog');
+		$job   = Mage::registry('current_job');
+		$date  = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
+
+		if (($job->getStatus() === 'success') || ($job->getStatus() === 'error'))
+			$status = $this->helper('cronlog')->_(ucfirst($job->getStatus()));
+		else
+			$status = $this->__(ucfirst($job->getStatus()));
 
 		$html = array();
 		$html[] = '<div class="content">';
@@ -91,7 +95,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		$html[] = '</ul>';
 		$html[] = '<ul>';
-		$html[] = '<li><strong class="status-'.$job->getStatus().'">'.$this->__('Status: %s (%s)', $status, $job->getStatus()).'</strong></li>';
+		$html[] = '<li><strong class="status-'.$job->getStatus().'">'.$this->__('Status: <span>%s</span>', $status).'</strong></li>';
 		$html[] = '<li>'.$this->__('Code: %s', $job->getJobCode()).'</li>';
 		$html[] = '</ul>';
 		$html[] = '</div>';

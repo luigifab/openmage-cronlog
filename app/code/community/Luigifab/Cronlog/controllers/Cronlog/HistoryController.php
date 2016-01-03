@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/10/09/2015
- * Version 18
+ * Updated S/10/10/2015
+ * Version 19
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -103,7 +103,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 		try {
 			if (!Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
 
-				if (($id = $this->getRequest()->getParam('id', false)) === false)
+				if ((($id = $this->getRequest()->getParam('id', false)) === false) || !is_numeric($id))
 					Mage::throwException($this->__('The <em>%s</em> field is a required value.', 'id'));
 
 				Mage::getModel('cron/schedule')->load($id)->delete();
@@ -124,7 +124,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 		try {
 			if (!Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
 
-				if (($id = $this->getRequest()->getParam('id', false)) === false)
+				if ((($id = $this->getRequest()->getParam('id', false)) === false) || !is_numeric($id))
 					Mage::throwException($this->__('The <em>%s</em> field is a required value.', 'id'));
 
 				Mage::getModel('cron/schedule')->load($id)->delete();

@@ -4,7 +4,7 @@
  * Updated M/22/09/2015
  * Version 10
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -49,8 +49,8 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 				$msg[] = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
 			}
 			else {
-				Mage::getModel('core/config')->saveConfig('crontab/jobs/'.$code.'/schedule/disabled', '1');
 				$text = $this->__('Job <b>%s</b> has been successfully <b>disabled</b>', $code);
+				Mage::getModel('core/config')->saveConfig('crontab/jobs/'.$code.'/schedule/disabled', '1');
 				Mage::log(strip_tags($text), Zend_Log::NOTICE, 'cronlog.log');
 				$msg[] = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
 			}

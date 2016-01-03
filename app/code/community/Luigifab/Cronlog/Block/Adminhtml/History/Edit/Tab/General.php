@@ -1,10 +1,10 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated D/01/06/2014
- * Version 4
+ * Updated L/21/12/2014
+ * Version 5
  *
- * Copyright 2012-2015 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -49,7 +49,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 		// sélection par défaut
 		$session = Mage::getSingleton('adminhtml/session')->getFormData();
 
-		if (is_array($session) && !empty($session)) {
+		if (is_array($session) && isset($session['job_code']) && isset($session['scheduled_at'])) {
 			$form->setValues(array('job_code' => trim($session['job_code']), 'scheduled_at' => trim($session['scheduled_at'])));
 			Mage::getSingleton('adminhtml/session')->unsFormData();
 		}
