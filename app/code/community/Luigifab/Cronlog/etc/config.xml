@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated L/26/10/2015
- * Version 20
+ * Updated D/28/02/2016
+ * Version 21
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -21,7 +21,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>3.3.0</version>
+			<version>3.3.1</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
@@ -108,7 +108,7 @@
 		<cronlog>
 			<email>
 				<enabled>0</enabled>
-				<recipient_email>hello@example.com</recipient_email>
+				<recipient_email>hello@example.org</recipient_email>
 				<sender_email_identity>general</sender_email_identity>
 				<template>cronlog_email_template</template>
 			</email>

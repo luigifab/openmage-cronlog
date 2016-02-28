@@ -1,6 +1,6 @@
 /**
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * Created W/29/02/2012, updated J/03/12/2015, version 33
+ * Created W/29/02/2012, updated D/28/02/2016, version 34
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -37,6 +37,18 @@ body.adminhtml-cronlog-history-index #loading_mask_loader { margin-left:-120px; 
 body.adminhtml-cronlog-config-index table.data tr.headings th.no-link { padding:3px 4px 4px; text-align:center; }
 body.adminhtml-cronlog-config-index table.data tr.disabled { color:#999; }
 body.adminhtml-cronlog-config-index table.data tr.readonly { font-style:italic; }
+
+body.adminhtml-cronlog-config-index div.hor-scroll {
+	margin-bottom:8px; padding-bottom:0; line-height:1.5em;
+	background-size:100% calc(3em + 10px); background-size:100% -moz-calc(3em + 10px); background-size:100% -webkit-calc(3em + 10px);
+	background-image:-webkit-linear-gradient(#FFF 50%, #F6F6F6 50%);
+	background-image:-moz-linear-gradient(#FFF 50%, #F6F6F6 50%);
+	background-image:linear-gradient(#FFF 50%, #F6F6F6 50%);
+	background-position:bottom;
+}
+
+body.adminhtml-cronlog-config-index table.data tbody,
+body.adminhtml-cronlog-config-index table.data tr.even { background-color:transparent; }
 
 body.adminhtml-cronlog-config-index table.data td.a-status span.grid-enabled  { background-color:#3CB861; }
 body.adminhtml-cronlog-config-index table.data td.a-status span.grid-disabled { background-color:#E41101; }

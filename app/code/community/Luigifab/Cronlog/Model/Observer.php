@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated W/11/11/2015
- * Version 33
+ * Updated D/28/02/2016
+ * Version 34
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -157,6 +157,9 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$vars['config'] = substr($vars['config'], 0, strrpos($vars['config'], '/system/config'));
 
 		foreach ($emails as $email) {
+
+			if (in_array($email, array('hello@example.org', 'hello@example.com', '')))
+				continue;
 
 			// sendTransactional($templateId, $sender, $recipient, $name, $vars = array(), $storeId = null)
 			$template = Mage::getModel('core/email_template');

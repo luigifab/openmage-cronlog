@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated L/21/12/2014
- * Version 13
+ * Updated V/26/02/2016
+ * Version 16
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -28,7 +28,6 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		return (strpos($txt = $this->__(' '.$data, $a, $b), ' ') === 0) ? $this->__($data, $a, $b) : $txt;
 	}
 
-
 	public function getDateToUtc($date) {
 
 		$dt = new DateTime($date, new DateTimeZone(Mage::app()->getStore()->getConfig('general/locale/timezone')));
@@ -43,13 +42,13 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 			return '';
 		}
 		else if (($number / 1024) < 1024) {
-			$size = number_format($number / 1024, 2);
-			$size = Zend_Locale_Format::toNumber($size);
+			$size = $number / 1024;
+			$size = Zend_Locale_Format::toNumber($size, array('precision' => 2));
 			return $this->__('%s KB', $size);
 		}
 		else {
-			$size = number_format($number / 1024 / 1024, 2);
-			$size = Zend_Locale_Format::toNumber($size);
+			$size = $number / 1024 / 1024;
+			$size = Zend_Locale_Format::toNumber($size, array('precision' => 2));
 			return $this->__('%s MB', $size);
 		}
 	}

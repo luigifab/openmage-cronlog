@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/11/04/2015
- * Version 20
+ * Updated D/28/02/2016
+ * Version 21
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -115,6 +115,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
 		$txt = $this->helper('adminhtml')->__(($row->getData('status') === 'disabled') ? 'Enable' : 'Disable');
 
-		return (!$row->getData('is_read_only')) ? '<a href="'.$url.'" onclick="return cronlog.action(this.href);">'.$txt.'</a>' : '';
+		return (!$row->getData('is_read_only')) ? '<a href="'.$url.'" onclick="new Ajax.Updater($(\'cronlog_grid_rw\').up(), this.href); return false;">'.$txt.'</a>' : '';
 	}
 }

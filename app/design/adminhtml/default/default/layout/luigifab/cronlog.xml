@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated L/30/03/2015
- * Version 13
+ * Updated D/28/02/2016
+ * Version 14
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -83,10 +83,6 @@
 				<type>skin_css</type>
 				<name>css/luigifab/cronlog/styles.min.css</name>
 				<params>media="screen, projection"</params>
-			</action>
-			<action method="addItem">
-				<type>skin_js</type>
-				<name>js/luigifab/cronlog/app.min.js</name>
 			</action>
 		</reference>
 		<reference name="content">
