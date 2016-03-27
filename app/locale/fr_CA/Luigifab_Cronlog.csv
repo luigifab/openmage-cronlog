@@ -42,6 +42,7 @@
 " Finished At: %s","Terminée le : %s"
 "%s KB","%s Ko"
 "%s MB","%s Mo"
+"%s GB","%s Go"
 "monthly","menusel"
 "weekly","hebdomadaire"
 "daily","quotidien"
