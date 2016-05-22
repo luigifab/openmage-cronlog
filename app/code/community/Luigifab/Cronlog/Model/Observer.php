@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated D/28/02/2016
- * Version 34
+ * Updated M/19/04/2016
+ * Version 35
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -73,6 +73,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 		Mage::getSingleton('core/translate')->setLocale(Mage::getStoreConfig('general/locale/code'))->init('adminhtml', true);
 		$frequency = Mage::getStoreConfig('cronlog/email/frequency');
+		$errors = array();
 
 		// chargement des tâches cron de la période
 		// le mois dernier (mensuel/monthly), les septs derniers jour (hebdomadaire/weekly), hier (quotidien/daily)
@@ -118,17 +119,14 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			'from' => $dateStart->toString(Zend_Date::RFC_3339), 'to' => $dateEnd->toString(Zend_Date::RFC_3339)
 		));
 
-		$date = Mage::getSingleton('core/locale');
-		$errors = array();
-
 		foreach ($jobs as $job) {
 
 			if (!in_array($job->getStatus(), array('error', 'missed')))
 				continue;
 
-			$link = '<a href="'.Mage::helper('adminhtml')->getUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:bold; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getJobCode()).'</a>';
+			$link = '<a href="'.$this->getEmailUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:bold; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getJobCode()).'</a>';
 
-			$hour  = $this->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601));
+			$hour  = $this->_('Scheduled At: %s', Mage::getSingleton('core/locale')->date($job->getScheduledAt(), Zend_Date::ISO_8601));
 			$state = $this->__('Status: %s (%s)', $this->__(ucfirst($job->getStatus())), $job->getStatus());
 			$error = '<pre style="margin:0.5em; font-size:0.9em; color:gray; white-space:pre-wrap;">'.$job->getMessages().'</pre>';
 
@@ -138,8 +136,8 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		// envoi des emails
 		$this->send(array(
 			'frequency'        => $frequency,
-			'date_period_from' => $date->date($dateStart)->toString(Zend_Date::DATETIME_FULL),
-			'date_period_to'   => $date->date($dateEnd)->toString(Zend_Date::DATETIME_FULL),
+			'date_period_from' => Mage::getSingleton('core/locale')->date($dateStart)->toString(Zend_Date::DATETIME_FULL),
+			'date_period_to'   => Mage::getSingleton('core/locale')->date($dateEnd)->toString(Zend_Date::DATETIME_FULL),
 			'total_cron'       => count($jobs),
 			'total_pending'    => count($jobs->getItemsByColumnValue('status', 'pending')),
 			'total_running'    => count($jobs->getItemsByColumnValue('status', 'running')),
@@ -150,10 +148,18 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		));
 	}
 
+	private function getEmailUrl($url, $params = array()) {
+
+		if (Mage::getStoreConfig('web/seo/use_rewrites') === '1')
+			return preg_replace('#/[^/]+\.php/#', '/', Mage::helper('adminhtml')->getUrl($url, $params));
+		else
+			return preg_replace('#/[^/]+\.php/#', '/index.php/', Mage::helper('adminhtml')->getUrl($url, $params));
+	}
+
 	private function send($vars) {
 
 		$emails = explode(' ', trim(Mage::getStoreConfig('cronlog/email/recipient_email')));
-		$vars['config'] = Mage::helper('adminhtml')->getUrl('adminhtml/system/config');
+		$vars['config'] = $this->getEmailUrl('adminhtml/system/config');
 		$vars['config'] = substr($vars['config'], 0, strrpos($vars['config'], '/system/config'));
 
 		foreach ($emails as $email) {

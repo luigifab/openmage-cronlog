@@ -1,8 +1,8 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated L/21/12/2014
- * Version 5
+ * Updated V/25/03/2016
+ * Version 6
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -43,7 +43,15 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 			'name'     => 'scheduled_at',
 			'class'    => 'required-entry',
 			'required' => true,
-			'values'   => Mage::getModel('cronlog/source_date')->toOptionArray()
+			'values'   => array(
+				array('value' => 1,  'label' => $this->__('%d minute', 1)),
+				array('value' => 5,  'label' => $this->__('%d minutes', 5)),
+				array('value' => 10, 'label' => $this->__('%d minutes', 10)),
+				array('value' => 15, 'label' => $this->__('%d minutes', 15)),
+				array('value' => 30, 'label' => $this->__('%d minutes', 30)),
+				array('value' => 45, 'label' => $this->__('%d minutes', 45)),
+				array('value' => 60, 'label' => $this->__('%d minutes', 60))
+			)
 		));
 
 		// sélection par défaut

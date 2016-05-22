@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated D/01/06/2014
- * Version 1
+ * Updated M/12/04/2016
+ * Version 2
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -31,7 +31,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config extends Mage_Adminhtml_Block_Widge
 		$this->_removeButton('add');
 
 		$this->_addButton('back', array(
-			'label'   => $this->helper('adminhtml')->__('Back'),
+			'label'   => $this->__('Back'),
 			'onclick' => "setLocation('".$this->getUrl('*/cronlog_history/index')."');",
 			'class'   => 'back'
 		));

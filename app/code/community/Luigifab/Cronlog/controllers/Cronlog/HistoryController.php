@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/10/10/2015
- * Version 19
+ * Updated M/12/04/2016
+ * Version 20
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -19,6 +19,18 @@
  */
 
 class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controller_Action {
+
+	protected function _validateSecretKey() {
+
+		$result = parent::_validateSecretKey();
+
+		if (Mage::getSingleton('admin/session')->isLoggedIn() && ($this->getFullActionName() === 'adminhtml_cronlog_history_view') && !$result) {
+			$this->getRequest()->setParam(Mage_Adminhtml_Model_Url::SECRET_KEY_PARAM_NAME, Mage::getSingleton('adminhtml/url')->getSecretKey());
+			$result = parent::_validateSecretKey();
+		}
+
+		return $result;
+	}
 
 	protected function _isAllowed() {
 		return Mage::getSingleton('admin/session')->isAllowed('tools/cronlog');

@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/06/12/2015
- * Version 32
+ * Updated M/12/04/2016
+ * Version 33
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -32,22 +32,22 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$this->_removeButton('add');
 
 		$this->_addButton('back', array(
-			'label'   => $this->helper('adminhtml')->__('Back'),
+			'label'   => $this->__('Back'),
 			'onclick' => "setLocation('".$this->getUrl('*/*/index')."');",
 			'class'   => 'back'
 		));
 
 		if ($job->getStatus() === 'pending') {
 			$this->_addButton('delete', array(
-				'label'   => $this->helper('adminhtml')->__('Cancel'),
-				'onclick' => "deleteConfirm('".addslashes($this->helper('core')->__('Are you sure?'))."', '".$this->getUrl('*/*/cancel', array('id' => $job->getId()))."');",
+				'label'   => $this->__('Cancel'),
+				'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/cancel', array('id' => $job->getId()))."');",
 				'class'   => 'delete'
 			));
 		}
 		else {
 			$this->_addButton('delete', array(
-				'label'   => $this->helper('adminhtml')->__('Delete'),
-				'onclick' => "deleteConfirm('".addslashes($this->helper('core')->__('Are you sure?'))."', '".$this->getUrl('*/*/delete', array('id' => $job->getId()))."');",
+				'label'   => $this->__('Delete'),
+				'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/delete', array('id' => $job->getId()))."');",
 				'class'   => 'delete'
 			));
 			$this->_addButton('action', array(

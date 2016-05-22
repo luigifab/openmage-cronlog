@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/11/04/2015
- * Version 20
+ * Updated M/12/04/2016
+ * Version 21
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -70,7 +70,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 		));
 
 		$this->addColumn('status', array(
-			'header'    => $this->helper('adminhtml')->__('Status'),
+			'header'    => $this->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
 			'options'   => array(
@@ -113,7 +113,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Gridro extends Mage_Adminhtml_Bloc
 	public function decorateLink($value, $row, $column, $isExport) {
 
 		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
-		$txt = $this->helper('adminhtml')->__(($row->getData('status') === 'disabled') ? 'Enable' : 'Disable');
+		$txt = $this->__(($row->getData('status') === 'disabled') ? 'Enable' : 'Disable');
 
 		return (!$row->getData('is_read_only')) ? '<a href="'.$url.'" onclick="return cronlog.action(this.href);">'.$txt.'</a>' : '';
 	}

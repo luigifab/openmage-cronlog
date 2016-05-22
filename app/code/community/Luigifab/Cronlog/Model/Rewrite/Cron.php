@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/04/04/2015
+ * Updated S/23/04/2016
  * Version 13
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
@@ -77,7 +77,7 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 			return $this;
 
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
-		$jobs->addFieldToFilter('status', array('in' => 'success'));
+		$jobs->addFieldToFilter('status', 'success');
 		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.$lifetime.' MINUTE)')));
 
 		foreach ($jobs as $job)

@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/06/12/2015
- * Version 27
+ * Updated M/12/04/2016
+ * Version 28
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -44,7 +44,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	protected function _prepareColumns() {
 
 		$this->addColumn('schedule_id', array(
-			'header'    => $this->helper('adminhtml')->__('Id'),
+			'header'    => $this->__('Id'),
 			'index'     => 'schedule_id',
 			'align'     => 'center',
 			'width'     => '80px'
@@ -105,7 +105,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		));
 
 		$this->addColumn('status', array(
-			'header'    => $this->helper('adminhtml')->__('Status'),
+			'header'    => $this->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
 			'options'   => array(
@@ -125,7 +125,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'getter'    => 'getId',
 			'actions'   => array(
 				array(
-					'caption' => $this->helper('adminhtml')->__('View'),
+					'caption' => $this->__('View'),
 					'url'     => array('base' => '*/*/view'),
 					'field'   => 'id'
 				)

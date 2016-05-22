@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/22/09/2015
- * Version 10
+ * Updated W/27/04/2016
+ * Version 11
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -36,7 +36,6 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 	public function saveAction() {
 
 		$this->setUsedModuleName('Luigifab_Cronlog');
-		$msg = array();
 
 		try {
 			if (($code = $this->getRequest()->getParam('code', false)) === false)
@@ -46,23 +45,22 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 				$text = $this->__('Job <b>%s</b> has been successfully <b>enabled</b>', $code);
 				Mage::getModel('core/config')->deleteConfig('crontab/jobs/'.$code.'/schedule/disabled');
 				Mage::log(strip_tags($text), Zend_Log::NOTICE, 'cronlog.log');
-				$msg[] = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
+				$msg = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
 			}
 			else {
 				$text = $this->__('Job <b>%s</b> has been successfully <b>disabled</b>', $code);
 				Mage::getModel('core/config')->saveConfig('crontab/jobs/'.$code.'/schedule/disabled', '1');
 				Mage::log(strip_tags($text), Zend_Log::NOTICE, 'cronlog.log');
-				$msg[] = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
+				$msg = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
 			}
 		}
 		catch (Exception $e) {
-			$msg[] = '<li class="error-msg"><ul><li>'.$e->getMessage().'</li></ul></li>';
+			$msg = '<li class="error-msg"><ul><li>'.$e->getMessage().'</li></ul></li>';
 		}
 
 		Mage::getConfig()->reinit(); // très important
 
-		$msg = (!empty($msg)) ?
-			'<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.implode($msg).'</ul></div> ' : '';
+		$msg = (isset($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
 		$this->getResponse()->setBody($msg.$this->getLayout()->createBlock('cronlog/adminhtml_config_grid')->toHtml());
 	}
 }
