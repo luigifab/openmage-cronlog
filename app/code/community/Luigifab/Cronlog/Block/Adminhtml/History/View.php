@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/12/04/2016
- * Version 33
+ * Updated D/22/05/2016
+ * Version 34
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -24,11 +24,12 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		parent::__construct();
 
-		$job = Mage::registry('current_job');
+		$job    = Mage::registry('current_job');
+		$params = array('id' => $job->getId());
+
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
 		$this->_headerText = $this->__('Cron job number %d - %s', $job->getId(), $job->getJobCode());
-
 		$this->_removeButton('add');
 
 		$this->_addButton('back', array(
@@ -40,14 +41,14 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		if ($job->getStatus() === 'pending') {
 			$this->_addButton('delete', array(
 				'label'   => $this->__('Cancel'),
-				'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/cancel', array('id' => $job->getId()))."');",
+				'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/cancel', $params)."');",
 				'class'   => 'delete'
 			));
 		}
 		else {
 			$this->_addButton('delete', array(
 				'label'   => $this->__('Delete'),
-				'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/delete', array('id' => $job->getId()))."');",
+				'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/delete', $params)."');",
 				'class'   => 'delete'
 			));
 			$this->_addButton('action', array(
@@ -64,7 +65,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$job   = Mage::registry('current_job');
 		$date  = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
 
-		if (($job->getStatus() === 'success') || ($job->getStatus() === 'error'))
+		if (in_array($job->getStatus(), array('success', 'error')))
 			$status = $this->helper('cronlog')->_(ucfirst($job->getStatus()));
 		else
 			$status = $this->__(ucfirst($job->getStatus()));
