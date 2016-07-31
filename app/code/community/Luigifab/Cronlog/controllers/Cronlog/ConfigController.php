@@ -1,8 +1,8 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated W/27/04/2016
- * Version 11
+ * Updated V/01/07/2016
+ * Version 12
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -39,7 +39,7 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 
 		try {
 			if (($code = $this->getRequest()->getParam('code', false)) === false)
-				Mage::throwException($this->__('The <em>%s</em> field is a required value.', 'code'));
+				Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'code'));
 
 			if (is_string(Mage::getStoreConfig('crontab/jobs/'.$code.'/schedule/disabled'))) {
 				$text = $this->__('Job <b>%s</b> has been successfully <b>enabled</b>', $code);

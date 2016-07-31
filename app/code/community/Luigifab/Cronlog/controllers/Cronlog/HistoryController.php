@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/12/04/2016
- * Version 20
+ * Updated V/01/07/2016
+ * Version 21
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -79,7 +79,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 			if (!Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
 
 				if (($code = $this->getRequest()->getPost('job_code', false)) === false)
-					Mage::throwException($this->__('The <em>%s</em> field is a required value.', 'job_code'));
+					Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'job_code'));
 
 				$dateCreated = Mage::app()->getLocale()->date();
 				$dateCreated->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
@@ -116,7 +116,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 			if (!Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
 
 				if ((($id = $this->getRequest()->getParam('id', false)) === false) || !is_numeric($id))
-					Mage::throwException($this->__('The <em>%s</em> field is a required value.', 'id'));
+					Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'id'));
 
 				Mage::getModel('cron/schedule')->load($id)->delete();
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully canceled.', $id));
@@ -137,7 +137,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 			if (!Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
 
 				if ((($id = $this->getRequest()->getParam('id', false)) === false) || !is_numeric($id))
-					Mage::throwException($this->__('The <em>%s</em> field is a required value.', 'id'));
+					Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'id'));
 
 				Mage::getModel('cron/schedule')->load($id)->delete();
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully deleted.', $id));

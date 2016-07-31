@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/12/04/2016
- * Version 28
+ * Updated S/23/07/2016
+ * Version 30
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -62,8 +62,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Created At'),
 			'index'     => 'created_at',
 			'type'      => 'datetime',
+			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
 			'align'     => 'center',
-			'width'     => '180px',
+			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
 		));
 
@@ -71,8 +72,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Scheduled At'),
 			'index'     => 'scheduled_at',
 			'type'      => 'datetime',
+			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
 			'align'     => 'center',
-			'width'     => '180px',
+			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
 		));
 
@@ -80,8 +82,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Executed At'),
 			'index'     => 'executed_at',
 			'type'      => 'datetime',
+			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
 			'align'     => 'center',
-			'width'     => '180px',
+			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
 		));
 
@@ -89,8 +92,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Finished At'),
 			'index'     => 'finished_at',
 			'type'      => 'datetime',
+			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
 			'align'     => 'center',
-			'width'     => '180px',
+			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
 		));
 
@@ -155,7 +159,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		if (is_string($filter) || !empty($this->_defaultFilter))
 			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));
 
-		if ((Mage::getStoreConfig('cronlog/general/textmode') === '1') || (isset($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
+		if (Mage::getStoreConfigFlag('cronlog/general/textmode') || (isset($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
 
 			$this->addColumnAfter('job_code', array(
 				'header'    => $this->__('Job'),

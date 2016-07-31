@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated M/19/04/2016
- * Version 35
+ * Updated D/10/07/2016
+ * Version 38
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -27,7 +27,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			$config = Mage::getModel('core/config_data');
 			$config->load('crontab/jobs/cronlog_send_report/schedule/cron_expr', 'path');
 
-			if (Mage::getStoreConfig('cronlog/email/enabled') === '1') {
+			if (Mage::getStoreConfigFlag('cronlog/email/enabled')) {
 
 				// quotidien, tous les jours à 1h00 (quotidien/daily)
 				// hebdomadaire, tous les lundi à 1h00 (hebdomadaire/weekly)
@@ -50,10 +50,12 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 				// email de test
 				// s'il n'a pas déjà été envoyé dans la dernière heure (3600 secondes)
+				// ou si le cookie maillog_print_email est présent, et ce, quoi qu'il arrive
+				$cookie = (Mage::getSingleton('core/cookie')->get('maillog_print_email') === 'yes') ? true : false;
 				$session = Mage::getSingleton('admin/session')->getLastCronlogReport();
 				$timestamp = Mage::getModel('core/date')->timestamp(time());
 
-				if (is_null($session) || ($timestamp > ($session + 3600))) {
+				if (is_null($session) || ($timestamp > ($session + 3600)) || $cookie) {
 					$this->sendEmailReport();
 					Mage::getSingleton('admin/session')->setLastCronlogReport($timestamp);
 				}
@@ -134,7 +136,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		}
 
 		// envoi des emails
-		$this->send(array(
+		$this->sendReportToRecipients(array(
 			'frequency'        => $frequency,
 			'date_period_from' => Mage::getSingleton('core/locale')->date($dateStart)->toString(Zend_Date::DATETIME_FULL),
 			'date_period_to'   => Mage::getSingleton('core/locale')->date($dateEnd)->toString(Zend_Date::DATETIME_FULL),
@@ -150,13 +152,13 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 	private function getEmailUrl($url, $params = array()) {
 
-		if (Mage::getStoreConfig('web/seo/use_rewrites') === '1')
+		if (Mage::getStoreConfigFlag('web/seo/use_rewrites'))
 			return preg_replace('#/[^/]+\.php/#', '/', Mage::helper('adminhtml')->getUrl($url, $params));
 		else
 			return preg_replace('#/[^/]+\.php/#', '/index.php/', Mage::helper('adminhtml')->getUrl($url, $params));
 	}
 
-	private function send($vars) {
+	private function sendReportToRecipients($vars) {
 
 		$emails = explode(' ', trim(Mage::getStoreConfig('cronlog/email/recipient_email')));
 		$vars['config'] = $this->getEmailUrl('adminhtml/system/config');
@@ -176,7 +178,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			);
 
 			if (!$template->getSentSuccess())
-				Mage::throwException($this->__('Can not send email report to %s.', $email));
+				Mage::throwException($this->__('Can not send the report by email to %s.', $email));
 
 			//exit($template->getProcessedTemplate($vars));
 		}

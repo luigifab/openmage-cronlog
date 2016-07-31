@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/22/05/2016
- * Version 34
+ * Updated S/02/07/2016
+ * Version 35
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -61,9 +61,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$that  = $this->helper('cronlog');
-		$job   = Mage::registry('current_job');
-		$date  = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
+		$help = Mage::helper('cronlog');
+		$job  = Mage::registry('current_job');
+		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
 
 		if (in_array($job->getStatus(), array('success', 'error')))
 			$status = $this->helper('cronlog')->_(ucfirst($job->getStatus()));
@@ -74,24 +74,24 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$html[] = '<div class="content">';
 		$html[] = '<div>';
 		$html[] = '<ul>';
-		$html[] = '<li>'.$that->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
+		$html[] = '<li>'.$help->_('Created At: %s', $date->date($job->getCreatedAt(), Zend_Date::ISO_8601)).'</li>';
 
 		if (!in_array($job->getFinishedAt(), array('', '0000-00-00 00:00:00', null))) {
 
-			$html[] = '<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html[] = '<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
-			$html[] = '<li>'.$that->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
+			$html[] = '<li>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html[] = '<li><strong>'.$help->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html[] = '<li>'.$help->_('Finished At: %s', $date->date($job->getFinishedAt(), Zend_Date::ISO_8601)).'</li>';
 
-			$duration = $that->getHumanDuration($job);
+			$duration = $help->getHumanDuration($job);
 			if (strlen($duration) > 0)
 				$html[] = '<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}
 		else if (!in_array($job->getExecutedAt(), array('', '0000-00-00 00:00:00', null))) {
-			$html[] = '<li>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
-			$html[] = '<li><strong>'.$that->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html[] = '<li>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</li>';
+			$html[] = '<li><strong>'.$help->_('Executed At: %s', $date->date($job->getExecutedAt(), Zend_Date::ISO_8601)).'</strong></li>';
 		}
 		else {
-			$html[] = '<li><strong>'.$that->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
+			$html[] = '<li><strong>'.$help->_('Scheduled At: %s', $date->date($job->getScheduledAt(), Zend_Date::ISO_8601)).'</strong></li>';
 		}
 
 		$html[] = '</ul>';
