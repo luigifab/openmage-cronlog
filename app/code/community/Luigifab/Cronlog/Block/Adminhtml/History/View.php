@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/02/07/2016
- * Version 35
+ * Updated M/13/09/2016
+ * Version 37
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -30,6 +30,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
 		$this->_headerText = $this->__('Cron job number %d - %s', $job->getId(), $job->getJobCode());
+
 		$this->_removeButton('add');
 
 		$this->_addButton('back', array(
@@ -61,7 +62,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$help = Mage::helper('cronlog');
+		$help = $this->helper('cronlog');
 		$job  = Mage::registry('current_job');
 		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
 

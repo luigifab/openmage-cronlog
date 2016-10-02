@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/23/07/2016
- * Version 30
+ * Updated V/16/09/2016
+ * Version 33
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -26,7 +26,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		$this->setId('cronlog_grid');
 		$this->setDefaultSort('schedule_id');
-		$this->setDefaultDir('DESC');
+		$this->setDefaultDir('desc');
 
 		$this->setUseAjax(true);
 		$this->setSaveParametersInSession(true);
@@ -62,7 +62,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Created At'),
 			'index'     => 'created_at',
 			'type'      => 'datetime',
-			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
+			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
@@ -72,7 +72,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Scheduled At'),
 			'index'     => 'scheduled_at',
 			'type'      => 'datetime',
-			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
+			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
@@ -82,7 +82,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Executed At'),
 			'index'     => 'executed_at',
 			'type'      => 'datetime',
-			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
+			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
@@ -92,7 +92,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'header'    => $this->helper('cronlog')->_('Finished At'),
 			'index'     => 'finished_at',
 			'type'      => 'datetime',
-			'format'    => Mage::app()->getLocale()->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT, true),
+			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
 			'frame_callback' => array($this, 'decorateDate')
@@ -144,7 +144,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		// recherche des codes
 		// efficacité maximale avec la PROCEDURE ANALYSE de MySQL
 		$resource = Mage::getSingleton('core/resource');
-		$read = $resource->getConnection('core_read');
+		$read = $resource->getConnection('cronlog_read');
 
 		$codes = $read->fetchAll('SELECT job_code FROM '.$resource->getTableName('cron_schedule').' PROCEDURE ANALYSE();');
 		$codes = (isset($codes[0]['Optimal_fieldtype'])) ?

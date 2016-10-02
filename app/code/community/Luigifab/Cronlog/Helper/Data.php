@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/19/03/2016
- * Version 17
+ * Updated D/18/09/2016
+ * Version 18
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -26,14 +26,6 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 
 	public function _($data, $a = null, $b = null) {
 		return (strpos($txt = $this->__(' '.$data, $a, $b), ' ') === 0) ? $this->__($data, $a, $b) : $txt;
-	}
-
-	public function getDateToUtc($date) {
-
-		$dt = new DateTime($date, new DateTimeZone(Mage::app()->getStore()->getConfig('general/locale/timezone')));
-		$dt->setTimezone(new DateTimeZone('UTC'));
-
-		return $dt->format('Y-m-d H:i:s');
 	}
 
 	public function getNumberToHumanSize($number) {

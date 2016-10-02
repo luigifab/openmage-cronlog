@@ -1,8 +1,8 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/01/07/2016
- * Version 21
+ * Updated D/18/09/2016
+ * Version 23
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -81,19 +81,14 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				if (($code = $this->getRequest()->getPost('job_code', false)) === false)
 					Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'job_code'));
 
-				$dateCreated = Mage::app()->getLocale()->date();
-				$dateCreated->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
-				$dateCreated = Mage::helper('cronlog')->getDateToUtc($dateCreated->toString(Zend_Date::RFC_3339));
-
-				$dateScheduled = Mage::app()->getLocale()->date();
-				$dateScheduled->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
+				$dateScheduled = Mage::getSingleton('core/locale')->date();
+				$dateScheduled->setTimezone('UTC');
 				$dateScheduled->addMinute($this->getRequest()->getPost('scheduled_at', 1));
-				$dateScheduled = Mage::helper('cronlog')->getDateToUtc($dateScheduled->toString(Zend_Date::RFC_3339));
 
 				$job = Mage::getModel('cron/schedule');
 				$job->setJobCode($code);
-				$job->setCreatedAt($dateCreated);
-				$job->setScheduledAt($dateScheduled);
+				$job->setCreatedAt(date('Y-m-d H:i:s'));
+				$job->setScheduledAt($dateScheduled->toString(Zend_Date::RFC_3339));
 				$job->save();
 
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully scheduled.', $job->getId()));

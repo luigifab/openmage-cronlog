@@ -1,8 +1,8 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated D/10/07/2016
- * Version 38
+ * Updated V/16/09/2016
+ * Version 41
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -53,7 +53,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 				// ou si le cookie maillog_print_email est présent, et ce, quoi qu'il arrive
 				$cookie = (Mage::getSingleton('core/cookie')->get('maillog_print_email') === 'yes') ? true : false;
 				$session = Mage::getSingleton('admin/session')->getLastCronlogReport();
-				$timestamp = Mage::getModel('core/date')->timestamp(time());
+				$timestamp = Mage::getSingleton('core/date')->timestamp();
 
 				if (is_null($session) || ($timestamp > ($session + 3600)) || $cookie) {
 					$this->sendEmailReport();
@@ -79,13 +79,13 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 		// chargement des tâches cron de la période
 		// le mois dernier (mensuel/monthly), les septs derniers jour (hebdomadaire/weekly), hier (quotidien/daily)
-		$dateStart = Mage::app()->getLocale()->date();
+		$dateStart = Mage::getSingleton('core/locale')->date();
 		$dateStart->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
 		$dateStart->setHour(0);
 		$dateStart->setMinute(0);
 		$dateStart->setSecond(0);
 
-		$dateEnd = Mage::app()->getLocale()->date();
+		$dateEnd = Mage::getSingleton('core/locale')->date();
 		$dateEnd->setTimezone(Mage::getStoreConfig('general/locale/timezone'));
 		$dateEnd->setHour(23);
 		$dateEnd->setMinute(59);
@@ -115,7 +115,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 		// chargement des tâches cron
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
-		$jobs->getSelect()->order('schedule_id', 'DESC');
+		$jobs->setOrder('schedule_id', 'desc');
 		$jobs->addFieldToFilter('created_at', array(
 			'datetime' => true,
 			'from' => $dateStart->toString(Zend_Date::RFC_3339), 'to' => $dateEnd->toString(Zend_Date::RFC_3339)
@@ -138,8 +138,8 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		// envoi des emails
 		$this->sendReportToRecipients(array(
 			'frequency'        => $frequency,
-			'date_period_from' => Mage::getSingleton('core/locale')->date($dateStart)->toString(Zend_Date::DATETIME_FULL),
-			'date_period_to'   => Mage::getSingleton('core/locale')->date($dateEnd)->toString(Zend_Date::DATETIME_FULL),
+			'date_period_from' => $dateStart->toString(Zend_Date::DATETIME_FULL),
+			'date_period_to'   => $dateEnd->toString(Zend_Date::DATETIME_FULL),
 			'total_cron'       => count($jobs),
 			'total_pending'    => count($jobs->getItemsByColumnValue('status', 'pending')),
 			'total_running'    => count($jobs->getItemsByColumnValue('status', 'running')),

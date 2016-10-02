@@ -1,8 +1,8 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated M/12/04/2016
- * Version 4
+ * Updated M/13/09/2016
+ * Version 5
  *
  * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
@@ -26,6 +26,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit extends Mage_Adminhtml_Block
 
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
+		$this->_headerText = $this->__('New cron job');
 
 		$this->_removeButton('reset');
 		$this->_removeButton('delete');
@@ -33,9 +34,5 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit extends Mage_Adminhtml_Block
 
 		if ($this->getRequest()->getParam('id', false) && $this->getRequest()->getParam('code', false))
 			$this->_updateButton('back', 'onclick', "setLocation('".$this->getUrl('*/*/view', array('id' => $this->getRequest()->getParam('id')))."');");
-	}
-
-	public function getHeaderText() {
-		return $this->__('New cron job');
 	}
 }

@@ -99,7 +99,7 @@ class Luigifab_Cronlog_Model_Source_Jobs extends Varien_Data_Collection {
 		$jobs->setPageSize(500);
 
 		$data = array();
-		$date = Mage::getSingleton('core/locale');
+		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale = null, $useTimezone = null
 
 		foreach ($jobs as $job) {
 
