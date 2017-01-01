@@ -1,10 +1,9 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated D/21/08/2016
- * Version 5
+ * Updated M/08/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify

@@ -1,10 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/13/09/2016
- * Version 37
+ * Updated W/09/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -53,7 +52,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 				'class'   => 'delete'
 			));
 			$this->_addButton('action', array(
-				'label'   => $this->__('Restart job'),
+				'label'   => $this->__('Restart the job'),
 				'onclick' => "setLocation('".$this->getUrl('*/*/new', array('id' => $job->getId(), 'code' => $job->getJobCode()))."');",
 				'class'   => 'add'
 			));

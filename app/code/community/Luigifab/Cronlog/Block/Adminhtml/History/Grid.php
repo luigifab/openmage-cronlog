@@ -1,10 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/16/09/2016
- * Version 33
+ * Updated M/08/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -36,7 +35,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	}
 
 	protected function _prepareCollection() {
-
 		$this->setCollection(Mage::getResourceModel('cron/schedule_collection'));
 		return parent::_prepareCollection();
 	}

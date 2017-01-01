@@ -1,10 +1,9 @@
 <?php
 /**
  * Created D/31/08/2014
- * Updated S/06/09/2014
- * Version 3
+ * Updated W/09/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -26,9 +25,11 @@ class Luigifab_Cronlog_Model_Source_Lifetime extends Luigifab_Cronlog_Helper_Dat
 			array('value' => 0, 'label' => '--'),
 			array('value' => 5 * 24 * 60,  'label' => $this->__('%d days', 5)),
 			array('value' => 7 * 24 * 60,  'label' => $this->__('%d days', 7)),
-			array('value' => 14 * 24 * 60, 'label' => $this->__('%d days', 14)),
-			array('value' => 28 * 24 * 60, 'label' => $this->__('%d days', 28)),
-			array('value' => 31 * 24 * 60, 'label' => $this->__('%d days', 31))
+			array('value' => 14 * 24 * 60, 'label' => $this->__('%d days (%d weeks)', 14, 2)),
+			array('value' => 28 * 24 * 60, 'label' => $this->__('%d days (%d weeks)', 28, 4)),
+			array('value' => 31 * 24 * 60, 'label' => $this->__('%d days (%d month)', 31, 1)),
+			array('value' => 62 * 24 * 60, 'label' => $this->__('%d days (%d months)', 62, 2)),
+			array('value' => 93 * 24 * 60, 'label' => $this->__('%d days (%d months)', 93, 3))
 		);
 	}
 }

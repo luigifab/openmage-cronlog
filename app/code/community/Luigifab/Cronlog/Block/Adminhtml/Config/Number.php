@@ -1,10 +1,9 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated D/21/08/2016
- * Version 6
+ * Updated W/09/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -32,7 +31,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Number extends Mage_Adminhtml_Bloc
 
 			$element->setValue(intval($read->fetchOne($select)));
 
-			return '<span id="'.$element->getHtmlId().'">'.$this->__('~%d (very approximate)', $element->getValue()).'</span>';
+			return '<span id="'.$element->getHtmlId().'">'.$this->__('~%d (is very approximate)', $element->getValue()).'</span>';
 		}
 		else {
 			return '<span id="'.$element->getHtmlId().'">'.Mage::getResourceModel('cron/schedule_collection')->getSize().'</span>';

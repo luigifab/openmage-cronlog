@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated V/08/07/2016
- * Version 24
+ * Updated W/09/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -51,7 +50,7 @@
 					<fields>
 						<lifetime translate="label comment">
 							<label>History lifetime</label>
-							<comment><![CDATA[Replace cron jobs history lifetime (see {{System &gt; Cron}}).]]></comment>
+							<comment><![CDATA[Replaces the history lifetime of the cron jobs (see {{System &gt; Cron}}).]]></comment>
 							<frontend_type>select</frontend_type>
 							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
 							<source_model>cronlog/source_lifetime</source_model>

@@ -1,10 +1,9 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated V/16/09/2016
- * Version 41
+ * Updated M/08/11/2016
  *
- * Copyright 2012-2016 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://redmine.luigifab.info/projects/magento/wiki/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -95,12 +94,12 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			$frequency = $this->__('monthly');
 			$dateStart->subMonth(1)->setDay(1);
 			$dateEnd->subMonth(1)->setDay(1);
-			$dateEnd->setDay(date('t', $dateEnd->getTimestamp()));
-			// Évite ce genre de chose... (date(n) = numéro du mois, date(t) = nombre de jour du mois)
+			$dateEnd->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
+			// Évite ce genre de chose... (date(n) = numéro du mois, date(t)/Zend_Date::MONTH_DAYS = nombre de jour du mois)
 			// Période du dimanche 1 mars 2015 00:00:00 Europe/Paris au samedi 28 février 2015 23:59:59 Europe/Paris
 			// Il est étrange que la variable dateEnd ne soit pas affectée
 			if (date('n', $dateStart->getTimestamp()) === date('n', $dateEnd->getTimestamp()))
-				$dateStart->subDay(date('t', $dateStart->getTimestamp()));
+				$dateStart->subDay($dateStart->toString(Zend_Date::MONTH_DAYS));
 		}
 		else if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
 			$frequency = $this->__('weekly');
