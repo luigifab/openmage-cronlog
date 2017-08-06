@@ -1,10 +1,10 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated M/08/11/2016
+ * Updated J/29/06/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -34,7 +34,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 			'name'     => 'job_code',
 			'class'    => 'required-entry',
 			'required' => true,
-			'values'   => Mage::getModel('cronlog/source_jobs')->toOptionArray()
+			'values'   => Mage::getSingleton('cronlog/source_jobs')->toOptionArray()
 		));
 
 		$fieldset->addField('scheduled_at', 'select', array(
@@ -56,11 +56,11 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 		// sélection par défaut
 		$session = Mage::getSingleton('adminhtml/session')->getFormData();
 
-		if (is_array($session) && isset($session['job_code']) && isset($session['scheduled_at'])) {
-			$form->setValues(array('job_code' => trim($session['job_code']), 'scheduled_at' => trim($session['scheduled_at'])));
+		if (is_array($session) && !empty($session['job_code']) && !empty($session['scheduled_at'])) {
+			$form->setValues(array('job_code' => $session['job_code'], 'scheduled_at' => $session['scheduled_at']));
 			Mage::getSingleton('adminhtml/session')->unsFormData();
 		}
-		else if ($this->getRequest()->getParam('code', false)) {
+		else if (!empty($this->getRequest()->getParam('code'))) {
 			$form->setValues(array('job_code' => $this->getRequest()->getParam('code')));
 		}
 

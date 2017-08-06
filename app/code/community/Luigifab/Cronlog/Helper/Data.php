@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/08/11/2016
+ * Updated M/28/02/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -35,7 +35,7 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		else if (($number / 1024) < 1024) {
 			$size = $number / 1024;
 			$size = Zend_Locale_Format::toNumber($size, array('precision' => 2));
-			return $this->__('%s KB', str_replace(array('.00',',00'), '', $size));
+			return $this->__('%s kB', str_replace(array('.00',',00'), '', $size));
 		}
 		else if (($number / 1024 / 1024) < 1024) {
 			$size = $number / 1024 / 1024;

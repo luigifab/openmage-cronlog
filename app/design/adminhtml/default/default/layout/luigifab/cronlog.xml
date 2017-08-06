@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated M/08/11/2016
+ * Updated M/28/02/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -70,6 +70,12 @@
 				<name>css/luigifab/cronlog/styles.min.css</name>
 				<params>media="screen, projection"</params>
 			</action>
+		</reference>
+		<reference name="left">
+			<block type="cronlog/adminhtml_history_edit_tabs" name="cronlog_tabs" />
+		</reference>
+		<reference name="content">
+			<block type="cronlog/adminhtml_history_edit" name="cronlog_edit" />
 		</reference>
 	</adminhtml_cronlog_history_new>
 

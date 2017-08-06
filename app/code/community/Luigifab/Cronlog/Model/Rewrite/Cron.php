@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated W/09/11/2016
+ * Updated M/28/02/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -38,14 +38,17 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 			// (config.xml/configuration : attention la configuration n'est pas fusionnée)
 			// - config.xml, Mage::getConfig()->getNode('crontab/jobs[/../schedule/disabled]')
 			// - configuration, Mage::getConfig()->getNode('default/crontab/jobs[/../schedule/disabled]')
-			// is_string et non isset car : Cannot use isset() on the result of a function call (you can use "null !== func()" instead)
-			if (!$cronExpr || isset($jobConfig->schedule->disabled) ||
+			// is_string et non !empty car : Cannot use !empty() on the result of a function call (you can use "null !== func()" instead)
+			if (!$cronExpr || !empty($jobConfig->schedule->disabled) ||
 			    is_string(Mage::getStoreConfig('crontab/jobs/'.$jobCode.'/schedule/disabled')))
 				continue;
 
 			$now = time();
 			$timeAhead = $now + $scheduleAheadFor;
-			$schedule->setJobCode($jobCode)->setCronExpr($cronExpr)->setStatus(Mage_Cron_Model_Schedule::STATUS_PENDING);
+
+			$schedule->setCronExpr($cronExpr);
+			$schedule->setData('job_code', $jobCode);
+			$schedule->setData('status', Mage_Cron_Model_Schedule::STATUS_PENDING);
 
 			for ($time = $now; $time < $timeAhead; $time += 60) {
 

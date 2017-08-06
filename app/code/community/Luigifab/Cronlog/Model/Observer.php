@@ -1,10 +1,10 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated M/08/11/2016
+ * Updated L/31/07/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -19,7 +19,7 @@
 
 class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
-	// EVENT admin_system_config_changed_section_cronlog
+	// EVENT admin_system_config_changed_section_cronlog (adminhtml)
 	public function updateConfig() {
 
 		try {
@@ -38,25 +38,28 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 				// 0	     1    *            *             0|1         => weekly
 				// 0	     1    *            *             *           => daily
 				if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY)
-					$config->setValue('0 1 1 * *');
+					$config->setData('value', '0 1 1 * *');
 				else if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY)
-					$config->setValue('0 1 * * '.Mage::getStoreConfig('general/locale/firstday'));
+					$config->setData('value', '0 1 * * '.Mage::getStoreConfig('general/locale/firstday'));
 				else
-					$config->setValue('0 1 * * *');
+					$config->setData('value', '0 1 * * *');
 
-				$config->setPath('crontab/jobs/cronlog_send_report/schedule/cron_expr');
+				$config->setData('path', 'crontab/jobs/cronlog_send_report/schedule/cron_expr');
 				$config->save();
 
 				// email de test
 				// s'il n'a pas déjà été envoyé dans la dernière heure (3600 secondes)
 				// ou si le cookie maillog_print_email est présent, et ce, quoi qu'il arrive
 				$cookie = (Mage::getSingleton('core/cookie')->get('maillog_print_email') === 'yes') ? true : false;
-				$session = Mage::getSingleton('admin/session')->getLastCronlogReport();
+				$lastSent  = Mage::getSingleton('admin/session')->getData('last_cronlog_report');
 				$timestamp = Mage::getSingleton('core/date')->timestamp();
 
-				if (is_null($session) || ($timestamp > ($session + 3600)) || $cookie) {
+				if (empty($lastSent) || ($timestamp > ($lastSent + 3600)) || $cookie) {
 					$this->sendEmailReport();
-					Mage::getSingleton('admin/session')->setLastCronlogReport($timestamp);
+					Mage::getSingleton('admin/session')->setData('last_cronlog_report', $timestamp);
+				}
+				else {
+					Mage::log(sprintf('Not sending test report, timestamp:%s > lastSent:%s +1h = false', date('H\hi', $timestamp), date('H\hi', $lastSent)), Zend_Log::DEBUG, 'cronlog.log');
 				}
 			}
 			else {
@@ -72,7 +75,10 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 	// CRON cronlog_send_report
 	public function sendEmailReport() {
 
-		Mage::getSingleton('core/translate')->setLocale(Mage::getStoreConfig('general/locale/code'))->init('adminhtml', true);
+		$oldLocale = Mage::getSingleton('core/translate')->getLocale();
+		$newLocale = (Mage::app()->getStore()->isAdmin()) ? $oldLocale : Mage::getStoreConfig('general/locale/code');
+		Mage::getSingleton('core/translate')->setLocale($newLocale)->init('adminhtml', true);
+
 		$frequency = Mage::getStoreConfig('cronlog/email/frequency');
 		$errors = array();
 
@@ -90,24 +96,27 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$dateEnd->setMinute(59);
 		$dateEnd->setSecond(59);
 
+		// de 1 (pour Lundi) à 7 (pour Dimanche)
+		// permet d'obtenir des semaines du lundi au dimanche
+		$day = $dateStart->toString(Zend_Date::WEEKDAY_8601) - 1;
+
 		if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY) {
-			$frequency = $this->__('monthly');
+			$frequency = $this->_('monthly');
 			$dateStart->subMonth(1)->setDay(1);
 			$dateEnd->subMonth(1)->setDay(1);
 			$dateEnd->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
-			// Évite ce genre de chose... (date(n) = numéro du mois, date(t)/Zend_Date::MONTH_DAYS = nombre de jour du mois)
+			// évite une connerie du genre (lorsque le mail est envoyé le 1er mars à 1hxx)
 			// Période du dimanche 1 mars 2015 00:00:00 Europe/Paris au samedi 28 février 2015 23:59:59 Europe/Paris
-			// Il est étrange que la variable dateEnd ne soit pas affectée
-			if (date('n', $dateStart->getTimestamp()) === date('n', $dateEnd->getTimestamp()))
-				$dateStart->subDay($dateStart->toString(Zend_Date::MONTH_DAYS));
+			if ($dateStart->toString(Zend_Date::MONTH_SHORT) != $dateEnd->toString(Zend_Date::MONTH_SHORT))
+				$dateStart->setMonth($dateEnd->getMonth())->setDay(1);
 		}
 		else if ($frequency === Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
-			$frequency = $this->__('weekly');
-			$dateStart->subDay(7);
-			$dateEnd->subDay(1);
+			$frequency = $this->_('weekly');
+			$dateStart->subDay($day + 7);
+			$dateEnd->subDay($day + 1);
 		}
 		else {
-			$frequency = $this->__('daily');
+			$frequency = $this->_('daily');
 			$dateStart->subDay(1);
 			$dateEnd->subDay(1);
 		}
@@ -122,20 +131,20 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 		foreach ($jobs as $job) {
 
-			if (!in_array($job->getStatus(), array('error', 'missed')))
+			if (!in_array($job->getData('status'), array('error', 'missed')))
 				continue;
 
-			$link = '<a href="'.$this->getEmailUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:bold; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getJobCode()).'</a>';
+			$link = '<a href="'.$this->getEmailUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:bold; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getData('job_code')).'</a>';
 
-			$hour  = $this->_('Scheduled At: %s', Mage::getSingleton('core/locale')->date($job->getScheduledAt(), Zend_Date::ISO_8601));
-			$state = $this->__('Status: %s (%s)', $this->__(ucfirst($job->getStatus())), $job->getStatus());
-			$error = '<pre style="margin:0.5em; font-size:0.9em; color:gray; white-space:pre-wrap;">'.$job->getMessages().'</pre>';
+			$hour  = $this->_('Scheduled At: %s', $this->formatDate($job->getData('scheduled_at')));
+			$state = $this->__('Status: %s (%s)', $this->__(ucfirst($job->getData('status'))), $job->getData('status'));
+			$error = '<pre style="margin:0.5em; font-size:0.9em; color:#767676; white-space:pre-wrap;">'.$job->getMessages().'</pre>';
 
 			array_push($errors, sprintf('(%d) %s / %s / %s %s', count($errors) + 1, $link, $hour, $state, $error));
 		}
 
 		// envoi des emails
-		$this->sendReportToRecipients(array(
+		$this->sendReportToRecipients($newLocale, array(
 			'frequency'        => $frequency,
 			'date_period_from' => $dateStart->toString(Zend_Date::DATETIME_FULL),
 			'date_period_to'   => $dateEnd->toString(Zend_Date::DATETIME_FULL),
@@ -147,19 +156,27 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			'total_error'      => count($jobs->getItemsByColumnValue('status', 'error')),
 			'list'             => (count($errors) > 0) ? implode('</li><li style="margin:0.8em 0 0.5em;">', $errors) : ''
 		));
+
+		if ($newLocale !== $oldLocale)
+			Mage::getSingleton('core/translate')->setLocale($oldLocale)->init('adminhtml', true);
+	}
+
+	private function formatDate($date, $format = Zend_Date::DATETIME_LONG) {
+		$obj = Mage::getSingleton('core/locale');
+		return str_replace($obj->date($date)->toString(Zend_Date::TIMEZONE), '', $obj->date($date)->toString($format));
 	}
 
 	private function getEmailUrl($url, $params = array()) {
 
 		if (Mage::getStoreConfigFlag('web/seo/use_rewrites'))
-			return preg_replace('#/[^/]+\.php/#', '/', Mage::helper('adminhtml')->getUrl($url, $params));
+			return preg_replace('#/[^/]+\.php[0-9]*/#', '/', Mage::helper('adminhtml')->getUrl($url, $params));
 		else
-			return preg_replace('#/[^/]+\.php/#', '/index.php/', Mage::helper('adminhtml')->getUrl($url, $params));
+			return preg_replace('#/[^/]+\.php([0-9]*)/#', '/index.php$1/', Mage::helper('adminhtml')->getUrl($url, $params));
 	}
 
-	private function sendReportToRecipients($vars) {
+	private function sendReportToRecipients($locale, $vars) {
 
-		$emails = explode(' ', trim(Mage::getStoreConfig('cronlog/email/recipient_email')));
+		$emails = preg_split('#\s#', Mage::getStoreConfig('cronlog/email/recipient_email'));
 		$vars['config'] = $this->getEmailUrl('adminhtml/system/config');
 		$vars['config'] = substr($vars['config'], 0, strrpos($vars['config'], '/system/config'));
 
@@ -169,12 +186,22 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 				continue;
 
 			// sendTransactional($templateId, $sender, $recipient, $name, $vars = array(), $storeId = null)
+			// fait en manuel (identique de Magento 1.4 à 1.9) pour utiliser la locale que l'on veut
+			// car le setLocale utilisé plus haut ne permet pas d'utiliser le template email de la langue choisie
+			$sender = Mage::getStoreConfig('cronlog/email/sender_email_identity');
 			$template = Mage::getModel('core/email_template');
-			$template->sendTransactional(
-				Mage::getStoreConfig('cronlog/email/template'),
-				Mage::getStoreConfig('cronlog/email/sender_email_identity'),
-				trim($email), null, $vars
-			);
+
+			//$template->sendTransactional(
+			//	Mage::getStoreConfig('cronlog/email/template'),
+			//	Mage::getStoreConfig('cronlog/email/sender_email_identity'),
+			//	$email, null, $vars
+			//);
+
+			$template->setSentSuccess(false);
+			$template->loadDefault('cronlog_email_template', $locale);
+			$template->setSenderName(Mage::getStoreConfig('trans_email/ident_'.$sender.'/name'));
+			$template->setSenderEmail(Mage::getStoreConfig('trans_email/ident_'.$sender.'/email'));
+			$template->setSentSuccess($template->send($email, null, $vars));
 
 			if (!$template->getSentSuccess())
 				Mage::throwException($this->__('Can not send the report by email to %s.', $email));

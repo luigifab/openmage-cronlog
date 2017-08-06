@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated M/08/11/2016
+ * Updated M/28/02/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -31,6 +31,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Size extends Mage_Adminhtml_Block_
 
 		$element->setValue(floatval($read->fetchOne($select)));
 
-		return '<span id="'.$element->getHtmlId().'">'.$this->helper('cronlog')->getNumberToHumanSize($element->getValue()).'</span>';
+		return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $this->helper('cronlog')->getNumberToHumanSize($element->getValue()));
 	}
 }

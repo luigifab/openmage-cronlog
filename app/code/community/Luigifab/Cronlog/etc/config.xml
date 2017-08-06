@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated M/08/11/2016
+ * Updated M/04/04/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -20,7 +20,7 @@
 <config>
 	<modules>
 		<Luigifab_Cronlog>
-			<version>3.4.4</version>
+			<version>3.5.0</version>
 		</Luigifab_Cronlog>
 	</modules>
 	<global>
@@ -60,7 +60,7 @@
 			<adminhtml>
 				<args>
 					<modules>
-						<luigifab_cronlog before="Mage_Adminhtml">Luigifab_Cronlog</luigifab_cronlog>
+						<Luigifab_Cronlog before="Mage_Adminhtml">Luigifab_Cronlog</Luigifab_Cronlog>
 					</modules>
 				</args>
 			</adminhtml>
@@ -109,7 +109,7 @@
 				<enabled>0</enabled>
 				<recipient_email>hello@example.org</recipient_email>
 				<sender_email_identity>general</sender_email_identity>
-				<template>cronlog_email_template</template>
+				<!--template>cronlog_email_template</template-->
 			</email>
 		</cronlog>
 	</default>

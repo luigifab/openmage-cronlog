@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/08/11/2016
+ * Updated L/15/05/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -24,12 +24,8 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 	}
 
 	public function indexAction() {
-
 		Mage::getConfig()->reinit(); // très important
-
-		$this->loadLayout();
-		$this->_setActiveMenu('tools/cronlog');
-		$this->renderLayout();
+		$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
 	}
 
 	public function saveAction() {
@@ -37,17 +33,17 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 		$this->setUsedModuleName('Luigifab_Cronlog');
 
 		try {
-			if (($code = $this->getRequest()->getParam('code', false)) === false)
+			if (empty($code = $this->getRequest()->getParam('code')))
 				Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'code'));
 
 			if (is_string(Mage::getStoreConfig('crontab/jobs/'.$code.'/schedule/disabled'))) {
-				$text = $this->__('Job <b>%s</b> has been successfully <b>enabled</b>', $code);
+				$text = $this->__('Job <strong>%s</strong> has been successfully <strong>enabled</strong>', $code);
 				Mage::getModel('core/config')->deleteConfig('crontab/jobs/'.$code.'/schedule/disabled');
 				Mage::log(strip_tags($text), Zend_Log::INFO, 'cronlog.log');
 				$msg = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
 			}
 			else {
-				$text = $this->__('Job <b>%s</b> has been successfully <b>disabled</b>', $code);
+				$text = $this->__('Job <strong>%s</strong> has been successfully <strong>disabled</strong>', $code);
 				Mage::getModel('core/config')->saveConfig('crontab/jobs/'.$code.'/schedule/disabled', '1');
 				Mage::log(strip_tags($text), Zend_Log::INFO, 'cronlog.log');
 				$msg = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
@@ -59,7 +55,7 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 
 		Mage::getConfig()->reinit(); // très important
 
-		$msg = (isset($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
+		$msg = (!empty($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
 		$this->getResponse()->setBody($msg.$this->getLayout()->createBlock('cronlog/adminhtml_config_grid')->toHtml());
 	}
 }

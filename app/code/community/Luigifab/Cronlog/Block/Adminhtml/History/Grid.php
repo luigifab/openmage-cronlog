@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/08/11/2016
+ * Updated J/29/06/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -113,9 +113,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'options'   => array(
 				'pending' => $this->__('Pending'),
 				'running' => $this->__('Running'),
-				'success' => $this->helper('cronlog')->_('Success'),
+				'error'   => $this->helper('cronlog')->_('Error'),
 				'missed'  => $this->__('Missed'),
-				'error'   => $this->helper('cronlog')->_('Error')
+				'success' => $this->helper('cronlog')->_('Success')
 			),
 			'align'     => 'status',
 			'width'     => '125px',
@@ -145,7 +145,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		$read = $resource->getConnection('cronlog_read');
 
 		$codes = $read->fetchAll('SELECT job_code FROM '.$resource->getTableName('cron_schedule').' PROCEDURE ANALYSE();');
-		$codes = (isset($codes[0]['Optimal_fieldtype'])) ?
+		$codes = (!empty($codes[0]['Optimal_fieldtype'])) ?
 			explode(',', str_replace(array('ENUM(', '\'', ') NOT NULL'), '', $codes[0]['Optimal_fieldtype'])) : array();
 
 		$codes = array_combine($codes, $codes);
@@ -157,7 +157,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		if (is_string($filter) || !empty($this->_defaultFilter))
 			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));
 
-		if (Mage::getStoreConfigFlag('cronlog/general/textmode') || (isset($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
+		if (Mage::getStoreConfigFlag('cronlog/general/textmode') || (!empty($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
 
 			$this->addColumnAfter('job_code', array(
 				'header'    => $this->__('Job'),
@@ -174,6 +174,10 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		return parent::_prepareColumns();
 	}
 
+	public function getCount() {
+		return $this->getCollection()->getSize();
+	}
+
 
 	public function getRowClass($row) {
 		return '';
@@ -184,7 +188,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	}
 
 	public function decorateStatus($value, $row, $column, $isExport) {
-		return '<span class="grid-'.$row->getData('status').'">'.$value.'</span>';
+		return sprintf('<span class="grid-%s">%s</span>', $row->getData('status'), $value);
 	}
 
 	public function decorateDuration($value, $row, $column, $isExport) {

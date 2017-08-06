@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/08/11/2016
+ * Updated J/29/06/2017
  *
  * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://redmine.luigifab.info/projects/magento/wiki/cronlog
+ * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -96,6 +96,10 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 		return parent::_prepareColumns();
 	}
 
+	public function getCount() {
+		return $this->getCollection()->getSize();
+	}
+
 
 	public function getRowClass($row) {
 		return ($row->getData('status') === 'disabled') ? 'disabled' : '';
@@ -106,7 +110,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 	}
 
 	public function decorateStatus($value, $row, $column, $isExport) {
-		return '<span class="grid-'.$row->getData('status').'">'.$value.'</span>';
+		return sprintf('<span class="grid-%s">%s</span>', $row->getData('status'), $value);
 	}
 
 	public function decorateLink($value, $row, $column, $isExport) {
@@ -114,6 +118,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
 		$txt = $this->__(($row->getData('status') === 'disabled') ? 'Enable' : 'Disable');
 
-		return (!$row->getData('is_read_only')) ? '<a href="'.$url.'" onclick="new Ajax.Updater($(\'cronlog_grid_rw\').up(), this.href); return false;">'.$txt.'</a>' : '';
+		return (!$row->getData('is_read_only')) ? sprintf('<a href="%s" onclick="new Ajax.Updater($(\'cronlog_grid_rw\').up(), this.href); return false;">%s</a>', $url, $txt) : '';
 	}
 }
