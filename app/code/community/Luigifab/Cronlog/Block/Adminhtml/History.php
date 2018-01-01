@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/28/02/2017
+ * Updated D/10/12/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -26,6 +26,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widg
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
 		$this->_headerText = $this->__('Cron jobs');
+
+		$this->_updateButton('add', 'label', $this->__('Add'));
 
 		$this->_addButton('config', array(
 			'label'   => $this->__('Manage cron jobs'),

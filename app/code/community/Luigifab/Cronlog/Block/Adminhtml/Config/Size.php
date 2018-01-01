@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated M/28/02/2017
+ * Updated M/12/12/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -19,15 +19,21 @@
 
 class Luigifab_Cronlog_Block_Adminhtml_Config_Size extends Mage_Adminhtml_Block_System_Config_Form_Field {
 
+	public function render(Varien_Data_Form_Element_Abstract $element) {
+		$element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
+		return parent::render($element);
+	}
+
 	protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
 
-		$resource = Mage::getSingleton('core/resource');
-		$read = $resource->getConnection('cronlog_read');
+		$database = Mage::getSingleton('core/resource');
+		$read = $database->getConnection('core_read');
+		$conf = $read->getConfig();
 
 		$select = $read->select()
 			->from('information_schema.TABLES', '(data_length + index_length) AS size_bytes')
-			->where('table_schema = ?', Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname'))
-			->where('table_name = ?', $resource->getTableName('cron_schedule'));
+			->where('table_schema = ?', $conf['dbname'])
+			->where('table_name = ?', $database->getTableName('cron_schedule'));
 
 		$element->setValue(floatval($read->fetchOne($select)));
 

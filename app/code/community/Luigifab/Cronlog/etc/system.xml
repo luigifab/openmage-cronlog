@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated W/10/05/2017
+ * Updated W/06/12/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -195,21 +195,21 @@
 						</schedule_lifetime>
 						<history_cleanup_every translate="comment">
 							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
-							<comment><![CDATA[Disabled if you use <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
+							<comment><![CDATA[Disabled when you are using <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
 							<show_in_default>1</show_in_default>
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
 						</history_cleanup_every>
 						<history_success_lifetime translate="comment">
 							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
-							<comment><![CDATA[Disabled if you use <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
+							<comment><![CDATA[Disabled when you are using <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
 							<show_in_default>1</show_in_default>
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
 						</history_success_lifetime>
 						<history_failure_lifetime translate="comment">
 							<frontend_model>cronlog/adminhtml_config_comment</frontend_model>
-							<comment><![CDATA[Disabled if you use <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
+							<comment><![CDATA[Disabled when you are using <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).]]></comment>
 							<show_in_default>1</show_in_default>
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>

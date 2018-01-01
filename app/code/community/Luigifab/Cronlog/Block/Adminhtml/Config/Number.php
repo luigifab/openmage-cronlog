@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated M/28/02/2017
+ * Updated S/16/09/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -19,22 +19,13 @@
 
 class Luigifab_Cronlog_Block_Adminhtml_Config_Number extends Mage_Adminhtml_Block_System_Config_Form_Field {
 
+	public function render(Varien_Data_Form_Element_Abstract $element) {
+		$element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
+		return parent::render($element);
+	}
+
 	protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
-
-		if (true) {
-			$resource = Mage::getSingleton('core/resource');
-			$read = $resource->getConnection('cronlog_read');
-
-			$select = $read->select()
-				->from('information_schema.TABLES', 'table_rows')
-				->where('table_name = ?', $resource->getTableName('cron_schedule'));
-
-			$element->setValue(intval($read->fetchOne($select)));
-
-			return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $this->__('~%d (is very approximate)', $element->getValue()));
-		}
-		else {
-			return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), Mage::getResourceModel('cron/schedule_collection')->getSize());
-		}
+		$element->setValue(Mage::getResourceModel('cron/schedule_collection')->getSize());
+		return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $element->getValue());
 	}
 }

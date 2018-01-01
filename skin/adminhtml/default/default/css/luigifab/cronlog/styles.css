@@ -1,6 +1,6 @@
 /**
- * Created W/29/02/2012, Updated D/16/07/2017
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Created W/29/02/2012, Updated D/29/10/2017
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -13,23 +13,17 @@ body.adminhtml-cronlog-history-view h3.icon-head, body.adminhtml-cronlog-history
 	background:url("../../../images/fam_calendar.gif") no-repeat left center;
 }
 
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/config/index &&& */
 body.adminhtml-cronlog-config-index div.hor-scroll {
 	padding-bottom:0; line-height:1.5em;
 	hyphens:auto; -moz-hyphens:auto; -ms-hyphens:auto; -webkit-hyphens:auto;
 	background-size:100% 48px; background-image:linear-gradient(#FFF 50%, #F6F6F6 50%); background-position:bottom;
 }
 
-body.adminhtml-cronlog-config-index table.data td.a-status span,
-body.adminhtml-cronlog-history-index table.data td.a-status span,
-body.adminhtml-cronlog-history-view div.content li strong span {
-	display:block; height:17px; line-height:17px; text-align:center;
-	font-size:10px; font-weight:700; text-transform:uppercase; color:white; border-radius:10px;
-}
-
-/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/config/index &&& */
 body.adminhtml-cronlog-config-index table.data tr.headings th.no-link { padding:3px 4px 4px; text-align:center; }
 body.adminhtml-cronlog-config-index table.data tr.disabled { color:#999; }
 body.adminhtml-cronlog-config-index table.data tr.readonly { font-style:italic; }
+body.adminhtml-cronlog-config-index table.data tbody { background-color:transparent; }
 
 body.adminhtml-cronlog-config-index table.data td {
 	padding:0 4px; line-height:24px;
@@ -38,20 +32,9 @@ body.adminhtml-cronlog-config-index table.data td {
 	background-image:-ms-linear-gradient(transparent 97%, #DADFE0 1px);
 }
 
-body.adminhtml-cronlog-config-index table.data td.a-status span.grid-enabled  { margin-top:3px; background-color:#3CB861; }
-body.adminhtml-cronlog-config-index table.data td.a-status span.grid-disabled { margin-top:3px; background-color:#E41101; }
-body.adminhtml-cronlog-config-index table.data tbody, body.adminhtml-cronlog-config-index table.data tr.even { background-color:transparent; }
-
 body.adminhtml-cronlog-config-index #messages { position:absolute; top:8.5em; left:50%; margin-left:-25%; width:50%; cursor:pointer; }
 body.adminhtml-cronlog-config-index #messages li[class] { margin:0 !important; }
-body.adminhtml-cronlog-config-index #messages li[class] strong { padding:0 0.3em; font-size:130%; }
-
-/* &&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/history/index &&& */
-body.adminhtml-cronlog-history-index table.data td.a-status span.grid-pending { background-color:#B3B4B3; }
-body.adminhtml-cronlog-history-index table.data td.a-status span.grid-running { background-color:#FF9C00; }
-body.adminhtml-cronlog-history-index table.data td.a-status span.grid-success { background-color:#3CB861; }
-body.adminhtml-cronlog-history-index table.data td.a-status span.grid-missed  { background-color:black; }
-body.adminhtml-cronlog-history-index table.data td.a-status span.grid-error   { background-color:#E41101; }
+body.adminhtml-cronlog-config-index #messages li.success-msg li { font-weight:400 !important; }
 
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&& cronlog/history/view &&& */
 body.adminhtml-cronlog-history-view div.content div { display:table; margin:1.4em auto; width:100%; border-spacing:1em 0; border-collapse:separate; }
@@ -62,13 +45,8 @@ body.adminhtml-cronlog-history-view div.content ul {
 	font-size:13px; border-radius:1em; border:1px solid #DDD; background-color:#EFEFEF; background-clip:padding-box;
 }
 
-body.adminhtml-cronlog-history-view div.content li strong { height:17px; line-height:17px; }
-body.adminhtml-cronlog-history-view div.content li strong span { display:inline-block; margin:0 0.5em; width:13em; vertical-align:top; }
-body.adminhtml-cronlog-history-view div.content li strong.status-pending span { background-color:#B3B4B3; }
-body.adminhtml-cronlog-history-view div.content li strong.status-running span { background-color:#FF9C00; }
-body.adminhtml-cronlog-history-view div.content li strong.status-success span { background-color:#3CB861; }
-body.adminhtml-cronlog-history-view div.content li strong.status-missed span  { background-color:black; }
-body.adminhtml-cronlog-history-view div.content li strong.status-error span   { background-color:#E41101; }
+body.adminhtml-cronlog-history-view div.content li strong { height:17px; line-height:18px; }
+body.adminhtml-cronlog-history-view div.content li strong span { display:inline-block !important; margin:0 0.5em; width:13em; vertical-align:top; }
 
 body.adminhtml-cronlog-history-view div.content pre {
 	display:block; margin:1em auto; padding:1.2em 1.4em; width:calc(100% - 2px - 4.8em); min-height:26em;
@@ -85,7 +63,28 @@ body.adminhtml-cronlog-history-new div.main-col td.value { padding-left:0 !impor
 body.adminhtml-cronlog-history-new div.main-col span.required { display:none; }
 body.adminhtml-cronlog-history-new div.main-col select { width:100%; padding:4px; }
 
-/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& animations &&& */
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&& statut et animations &&& */
+body.adminhtml-cronlog-config-index table.data td.a-status span,
+body.adminhtml-cronlog-history-index table.data td.a-status span,
+body.adminhtml-cronlog-history-view div.content li strong span {
+	display:block; height:17px; line-height:18px; text-align:center;
+	font-size:10px; font-weight:700; text-transform:uppercase; color:white; border-radius:10px;
+}
+
+body.adminhtml-cronlog-config-index table.data td.a-status span.grid-enabled  { margin-top:3px; background-color:#3CB861; }
+body.adminhtml-cronlog-config-index table.data td.a-status span.grid-disabled { margin-top:3px; background-color:#E41101; }
+
+body.adminhtml-cronlog-history-index table.data td.a-status span.grid-pending,
+body.adminhtml-cronlog-history-view div.content      li strong.status-pending span { background-color:#B3B4B3; }
+body.adminhtml-cronlog-history-index table.data td.a-status span.grid-running,
+body.adminhtml-cronlog-history-view div.content      li strong.status-running span { background-color:#FF9C00; }
+body.adminhtml-cronlog-history-index table.data td.a-status span.grid-success,
+body.adminhtml-cronlog-history-view div.content      li strong.status-success span { background-color:#3CB861; }
+body.adminhtml-cronlog-history-index table.data td.a-status span.grid-missed,
+body.adminhtml-cronlog-history-view div.content      li strong.status-missed span  { background-color:black; }
+body.adminhtml-cronlog-history-index table.data td.a-status span.grid-error,
+body.adminhtml-cronlog-history-view div.content      li strong.status-error span   { background-color:#E41101; }
+
 body.adminhtml-cronlog-history-index table.data td.a-status span.grid-error,
 body.adminhtml-cronlog-history-index table.data td.a-status span.grid-missed,
 body.adminhtml-cronlog-history-view div.content li strong.status-missed span,

@@ -1,16 +1,16 @@
-<!--@subject Rapport des tâches cron@-->
+<!--@subject Rapport des tâches cron @-->
 <!--@vars {
-"var frequency":"Fréquence du rapport",
-"var date_period_from":"Date de début du rapport",
-"var date_period_to":"Date de fin du rapport",
-"var total_cron":"Nombre de tâches",
-"var total_pending":"Nombre de tâches en attente",
-"var total_running":"Nombre de tâches en cours",
-"var total_error":"Nombre de tâches en erreur",
-"var total_missed":"Nombre de tâches manquées",
-"var total_success":"Nombre de tâches terminées",
-"var list":"Liste des tâches en erreur",
-"var config":"Adresse de configuration"
+"var frequency":"Report frequency",
+"var date_period_from":"Beginning date of the report",
+"var date_period_to":"Ending date of the report",
+"var total_cron":"Number of jobs",
+"var total_pending":"Number of pending jobs",
+"var total_running":"Number of running jobs",
+"var total_error":"Number of jobs on error",
+"var total_missed":"Number of missed jobs",
+"var total_success":"Number of successful jobs",
+"var list":"List of jobs on error",
+"var config":"Configuration address"
 }@-->
 
 <div style="margin:1em; font-size:12px; line-height:16px;" lang="fr">
@@ -18,11 +18,11 @@
 	<br />Période du <strong>{{var date_period_from}}</strong> au <strong>{{var date_period_to}}</strong>.</p>
 
 	<p>Sur les <strong>{{var total_cron}}</strong> tâches prévues :
-	<br /><span style="color:#6F6F6F;">➩ Tâche(s) en attente : {{var total_pending}}</span>
-	<br /><span style="color:orange;">➩ Tâche(s) en cours : {{var total_running}}</span>
-	<br /><span style="color:red;">➩ Tâche(s) en erreur : {{var total_error}}</span>
-	<br /><span style="color:black;">➩ Tâche(s) manquée(s) : {{var total_missed}}</span>
-	<br /><span style="color:green;">➩ Tâche(s) terminée(s) : {{var total_success}}</span></p>
+	<br /><span style="color:#6F6F6F;">➤ Tâche(s) en attente : {{var total_pending}}</span>
+	<br /><span style="color:orange;">➤ Tâche(s) en cours : {{var total_running}}</span>
+	<br /><span style="color:red;">➤ Tâche(s) en erreur : {{var total_error}}</span>
+	<br /><span style="color:black;">➤ Tâche(s) manquée(s) : {{var total_missed}}</span>
+	<br /><span style="color:green;">➤ Tâche(s) terminée(s) : {{var total_success}}</span></p>
 
 	{{depend list}}
 		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; line-height:1.3em;list-style:none; border-top:1px dashed #777;">

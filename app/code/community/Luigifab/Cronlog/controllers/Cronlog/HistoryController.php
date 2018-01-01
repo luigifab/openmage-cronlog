@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated L/15/05/2017
+ * Updated J/14/12/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -23,7 +23,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 		$result = parent::_validateSecretKey();
 
-		if (Mage::getSingleton('admin/session')->isLoggedIn() && ($this->getFullActionName() === 'adminhtml_cronlog_history_view') && !$result) {
+		if (Mage::getSingleton('admin/session')->isLoggedIn() && ($this->getFullActionName() == 'adminhtml_cronlog_history_view') && !$result) {
 			$this->getRequest()->setParam(Mage_Adminhtml_Model_Url::SECRET_KEY_PARAM_NAME, Mage::getSingleton('adminhtml/url')->getSecretKey());
 			$result = parent::_validateSecretKey();
 		}
@@ -37,14 +37,13 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 	public function indexAction() {
 
-		if (!empty($this->getRequest()->getParam('isAjax')))
+		if ($this->getRequest()->isXmlHttpRequest() || !empty($this->getRequest()->getParam('isAjax')))
 			$this->getResponse()->setBody($this->getLayout()->createBlock('cronlog/adminhtml_history_grid')->toHtml());
 		else
 			$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
 	}
 
 	public function newAction() {
-		Mage::getConfig()->reinit(); // très important
 		$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
 	}
 

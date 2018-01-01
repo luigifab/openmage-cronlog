@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/29/06/2017
+ * Updated M/12/12/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -140,12 +140,13 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		));
 
 		// recherche des codes
-		// efficacité maximale avec la PROCEDURE ANALYSE de MySQL
-		$resource = Mage::getSingleton('core/resource');
-		$read = $resource->getConnection('cronlog_read');
+		// efficacité maximale avec la PROCEDURE ANALYSE de MySQL/MariaDB
+		$database = Mage::getSingleton('core/resource');
+		$read  = $database->getConnection('core_read');
+		$table = $database->getTableName('cron_schedule');
 
-		$codes = $read->fetchAll('SELECT job_code FROM '.$resource->getTableName('cron_schedule').' PROCEDURE ANALYSE();');
-		$codes = (!empty($codes[0]['Optimal_fieldtype'])) ?
+		$codes = $read->fetchAll('SELECT job_code FROM '.$table.' PROCEDURE ANALYSE();');
+		$codes = (!empty($codes[0]['Optimal_fieldtype']) && (stripos($codes[0]['Optimal_fieldtype'], 'ENUM(') !== false)) ?
 			explode(',', str_replace(array('ENUM(', '\'', ') NOT NULL'), '', $codes[0]['Optimal_fieldtype'])) : array();
 
 		$codes = array_combine($codes, $codes);
@@ -158,11 +159,10 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));
 
 		if (Mage::getStoreConfigFlag('cronlog/general/textmode') || (!empty($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
-
+			// remplace la colonne existante
 			$this->addColumnAfter('job_code', array(
 				'header'    => $this->__('Job'),
 				'index'     => 'job_code',
-				//'type'    => 'options',
 				'align'     => 'center',
 				'frame_callback' => array($this, 'decorateCode')
 			), 'schedule_id');
@@ -172,10 +172,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		}
 
 		return parent::_prepareColumns();
-	}
-
-	public function getCount() {
-		return $this->getCollection()->getSize();
 	}
 
 

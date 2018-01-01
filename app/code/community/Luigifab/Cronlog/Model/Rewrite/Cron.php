@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/28/02/2017
+ * Updated S/11/11/2017
  *
- * Copyright 2012-2017 | Fabrice Creuzot (luigifab) <code~luigifab~info>
+ * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -38,9 +38,8 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 			// (config.xml/configuration : attention la configuration n'est pas fusionnée)
 			// - config.xml, Mage::getConfig()->getNode('crontab/jobs[/../schedule/disabled]')
 			// - configuration, Mage::getConfig()->getNode('default/crontab/jobs[/../schedule/disabled]')
-			// is_string et non !empty car : Cannot use !empty() on the result of a function call (you can use "null !== func()" instead)
 			if (!$cronExpr || !empty($jobConfig->schedule->disabled) ||
-			    is_string(Mage::getStoreConfig('crontab/jobs/'.$jobCode.'/schedule/disabled')))
+			    !empty(Mage::getStoreConfig('crontab/jobs/'.$jobCode.'/schedule/disabled')))
 				continue;
 
 			$now = time();
