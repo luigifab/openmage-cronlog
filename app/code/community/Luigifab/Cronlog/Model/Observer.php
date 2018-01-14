@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated J/07/12/2017
+ * Updated J/04/01/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -48,19 +48,11 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 				$config->save();
 
 				// email de test
-				// s'il n'a pas déjà été envoyé dans la dernière heure (3600 secondes)
-				// ou si le cookie maillog_print_email est présent, et ce, quoi qu'il arrive
+				// si demandé ou si le cookie maillog_print_email est présent
 				$cookie = (Mage::getSingleton('core/cookie')->get('maillog_print_email') == 'yes') ? true : false;
-				$lastSent  = Mage::getSingleton('admin/session')->getData('last_cronlog_report');
-				$timestamp = Mage::getSingleton('core/date')->timestamp();
 
-				if (empty($lastSent) || ($timestamp > ($lastSent + 3600)) || $cookie) {
+				if (!empty(Mage::app()->getRequest()->getPost('cronlog_test_email')) || $cookie)
 					$this->sendEmailReport();
-					Mage::getSingleton('admin/session')->setData('last_cronlog_report', $timestamp);
-				}
-				else {
-					Mage::log(sprintf('Not sending test report because timestamp:%s > lastSent:%s +1h = false', date('H\hi', $timestamp), date('H\hi', $lastSent)), Zend_Log::DEBUG, 'cronlog.log');
-				}
 			}
 			else {
 				$config->delete();
