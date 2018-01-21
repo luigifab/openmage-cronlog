@@ -8,7 +8,7 @@
 "Table size","Taille de la table"
 "Email reports","Rapports par email"
 "Separate addresses by a space.","Séparer les adresses par un espace."
-"Send a test email","Envoyer un email de test"
+"Send a test","Envoyer un test"
 "Disabled when you are using <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).","Désactivé lorsque vous utilisez la durée de vie du module <strong lang=""en"">cronlog</strong> (voir {{Tâches cron &gt; Durée de vie}})."
 "Cron jobs / Tools / Magento Admin","Tâches cron / Outils / Admin Magento"
 "Manage cron jobs","Gérer les tâches cron"
