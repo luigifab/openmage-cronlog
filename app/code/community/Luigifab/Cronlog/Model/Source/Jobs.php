@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated J/14/12/2017
+ * Updated S/03/03/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -95,23 +95,21 @@ class Luigifab_Cronlog_Model_Source_Jobs extends Varien_Data_Collection {
 
 	private function getRecentOptionArray() {
 
-		$jobs = Mage::getResourceModel('cron/schedule_collection');
-		$jobs->setOrder('executed_at', 'desc');
-		$jobs->setPageSize(500);
-
 		$data = array();
 		$date = Mage::getSingleton('core/locale'); //date($date, $format, $locale null, $useTimezone null)
+		$jobs = Mage::getResourceModel('cron/schedule_collection')->setOrder('executed_at', 'desc')->setPageSize(500);
 
 		foreach ($jobs as $job) {
 
-			if (empty($data[$job->getData('job_code')]))
-				$data[$job->getData('job_code')] = array(
-					'value' => $job->getData('job_code'),
-					'label' => $date->date($job->getData('scheduled_at'), Zend_Date::ISO_8601, null, true).' / '.$job->getData('job_code')
-				);
-
-			if (count($data) > 9)
+			if (!empty($data[$job->getData('job_code')]))
+				continue;
+			if (count($data) > 10)
 				break;
+
+			$data[$job->getData('job_code')] = array(
+				'value' => $job->getData('job_code'),
+				'label' => $date->date($job->getData('scheduled_at'), Zend_Date::ISO_8601, null, true).' / '.$job->getData('job_code')
+			);
 		}
 
 		return $data;

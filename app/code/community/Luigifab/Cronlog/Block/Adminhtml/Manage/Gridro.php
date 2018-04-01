@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/11/11/2017
+ * Updated M/27/02/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -17,13 +17,13 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Block_Widget_Grid {
 
 	public function __construct() {
 
 		parent::__construct();
 
-		$this->setId('cronlog_grid_rw');
+		$this->setId('cronlog_grid_ro');
 
 		$this->setUseAjax(true);
 		$this->setSaveParametersInSession(false);
@@ -32,7 +32,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 	}
 
 	protected function _prepareCollection() {
-		$this->setCollection(Mage::getModel('cronlog/source_jobs')->getCollection('rw'));
+		$this->setCollection(Mage::getModel('cronlog/source_jobs')->getCollection('ro'));
 		return parent::_prepareCollection();
 	}
 
@@ -46,7 +46,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 		));
 
 		$this->addColumn('job_code', array(
-			'header'    => $this->__('Editable job'),
+			'header'    => $this->__('Read-only job'),
 			'index'     => 'job_code',
 			'width'     => '30%',
 			'filter'    => false,
@@ -76,7 +76,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 				'enabled'  => $this->helper('cronlog')->_('Enabled'),
 				'disabled' => $this->helper('cronlog')->_('Disabled')
 			),
-			'align'     => 'status',
 			'width'     => '120px',
 			'filter'    => false,
 			'sortable'  => false,
@@ -89,8 +88,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 			'width'     => '85px',
 			'filter'    => false,
 			'sortable'  => false,
-			'is_system' => true,
-			'frame_callback' => array($this, 'decorateLink')
+			'is_system' => true
 		));
 
 		return parent::_prepareColumns();
@@ -98,7 +96,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 
 
 	public function getRowClass($row) {
-		return ($row->getData('status') == 'disabled') ? 'disabled' : '';
+		return ($row->getData('status') == 'disabled') ? 'readonly disabled' : 'readonly';
 	}
 
 	public function getRowUrl($row) {
@@ -113,15 +111,8 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Grid extends Mage_Adminhtml_Block_
 		return Mage::getBlockSingleton('core/template');
 	}
 
+
 	public function decorateStatus($value, $row, $column, $isExport) {
-		return sprintf('<span class="grid-%s">%s</span>', $row->getData('status'), $value);
-	}
-
-	public function decorateLink($value, $row, $column, $isExport) {
-
-		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
-		$txt = $this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable');
-
-		return (!$row->getData('is_read_only')) ? sprintf('<a href="%s" onclick="new Ajax.Updater($(\'cronlog_grid_rw_table\').up().up().up(), this.href); return false;">%s</a>', $url, $txt) : '';
+		return sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
 	}
 }

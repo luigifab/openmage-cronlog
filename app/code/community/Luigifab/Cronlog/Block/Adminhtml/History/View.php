@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/07/12/2017
+ * Updated D/18/03/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -52,8 +52,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$help   = $this->helper('cronlog');
 		$object = Mage::registry('current_job');
+		$class  = 'class="cronlog-status grid-'.$object->getData('status').'"';
+		$help   = $this->helper('cronlog');
 
 		// status
 		if (in_array($object->getData('status'), array('success', 'error')))
@@ -62,7 +63,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 			$status = $this->__(ucfirst($object->getData('status')));
 
 		// html
-		$html = array();
+		$html   = array();
 		$html[] = '<div class="content">';
 		$html[] = '<div>';
 		$html[] = '<ul>';
@@ -88,11 +89,11 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		$html[] = '</ul>';
 		$html[] = '<ul>';
-		$html[] = '<li><strong class="status-'.$object->getData('status').'">'.$this->__('Status: <span>%s</span>', $status).'</strong></li>';
+		$html[] = '<li><strong>'.$this->__('Status: <span %s>%s</span>', $class, $status).'</strong></li>';
 		$html[] = '<li>'.$this->__('Code: %s', $object->getData('job_code')).'</li>';
 		$html[] = '</ul>';
 		$html[] = '</div>';
-		$html[] = '<pre lang="mul">'.$object->getMessages().'</pre>';
+		$html[] = '<pre lang="mul">'.htmlspecialchars($object->getMessages()).'</pre>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);

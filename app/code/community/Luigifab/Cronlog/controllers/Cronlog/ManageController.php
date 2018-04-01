@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated J/14/12/2017
+ * Updated M/27/02/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -17,7 +17,7 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controller_Action {
+class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controller_Action {
 
 	protected function _isAllowed() {
 		return Mage::getSingleton('admin/session')->isAllowed('tools/cronlog');
@@ -37,23 +37,23 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 
 			if (is_string(Mage::getStoreConfig('crontab/jobs/'.$code.'/schedule/disabled'))) {
 
-				$text = $this->__('Job <strong>%s</strong> has been successfully <strong>enabled</strong>.', $code);
-				$msg  = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
+				$txt = $this->__('Job <strong>%s</strong> has been successfully <strong>enabled</strong>.', $code);
+				$msg = '<li class="success-msg"><ul><li>'.$txt.'</li></ul></li>';
 
 				Mage::getModel('core/config')->deleteConfig('crontab/jobs/'.$code.'/schedule/disabled');
-				Mage::log(strip_tags($text), Zend_Log::INFO, 'cronlog.log');
+				Mage::log(strip_tags($txt), Zend_Log::INFO, 'cronlog.log');
 			}
 			else {
-				$text = $this->__('Job <strong>%s</strong> has been successfully <strong>disabled</strong>.', $code);
-				$msg  = '<li class="success-msg"><ul><li>'.$text.'</li></ul></li>';
+				$txt = $this->__('Job <strong>%s</strong> has been successfully <strong>disabled</strong>.', $code);
+				$msg = '<li class="success-msg"><ul><li>'.$txt.'</li></ul></li>';
 
 				Mage::getModel('core/config')->saveConfig('crontab/jobs/'.$code.'/schedule/disabled', '1');
-				Mage::log(strip_tags($text), Zend_Log::INFO, 'cronlog.log');
+				Mage::log(strip_tags($txt), Zend_Log::INFO, 'cronlog.log');
 
-				$jobs = Mage::getResourceModel('cron/schedule_collection')
-					->addFieldToFilter('job_code', $code)
-					->addFieldToFilter('status', 'pending');
-				Mage::log(sprintf('... and delete %d pending job(s)', $jobs->getSize()), Zend_Log::INFO, 'cronlog.log');
+				$jobs = Mage::getResourceModel('cron/schedule_collection');
+				$jobs->addFieldToFilter('job_code', $code);
+				$jobs->addFieldToFilter('status', 'pending');
+
 				foreach ($jobs as $job)
 					$job->delete();
 			}
@@ -64,9 +64,9 @@ class Luigifab_Cronlog_Cronlog_ConfigController extends Mage_Adminhtml_Controlle
 
 		Mage::getConfig()->reinit(); // très important
 
-		$msg  = (!empty($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
-		$html = $this->getLayout()->createBlock('cronlog/adminhtml_config_grid')->toHtml();
+		$msg = (!empty($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
+		$blk = $this->getLayout()->createBlock('cronlog/adminhtml_manage_grid')->toHtml();
 
-		$this->getResponse()->setBody($msg.$html);
+		$this->getResponse()->setBody($msg.$blk);
 	}
 }

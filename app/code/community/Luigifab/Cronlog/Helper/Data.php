@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/28/02/2017
+ * Updated S/24/02/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -27,6 +27,28 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		return (strpos($txt = $this->__(' '.$data, $a, $b), ' ') === 0) ? $this->__($data, $a, $b) : $txt;
 	}
 
+	public function getHumanDuration($row) {
+
+		if (!in_array($row->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
+		    !in_array($row->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
+
+			$data = strtotime($row->getData('finished_at')) - strtotime($row->getData('executed_at'));
+			$minutes = intval($data / 60);
+			$seconds = intval($data % 60);
+
+			if ($data > 599)
+				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
+			else if ($data > 59)
+				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
+			else if ($data > 1)
+				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
+			else
+				$data = '⩽ 1';
+
+			return $data;
+		}
+	}
+
 	public function getNumberToHumanSize($number) {
 
 		if ($number < 1) {
@@ -46,28 +68,6 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 			$size = $number / 1024 / 1024 / 1024;
 			$size = Zend_Locale_Format::toNumber($size, array('precision' => 2));
 			return $this->__('%s GB', str_replace(array('.00',',00'), '', $size));
-		}
-	}
-
-	public function getHumanDuration($job) {
-
-		if (!in_array($job->getData('executed_at'), array('', '0000-00-00 00:00:00', null)) &&
-		    !in_array($job->getData('finished_at'), array('', '0000-00-00 00:00:00', null))) {
-
-			$data = strtotime($job->getData('finished_at')) - strtotime($job->getData('executed_at'));
-			$minutes = intval($data / 60);
-			$seconds = intval($data % 60);
-
-			if ($data > 599)
-				$data = '<strong>'.(($seconds > 9) ? $minutes.':'.$seconds : $minutes.':0'.$seconds).'</strong>';
-			else if ($data > 59)
-				$data = '<strong>'.(($seconds > 9) ? '0'.$minutes.':'.$seconds : '0'.$minutes.':0'.$seconds).'</strong>';
-			else if ($data > 1)
-				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
-			else
-				$data = '⩽ 1';
-
-			return $data;
 		}
 	}
 }

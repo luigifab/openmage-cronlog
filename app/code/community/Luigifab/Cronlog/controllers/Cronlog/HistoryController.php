@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/14/12/2017
+ * Updated M/27/02/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -45,11 +45,12 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 	public function newAction() {
 		$this->loadLayout()->_setActiveMenu('tools/cronlog')->renderLayout();
+		Mage::getSingleton('adminhtml/session')->unsFormData();
 	}
 
 	public function viewAction() {
 
-		$job = Mage::getModel('cron/schedule')->load(intval($this->getRequest()->getParam('id', 0)));
+		$job = Mage::getModel('cron/schedule')->load(intval($this->getRequest()->getParam('id')));
 
 		if (!empty($job->getId())) {
 			Mage::register('current_job', $job);

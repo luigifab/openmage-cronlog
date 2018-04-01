@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/12/12/2017
+ * Updated S/17/03/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -117,7 +117,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'missed'  => $this->__('Missed'),
 				'success' => $this->helper('cronlog')->_('Success')
 			),
-			'align'     => 'status',
 			'width'     => '125px',
 			'frame_callback' => array($this, 'decorateStatus')
 		));
@@ -142,10 +141,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		// recherche des codes
 		// efficacité maximale avec la PROCEDURE ANALYSE de MySQL/MariaDB
 		$database = Mage::getSingleton('core/resource');
-		$read  = $database->getConnection('core_read');
 		$table = $database->getTableName('cron_schedule');
 
-		$codes = $read->fetchAll('SELECT job_code FROM '.$table.' PROCEDURE ANALYSE();');
+		$codes = $database->getConnection('core_read')->fetchAll('SELECT job_code FROM '.$table.' PROCEDURE ANALYSE()');
 		$codes = (!empty($codes[0]['Optimal_fieldtype']) && (stripos($codes[0]['Optimal_fieldtype'], 'ENUM(') !== false)) ?
 			explode(',', str_replace(array('ENUM(', '\'', ') NOT NULL'), '', $codes[0]['Optimal_fieldtype'])) : array();
 
@@ -183,8 +181,9 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		return $this->getUrl('*/*/view', array('id' => $row->getId()));
 	}
 
+
 	public function decorateStatus($value, $row, $column, $isExport) {
-		return sprintf('<span class="grid-%s">%s</span>', $row->getData('status'), $value);
+		return sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
 	}
 
 	public function decorateDuration($value, $row, $column, $isExport) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated J/04/01/2018
+ * Updated S/10/03/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -48,10 +48,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 				$config->save();
 
 				// email de test
-				// si demandé ou si le cookie maillog_print_email est présent
-				$cookie = (Mage::getSingleton('core/cookie')->get('maillog_print_email') == 'yes') ? true : false;
-
-				if (!empty(Mage::app()->getRequest()->getPost('cronlog_test_email')) || $cookie)
+				if (!empty(Mage::app()->getRequest()->getPost('cronlog_test_email')))
 					$this->sendEmailReport();
 			}
 			else {
@@ -92,13 +89,8 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 		if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY) {
 			$frequency = $this->_('monthly');
-			$dateStart->subMonth(1)->setDay(1);
-			$dateEnd->subMonth(1)->setDay(1);
-			$dateEnd->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
-			// évite une connerie du genre (lorsque le mail est envoyé le 1er mars à 1hxx)
-			// Période du dimanche 1 mars 2015 00:00:00 Europe/Paris au samedi 28 février 2015 23:59:59 Europe/Paris
-			if ($dateStart->toString(Zend_Date::MONTH_SHORT) != $dateEnd->toString(Zend_Date::MONTH_SHORT))
-				$dateStart->setMonth($dateEnd->getMonth())->setDay(1);
+			$dateEnd->subMonth(1)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
+			$dateStart->setMonth($dateEnd->getMonth())->setDay(1);
 		}
 		else if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
 			$frequency = $this->_('weekly');
@@ -126,7 +118,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 			$link = '<a href="'.$this->getEmailUrl('adminhtml/cronlog_history/view', array('id' => $job->getId())).'" style="font-weight:700; color:red; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getData('job_code')).'</a>';
 
-			$hour  = $this->_('Scheduled At: %s', $this->formatDate($job->getData('scheduled_at')));
+			$hour = $this->_('Scheduled At: %s', $this->formatDate($job->getData('scheduled_at')));
 			$state = $this->__('Status: %s (%s)', $this->__(ucfirst($job->getData('status'))), $job->getData('status'));
 			$error = '<pre lang="mul" style="margin:0.5em; font-size:0.9em; color:#767676; white-space:pre-wrap;">'.$job->getMessages().'</pre>';
 

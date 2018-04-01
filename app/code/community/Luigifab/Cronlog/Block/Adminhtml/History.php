@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/10/12/2017
+ * Updated M/20/02/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -31,7 +31,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widg
 
 		$this->_addButton('config', array(
 			'label'   => $this->__('Manage cron jobs'),
-			'onclick' => "setLocation('".$this->getUrl('*/cronlog_config/index')."');",
+			'onclick' => "setLocation('".$this->getUrl('*/cronlog_manage/index')."');",
 			'class'   => 'go'
 		));
 	}

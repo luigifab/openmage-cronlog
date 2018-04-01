@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/28/02/2017
+ * Updated M/20/02/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -17,13 +17,13 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_Config extends Mage_Adminhtml_Block_Widget_Grid_Container {
+class Luigifab_Cronlog_Block_Adminhtml_Manage extends Mage_Adminhtml_Block_Widget_Grid_Container {
 
 	public function __construct() {
 
 		parent::__construct();
 
-		$this->_controller = 'adminhtml_config';
+		$this->_controller = 'adminhtml_manage';
 		$this->_blockGroup = 'cronlog';
 		$this->_headerText = $this->__('Manage cron jobs');
 
