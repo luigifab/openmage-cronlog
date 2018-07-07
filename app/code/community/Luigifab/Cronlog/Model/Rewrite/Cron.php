@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/11/11/2017
+ * Updated S/28/04/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -69,25 +69,24 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 
 	public function cleanup() {
 
-		$lifetime = intval(Mage::getStoreConfig('cronlog/general/lifetime'));
-		if ($lifetime < 7200) // 5 jours
+		$val = intval(Mage::getStoreConfig('cronlog/general/lifetime'));
+		if ($val < 7200) // 5 jours
 			return parent::cleanup();
 
-		// check every 24 hours (1440 minutes) if history cleanup is needed
-		// pour success conserve $lifetime, et pour les autres conserve 3 x $lifetime
+		// check every 24 hours if history cleanup is needed
 		if (Mage::app()->loadCache(self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT) > (time() - 1440 * 60))
 			return $this;
 
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
 		$jobs->addFieldToFilter('status', array('eq' => 'success'));
-		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.$lifetime.' MINUTE)')));
+		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.$val.' MINUTE)')));
 
 		foreach ($jobs as $job)
 			$job->delete();
 
 		$jobs = Mage::getResourceModel('cron/schedule_collection');
 		$jobs->addFieldToFilter('status', array('neq' => 'success'));
-		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.(3 * $lifetime).' MINUTE)')));
+		$jobs->addFieldToFilter('scheduled_at', array('lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.(3 * $val).' MINUTE)')));
 
 		foreach ($jobs as $job)
 			$job->delete();

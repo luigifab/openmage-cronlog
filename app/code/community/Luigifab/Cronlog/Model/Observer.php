@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated S/10/03/2018
+ * Updated M/26/06/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -90,7 +90,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY) {
 			$frequency = $this->_('monthly');
 			$dateEnd->subMonth(1)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
-			$dateStart->setMonth($dateEnd->getMonth())->setDay(1);
+			$dateStart->subMonth(1)->setMonth($dateEnd->getMonth())->setDay(1);
 		}
 		else if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
 			$frequency = $this->_('weekly');
@@ -136,7 +136,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			'total_success'    => count($jobs->getItemsByColumnValue('status', 'success')),
 			'total_missed'     => count($jobs->getItemsByColumnValue('status', 'missed')),
 			'total_error'      => count($jobs->getItemsByColumnValue('status', 'error')),
-			'list'             => (count($errors) > 0) ? implode('</li><li style="margin:0.8em 0 0.5em;">', $errors) : ''
+			'list'             => (!empty($errors)) ? implode('</li><li style="margin:0.8em 0 0.5em;">', $errors) : ''
 		));
 
 		if ($newLocale != $oldLocale)

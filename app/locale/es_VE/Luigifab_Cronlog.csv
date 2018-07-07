@@ -48,8 +48,6 @@
 " monthly","mensual"
 " weekly","semanal"
 " daily","diario"
-"Recent jobs","Tareas recientes"
-"All jobs","Todas las tareas"
 "%d days","%d días"
 "%d days (%d weeks)","%d días (%d semanas)"
 "%d days (%d month)","%d días (%d mes)"

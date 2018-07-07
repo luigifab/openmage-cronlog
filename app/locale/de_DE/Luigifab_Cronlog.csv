@@ -48,8 +48,6 @@
 " monthly","Monatlich"
 " weekly","Wöchentlich"
 " daily","Täglich"
-"Recent jobs","Kürzliche Tasks"
-"All jobs","Alle Tasks"
 "%d days","%d Tage"
 "%d days (%d weeks)","%d Tage (%d Wochen)"
 "%d days (%d month)","%d Tage (%d Monat)"

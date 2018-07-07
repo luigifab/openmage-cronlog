@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/18/03/2018
+ * Updated D/29/04/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -43,7 +43,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 			'onclick' => "deleteConfirm('".addslashes($this->__('Are you sure?'))."', '".$this->getUrl('*/*/delete', $params)."');",
 			'class'   => 'delete'
 		));
-		$this->_addButton('action', array(
+
+		$this->_addButton('restart', array(
 			'label'   => $this->__('Restart the job'),
 			'onclick' => "setLocation('".$this->getUrl('*/*/new', array('id' => $object->getId(), 'code' => $object->getData('job_code')))."');",
 			'class'   => 'add'

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/22/08/2015
- * Updated D/18/02/2018
+ * Updated J/29/03/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -31,7 +31,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Comment extends Mage_Adminhtml_Blo
 			$html = str_replace('{{', '<a href="'.$this->getUrl('*/*/edit', array('section' => 'cronlog')).'">', $html);
 			$html = str_replace('}}', '</a>', $html);
 
-			if (intval(Mage::getStoreConfig('cronlog/general/lifetime')) > 0)
+			if (!empty(Mage::getStoreConfig('cronlog/general/lifetime')))
 				$html = str_replace('<input', '<input disabled="disabled" ', $html);
 		}
 
