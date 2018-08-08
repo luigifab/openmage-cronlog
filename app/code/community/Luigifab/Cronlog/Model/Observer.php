@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated M/26/06/2018
+ * Updated S/21/07/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -158,7 +158,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 	private function sendReportToRecipients($locale, $vars) {
 
-		$emails = preg_split('#\s#', Mage::getStoreConfig('cronlog/email/recipient_email'));
+		$emails = array_filter(preg_split('#\s+#', Mage::getStoreConfig('cronlog/email/recipient_email')));
 		$vars['config'] = $this->getEmailUrl('adminhtml/system/config');
 		$vars['config'] = substr($vars['config'], 0, strrpos($vars['config'], '/system/config'));
 

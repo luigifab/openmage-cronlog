@@ -11,6 +11,8 @@
 "Send a test","Envoyer un test"
 "Disabled when you are using <strong>cronlog</strong> module lifetime (see {{Cron jobs &gt; Lifetime}}).","Désactivé lorsque vous utilisez la durée de vie du module <strong lang=""en"">cronlog</strong> (voir {{Tâches cron &gt; Durée de vie}})."
 "Cron jobs / Tools / Magento Admin","Tâches cron / Outils / Admin Magento"
+"INCOMPLETE MODULE INSTALLATION","INSTALLATION INCOMPLÈTE DU MODULE"
+"There is conflict (<em>%s</em>).","Il y a un conflit (<em lang=""en"">%s</em>)."
 "Manage cron jobs","Gérer les tâches cron"
 "New cron job","Nouvelle tâche cron"
 "Job","Tâche"

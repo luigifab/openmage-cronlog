@@ -1,7 +1,7 @@
 <?php
 /**
  * Created V/23/05/2014
- * Updated M/22/05/2018
+ * Updated J/26/07/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -20,7 +20,42 @@
 class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_Abstract implements Varien_Data_Form_Element_Renderer_Interface {
 
 	public function render(Varien_Data_Form_Element_Abstract $element) {
-		return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>',
-			$this->helper('cronlog')->getVersion(), 'luigifab.info/magento/cronlog');
+
+		if (($msg = $this->checkRewrites()) === true) {
+			return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>',
+				$this->helper('cronlog')->getVersion(), 'luigifab.info/magento/cronlog');
+		}
+		else {
+			return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>'.
+				'<p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
+				$this->helper('cronlog')->getVersion(), 'luigifab.info/magento/cronlog',
+				$this->__('INCOMPLETE MODULE INSTALLATION'),
+				$this->__('There is conflict (<em>%s</em>).', $msg));
+		}
+	}
+
+	private function checkRewrites() {
+
+		$rewrites = array(
+			array('model', 'cron/observer'),
+			array('model', 'cron/schedule')
+		);
+
+		foreach ($rewrites as $rewrite) {
+			if ($rewrite[0] == 'model') {
+				if (!method_exists(Mage::getModel($rewrite[1]), 'specialCheckRewrite'))
+					return $rewrite[1];
+			}
+			else if ($rewrite[0] == 'resource') {
+				if (!method_exists(Mage::getResourceModel($rewrite[1]), 'specialCheckRewrite'))
+					return $rewrite[1];
+			}
+			else if ($rewrite[0] == 'block') {
+				if (!method_exists(Mage::getBlockSingleton($rewrite[1]), 'specialCheckRewrite'))
+					return $rewrite[1];
+			}
+		}
+
+		return true;
 	}
 }

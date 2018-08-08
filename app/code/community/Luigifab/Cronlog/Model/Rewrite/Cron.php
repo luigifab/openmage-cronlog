@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/28/04/2018
+ * Updated L/16/07/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -93,5 +93,9 @@ class Luigifab_Cronlog_Model_Rewrite_Cron extends Mage_Cron_Model_Observer {
 
 		Mage::app()->saveCache(time(), self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT, array('crontab'), null);
 		return $this;
+	}
+
+	public function specialCheckRewrite() {
+		return true;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/16/05/2015
- * Updated M/28/02/2017
+ * Updated L/16/07/2018
  *
  * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
  * https://www.luigifab.info/magento/cronlog
@@ -25,5 +25,9 @@ class Luigifab_Cronlog_Model_Rewrite_Schedule extends Mage_Cron_Model_Schedule {
 		$this->setData('status', Mage_Cron_Model_Schedule::STATUS_RUNNING);
 
 		return $this;
+	}
+
+	public function specialCheckRewrite() {
+		return true;
 	}
 }
