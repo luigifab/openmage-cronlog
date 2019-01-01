@@ -3,8 +3,8 @@
  * Created S/31/05/2014
  * Updated L/16/07/2018
  *
- * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://www.luigifab.info/magento/cronlog
+ * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published

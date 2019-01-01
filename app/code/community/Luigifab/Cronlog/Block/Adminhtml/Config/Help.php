@@ -3,8 +3,8 @@
  * Created V/23/05/2014
  * Updated J/26/07/2018
  *
- * Copyright 2012-2018 | Fabrice Creuzot (luigifab) <code~luigifab~info>
- * https://www.luigifab.info/magento/cronlog
+ * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -23,12 +23,12 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_
 
 		if (($msg = $this->checkRewrites()) === true) {
 			return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>',
-				$this->helper('cronlog')->getVersion(), 'luigifab.info/magento/cronlog');
+				$this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog');
 		}
 		else {
 			return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>'.
 				'<p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
-				$this->helper('cronlog')->getVersion(), 'luigifab.info/magento/cronlog',
+				$this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog',
 				$this->__('INCOMPLETE MODULE INSTALLATION'),
 				$this->__('There is conflict (<em>%s</em>).', $msg));
 		}
