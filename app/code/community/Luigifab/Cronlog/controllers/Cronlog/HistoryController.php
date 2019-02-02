@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/27/02/2018
+ * Updated L/14/01/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -23,7 +23,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 		$result = parent::_validateSecretKey();
 
-		if (Mage::getSingleton('admin/session')->isLoggedIn() && ($this->getFullActionName() == 'adminhtml_cronlog_history_view') && !$result) {
+		if (!$result && ($this->getFullActionName() == 'adminhtml_cronlog_history_view') && Mage::getSingleton('admin/session')->isLoggedIn()) {
 			$this->getRequest()->setParam(Mage_Adminhtml_Model_Url::SECRET_KEY_PARAM_NAME, Mage::getSingleton('adminhtml/url')->getSecretKey());
 			$result = parent::_validateSecretKey();
 		}

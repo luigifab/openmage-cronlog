@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/17/03/2018
+ * Updated S/22/12/2018
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -144,7 +144,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		$table = $database->getTableName('cron_schedule');
 
 		$codes = $database->getConnection('core_read')->fetchAll('SELECT job_code FROM '.$table.' PROCEDURE ANALYSE()');
-		$codes = (!empty($codes[0]['Optimal_fieldtype']) && (stripos($codes[0]['Optimal_fieldtype'], 'ENUM(') !== false)) ?
+		$codes = (!empty($codes[0]['Optimal_fieldtype']) && (mb_stripos($codes[0]['Optimal_fieldtype'], 'ENUM(') !== false)) ?
 			explode(',', str_replace(array('ENUM(', '\'', ') NOT NULL'), '', $codes[0]['Optimal_fieldtype'])) : array();
 
 		$codes = array_combine($codes, $codes);

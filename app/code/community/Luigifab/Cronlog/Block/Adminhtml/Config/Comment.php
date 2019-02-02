@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/22/08/2015
- * Updated J/29/03/2018
+ * Updated S/22/12/2018
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -21,7 +21,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Comment extends Mage_Adminhtml_Blo
 
 	public function render(Varien_Data_Form_Element_Abstract $element) {
 
-		if (strpos($element->getHtmlId(), 'cronlog_') !== false) {
+		if (mb_strpos($element->getHtmlId(), 'cronlog_') !== false) {
 			$html = parent::render($element);
 			$html = str_replace('{{', '<a href="'.$this->getUrl('*/*/edit', array('section' => 'system')).'">', $html);
 			$html = str_replace('}}', '</a>', $html);

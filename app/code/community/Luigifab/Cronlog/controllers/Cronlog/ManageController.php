@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/27/02/2018
+ * Updated M/15/01/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -64,7 +64,7 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 
 		Mage::getConfig()->reinit(); // très important
 
-		$msg = (!empty($msg)) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
+		$msg = !empty($msg) ? '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ' : '';
 		$blk = $this->getLayout()->createBlock('cronlog/adminhtml_manage_grid')->toHtml();
 
 		$this->getResponse()->setBody($msg.$blk);
