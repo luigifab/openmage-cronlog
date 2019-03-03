@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated D/25/02/2018
+ * Updated M/05/02/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -72,7 +72,12 @@
 			</action>
 		</reference>
 		<reference name="left">
-			<block type="cronlog/adminhtml_history_edit_tabs" name="cronlog_tabs" />
+			<block type="cronlog/adminhtml_history_edit_tabs" name="cronlog_tabs">
+				<action method="addTab">
+					<name>general_section</name>
+					<block>cronlog/adminhtml_history_edit_tab_general</block>
+				</action>
+			</block>
 		</reference>
 		<reference name="content">
 			<block type="cronlog/adminhtml_history_edit" name="cronlog_edit" />
@@ -91,7 +96,7 @@
 			</action>
 		</reference>
 		<reference name="content">
-			<block type="cronlog/adminhtml_manage"        name="cronlog_manage_rw" />
+			<block type="cronlog/adminhtml_manage" name="cronlog_manage_rw" />
 			<block type="cronlog/adminhtml_manage_gridro" name="cronlog_manage_ro" />
 		</reference>
 	</adminhtml_cronlog_manage_index>

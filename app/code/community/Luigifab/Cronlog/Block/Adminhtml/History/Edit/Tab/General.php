@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated M/27/02/2018
+ * Updated M/05/02/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -17,7 +17,25 @@
  * GNU General Public License (GPL) for more details.
  */
 
-class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adminhtml_Block_Widget_Form {
+use Mage_Adminhtml_Block_Widget_Tab_Interface as Mage_Adminhtml_BWT_Interface;
+class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adminhtml_Block_Widget_Form implements Mage_Adminhtml_BWT_Interface {
+
+	public function getTabLabel() {
+		return $this->__('Job');
+	}
+
+	public function getTabTitle() {
+		return null;
+	}
+
+	public function isHidden() {
+		return false;
+	}
+
+	public function canShowTab() {
+		return true;
+	}
+
 
 	protected function _prepareForm() {
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created V/23/05/2014
- * Updated J/26/07/2018
+ * Updated J/14/02/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -22,13 +22,12 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_
 	public function render(Varien_Data_Form_Element_Abstract $element) {
 
 		if (($msg = $this->checkRewrites()) === true) {
-			return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>',
-				$this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog');
+			return sprintf('<p class="box">Luigifab/%s %s <span style="float:right;"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p>',
+				'Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog');
 		}
 		else {
-			return sprintf('<p class="box">Luigifab/Cronlog %s <a href="https://www.%s" style="float:right;">%2$s</a></p>'.
-				'<p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
-				$this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog',
+			return sprintf('<p class="box">Luigifab/%s %s <span style="float:right;"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p><p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
+				'Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog',
 				$this->__('INCOMPLETE MODULE INSTALLATION'),
 				$this->__('There is conflict (<em>%s</em>).', $msg));
 		}

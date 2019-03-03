@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated J/07/12/2017
+ * Updated M/05/02/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -26,16 +26,5 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tabs extends Mage_Adminhtml_
 		$this->setId('cronlogTabs');
 		$this->setTitle($this->__('Job'));
 		$this->setDestElementId('edit_form');
-	}
-
-	protected function _prepareLayout() {
-
-		$this->addTab('general_section', array(
-			'label'   => $this->__('Job'),
-			'content' => $this->getLayout()->createBlock('cronlog/adminhtml_history_edit_tab_general')->toHtml(),
-			'active'  => true
-		));
-
-		return parent::_prepareLayout();
 	}
 }

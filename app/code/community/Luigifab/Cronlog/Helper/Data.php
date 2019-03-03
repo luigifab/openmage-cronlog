@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/22/12/2018
+ * Updated S/02/02/2019
  *
  * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -43,7 +43,7 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 			else if ($data > 1)
 				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
 			else
-				$data = '⩽ 1';
+				$data = '⩽&nbsp;1';
 
 			return $data;
 		}
