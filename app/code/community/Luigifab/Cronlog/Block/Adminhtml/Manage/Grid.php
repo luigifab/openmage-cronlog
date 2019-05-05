@@ -123,6 +123,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 		$txt = $this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable');
 
 		if (!$row->getData('is_read_only'))
-		    return sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>','$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
+			return sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>','$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
 	}
 }

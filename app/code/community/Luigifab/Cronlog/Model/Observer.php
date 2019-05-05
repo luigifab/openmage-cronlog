@@ -33,9 +33,9 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			$frequency = Mage::getStoreConfig('cronlog/email/frequency');
 
 			// minute hour day-of-month month-of-year day-of-week (Dimanche = 0, Lundi = 1...)
-			// 0	     1    1            *             *           => monthly
-			// 0	     1    *            *             0|1         => weekly
-			// 0	     1    *            *             *           => daily
+			// 0      1    1            *             *           => monthly
+			// 0      1    *            *             0|1         => weekly
+			// 0      1    *            *             *           => daily
 			if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY)
 				$config->setData('value', '0 1 1 * *');
 			else if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY)

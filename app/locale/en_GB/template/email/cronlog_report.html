@@ -1,17 +1,4 @@
 <!--@subject Cron jobs report @-->
-<!--@vars {
-"var frequency":"Report frequency",
-"var date_period_from":"Beginning date of the report",
-"var date_period_to":"Ending date of the report",
-"var total_cron":"Number of jobs",
-"var total_pending":"Number of pending jobs",
-"var total_running":"Number of running jobs",
-"var total_error":"Number of jobs on error",
-"var total_missed":"Number of missed jobs",
-"var total_success":"Number of successful jobs",
-"var list":"List of jobs on error",
-"var config":"Configuration address"
-}@-->
 
 <div style="margin:1em; font-size:12px; line-height:16px;" lang="en">
 	<p>This is the {{var frequency}} report about the executions of cron jobs.
@@ -25,7 +12,7 @@
 	<br /><span style="color:green;">➤ Completed job(s): {{var total_success}}</span></p>
 
 	{{depend list}}
-		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; line-height:1.3em;list-style:none; border-top:1px dashed #777;">
+		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; line-height:1.3em; list-style:none; border-top:1px dashed #777;">
 			<li style="margin:0.8em 0 0.5em;">{{var list}}</li>
 		</ul>
 	{{/depend}}
