@@ -1,9 +1,9 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated M/05/02/2019
+ * Updated M/20/08/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -43,33 +43,33 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 		$form = new Varien_Data_Form();
 		$this->setForm($form);
 
-		$fieldset = $form->addFieldset('general_form', array(
+		$fieldset = $form->addFieldset('general_form', [
 			'legend'   => $this->__('Job')
-		));
+		]);
 
-		$fieldset->addField('job_code', 'select', array(
+		$fieldset->addField('job_code', 'select', [
 			'label'    => $this->__('Code'),
 			'name'     => 'job_code',
 			'class'    => 'required-entry',
 			'required' => true,
 			'values'   => Mage::getSingleton('cronlog/source_jobs')->toOptionArray()
-		));
+		]);
 
-		$fieldset->addField('scheduled_at', 'select', array(
+		$fieldset->addField('scheduled_at', 'select', [
 			'label'    => $this->__('Scheduled into'),
 			'name'     => 'scheduled_at',
 			'class'    => 'required-entry',
 			'required' => true,
-			'values'   => array(
-				array('value' => 1,  'label' => $this->__('%d minute', 1)),
-				array('value' => 5,  'label' => $this->__('%d minutes', 5)),
-				array('value' => 10, 'label' => $this->__('%d minutes', 10)),
-				array('value' => 15, 'label' => $this->__('%d minutes', 15)),
-				array('value' => 30, 'label' => $this->__('%d minutes', 30)),
-				array('value' => 45, 'label' => $this->__('%d minutes', 45)),
-				array('value' => 60, 'label' => $this->__('%d minutes', 60))
-			)
-		));
+			'values'   => [
+				['value' => 1,  'label' => $this->__('%d minute', 1)],
+				['value' => 5,  'label' => $this->__('%d minutes', 5)],
+				['value' => 10, 'label' => $this->__('%d minutes', 10)],
+				['value' => 15, 'label' => $this->__('%d minutes', 15)],
+				['value' => 30, 'label' => $this->__('%d minutes', 30)],
+				['value' => 45, 'label' => $this->__('%d minutes', 45)],
+				['value' => 60, 'label' => $this->__('%d minutes', 60)]
+			]
+		]);
 
 		// sélection par défaut
 		$session = Mage::getSingleton('adminhtml/session')->getFormData();
@@ -77,7 +77,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 		if (is_array($session) && !empty($session['job_code']) && !empty($session['scheduled_at']))
 			$form->setValues($session);
 		else if (!empty($this->getRequest()->getParam('code')))
-			$form->setValues(array('job_code' => $this->getRequest()->getParam('code')));
+			$form->setValues(['job_code' => $this->getRequest()->getParam('code')]);
 
 		return parent::_prepareForm();
 	}

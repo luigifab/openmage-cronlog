@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated M/12/12/2017
+ * Updated V/30/08/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -28,14 +28,13 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Size extends Mage_Adminhtml_Block_
 
 		$database = Mage::getSingleton('core/resource');
 		$read = $database->getConnection('core_read');
-		$conf = $read->getConfig();
 
 		$select = $read->select()
 			->from('information_schema.TABLES', '(data_length + index_length) AS size_bytes')
-			->where('table_schema = ?', $conf['dbname'])
+			->where('table_schema = DATABASE()')
 			->where('table_name = ?', $database->getTableName('cron_schedule'));
 
-		$element->setValue(floatval($read->fetchOne($select)));
+		$element->setValue((float) $read->fetchOne($select));
 
 		return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $this->helper('cronlog')->getNumberToHumanSize($element->getValue()));
 	}

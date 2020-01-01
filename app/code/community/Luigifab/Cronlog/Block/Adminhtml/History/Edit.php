@@ -1,9 +1,9 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated J/07/12/2017
+ * Updated M/20/08/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -32,6 +32,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit extends Mage_Adminhtml_Block
 		$this->_updateButton('save', 'label', $this->__('Add'));
 
 		if (!empty($id = $this->getRequest()->getParam('id')) && !empty($this->getRequest()->getParam('code')))
-			$this->_updateButton('back', 'onclick', "setLocation('".$this->getUrl('*/*/view', array('id' => $id))."');");
+			$this->_updateButton('back', 'onclick', "setLocation('".$this->getUrl('*/*/view', ['id' => $id])."');");
 	}
 }

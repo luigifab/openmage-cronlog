@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/16/05/2015
- * Updated J/27/12/2018
+ * Updated D/06/09/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -20,10 +20,13 @@
 class Luigifab_Cronlog_Model_Rewrite_Schedule extends Mage_Cron_Model_Schedule {
 
 	public function setExecutedAt($date) {
-		return $this->setData('executed_at', $date)->setData('status', Mage_Cron_Model_Schedule::STATUS_RUNNING);
-	}
 
-	public function specialCheckRewrite() {
-		return true;
+		Mage::unregister('current_cron');
+		Mage::register('current_cron', $this);
+
+		$this->setData('status', self::STATUS_RUNNING);
+		$this->setData('executed_at', $date);
+
+		return $this;
 	}
 }

@@ -2,14 +2,14 @@
 
 <div style="margin:1em; font-size:12px; line-height:16px;" lang="fr">
 	<p>Voici le rapport {{var frequency}} par rapport aux exécutions des tâches cron.
-	<br />Période du <strong>{{var date_period_from}}</strong> au <strong>{{var date_period_to}}</strong>.</p>
+	<br>Période du <strong>{{var date_period_from}}</strong> au <strong>{{var date_period_to}}</strong>.</p>
 
 	<p>Sur les <strong>{{var total_cron}}</strong> tâches prévues :
-	<br /><span style="color:#6F6F6F;">➤ Tâche(s) en attente : {{var total_pending}}</span>
-	<br /><span style="color:orange;">➤ Tâche(s) en cours : {{var total_running}}</span>
-	<br /><span style="color:red;">➤ Tâche(s) en erreur : {{var total_error}}</span>
-	<br /><span style="color:black;">➤ Tâche(s) manquée(s) : {{var total_missed}}</span>
-	<br /><span style="color:green;">➤ Tâche(s) terminée(s) : {{var total_success}}</span></p>
+	<br><span style="color:#6F6F6F;">➤ Tâche(s) en attente : {{var total_pending}}</span>
+	<br><span style="color:orange;">➤ Tâche(s) en cours : {{var total_running}}</span>
+	<br><span style="color:#E41101;">➤ Tâche(s) en erreur : {{var total_error}}</span>
+	<br><span style="color:black;">➤ Tâche(s) manquée(s) : {{var total_missed}}</span>
+	<br><span style="color:green;">➤ Tâche(s) terminée(s) : {{var total_success}}</span></p>
 
 	{{depend list}}
 		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; line-height:1.3em; list-style:none; border-top:1px dashed #777;">
@@ -18,5 +18,5 @@
 	{{/depend}}
 
 	<p style="font-size:0.8em; line-height:1.35em; font-style:italic; color:#6F6F6F;">{{config path='design/head/default_title'}} - Rapport des tâches cron
-	<br /><a href="{{var config}}" style="color:#6F6F6F;">{{var config}}</a><!-- maillog - <a href="#online#" style="color:#6F6F6F;">voir la version en ligne</a> #readimg# #mailid#cron# maillog --></p>
+	<br><a href="{{var config}}" style="color:#6F6F6F;">{{var config}}</a><!-- maillog - <a href="#online#" style="color:#6F6F6F;">voir dans mon navigateur</a> #readimg# #mailid#cron# maillog --></p>
 </div>

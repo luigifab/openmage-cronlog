@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/22/12/2018
+ * Updated J/17/10/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -31,7 +31,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		$this->setSaveParametersInSession(true);
 		$this->setPagerVisibility(true);
 		$this->setFilterVisibility(true);
-		$this->setDefaultLimit(max($this->_defaultLimit, intval(Mage::getStoreConfig('cronlog/general/number'))));
+		$this->setDefaultLimit(max($this->_defaultLimit, (int) Mage::getStoreConfig('cronlog/general/number')));
 	}
 
 	protected function _prepareCollection() {
@@ -41,113 +41,111 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 	protected function _prepareColumns() {
 
-		$this->addColumn('schedule_id', array(
+		$this->addColumn('schedule_id', [
 			'header'    => $this->__('Id'),
 			'index'     => 'schedule_id',
 			'align'     => 'center',
 			'width'     => '80px'
-		));
+		]);
 
-		$this->addColumn('job_code', array(
+		$this->addColumn('job_code', [
 			'header'    => $this->__('Job'),
 			'index'     => 'job_code',
 			'type'      => 'options',
 			'align'     => 'center',
-			'frame_callback' => array($this, 'decorateCode')
-		));
+			'frame_callback' => [$this, 'decorateCode']
+		]);
 
-		$this->addColumn('created_at', array(
+		$this->addColumn('created_at', [
 			'header'    => $this->helper('cronlog')->_('Created At'),
 			'index'     => 'created_at',
 			'type'      => 'datetime',
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => array($this, 'decorateDate')
-		));
+			'frame_callback' => [$this, 'decorateDate']
+		]);
 
-		$this->addColumn('scheduled_at', array(
+		$this->addColumn('scheduled_at', [
 			'header'    => $this->helper('cronlog')->_('Scheduled At'),
 			'index'     => 'scheduled_at',
 			'type'      => 'datetime',
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => array($this, 'decorateDate')
-		));
+			'frame_callback' => [$this, 'decorateDate']
+		]);
 
-		$this->addColumn('executed_at', array(
+		$this->addColumn('executed_at', [
 			'header'    => $this->helper('cronlog')->_('Executed At'),
 			'index'     => 'executed_at',
 			'type'      => 'datetime',
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => array($this, 'decorateDate')
-		));
+			'frame_callback' => [$this, 'decorateDate']
+		]);
 
-		$this->addColumn('finished_at', array(
+		$this->addColumn('finished_at', [
 			'header'    => $this->helper('cronlog')->_('Finished At'),
 			'index'     => 'finished_at',
 			'type'      => 'datetime',
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => array($this, 'decorateDate')
-		));
+			'frame_callback' => [$this, 'decorateDate']
+		]);
 
-		$this->addColumn('duration', array(
+		$this->addColumn('duration', [
 			'header'    => $this->__('Duration'),
 			'index'     => 'duration',
 			'align'     => 'center',
 			'width'     => '60px',
 			'filter'    => false,
 			'sortable'  => false,
-			'frame_callback' => array($this, 'decorateDuration')
-		));
+			'frame_callback' => [$this, 'decorateDuration']
+		]);
 
-		$this->addColumn('status', array(
+		$this->addColumn('status', [
 			'header'    => $this->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
-			'options'   => array(
+			'options'   => [
 				'pending' => $this->__('Pending'),
 				'running' => $this->__('Running'),
 				'error'   => $this->helper('cronlog')->_('Error'),
 				'missed'  => $this->__('Missed'),
 				'success' => $this->helper('cronlog')->_('Success')
-			),
+			],
 			'width'     => '125px',
-			'frame_callback' => array($this, 'decorateStatus')
-		));
+			'frame_callback' => [$this, 'decorateStatus']
+		]);
 
-		$this->addColumn('action', array(
+		$this->addColumn('action', [
 			'type'      => 'action',
 			'getter'    => 'getId',
-			'actions'   => array(
-				array(
+			'actions'   => [
+				[
 					'caption' => $this->__('View'),
-					'url'     => array('base' => '*/*/view'),
+					'url'     => ['base' => '*/*/view'],
 					'field'   => 'id'
-				)
-			),
+				]
+			],
 			'align'     => 'center',
 			'width'     => '55px',
 			'filter'    => false,
 			'sortable'  => false,
 			'is_system' => true
-		));
+		]);
 
 		// recherche des codes
-		// efficacité maximale avec la PROCEDURE ANALYSE de MySQL/MariaDB
 		$database = Mage::getSingleton('core/resource');
-		$table = $database->getTableName('cron_schedule');
+		$read  = $database->getConnection('core_read');
 
-		$codes = $database->getConnection('core_read')->fetchAll('SELECT job_code FROM '.$table.' PROCEDURE ANALYSE()');
-		$codes = (!empty($codes[0]['Optimal_fieldtype']) && (mb_stripos($codes[0]['Optimal_fieldtype'], 'ENUM(') !== false)) ?
-			explode(',', str_replace(array('ENUM(', '\'', ') NOT NULL'), '', $codes[0]['Optimal_fieldtype'])) : array();
-
+		$codes = $read->fetchAssoc($read->select()->distinct()->from($database->getTableName('cron_schedule'), 'job_code'));
+		$codes = array_keys($codes);
 		$codes = array_combine($codes, $codes);
+
 		ksort($codes);
 
 		// mode texte ou mode liste déroulante
@@ -158,12 +156,12 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		if (Mage::getStoreConfigFlag('cronlog/general/textmode') || (!empty($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
 			// remplace la colonne existante
-			$this->addColumnAfter('job_code', array(
+			$this->addColumnAfter('job_code', [
 				'header'    => $this->__('Job'),
 				'index'     => 'job_code',
 				'align'     => 'center',
-				'frame_callback' => array($this, 'decorateCode')
-			), 'schedule_id');
+				'frame_callback' => [$this, 'decorateCode']
+			], 'schedule_id');
 		}
 		else {
 			$this->getColumn('job_code')->setData('options', $codes);
@@ -178,7 +176,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	}
 
 	public function getRowUrl($row) {
-		return $this->getUrl('*/*/view', array('id' => $row->getId()));
+		return $this->getUrl('*/*/view', ['id' => $row->getId()]);
 	}
 
 
@@ -187,11 +185,11 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 	}
 
 	public function decorateDuration($value, $row, $column, $isExport) {
-		return $this->helper('cronlog')->getHumanDuration($row);
+		return $this->helper('cronlog')->getHumanDuration($row->getData('executed_at'), $row->getData('finished_at'));
 	}
 
 	public function decorateDate($value, $row, $column, $isExport) {
-		return (!in_array($row->getData($column->getIndex()), array('', '0000-00-00 00:00:00', null))) ? $value : '';
+		return in_array($row->getData($column->getIndex()), ['', '0000-00-00 00:00:00', null]) ? '' : $value;
 	}
 
 	public function decorateCode($value, $row, $column, $isExport) {

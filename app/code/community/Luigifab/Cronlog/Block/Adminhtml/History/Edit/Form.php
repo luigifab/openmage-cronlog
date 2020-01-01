@@ -1,9 +1,9 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated J/07/12/2017
+ * Updated M/20/08/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -21,11 +21,11 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_
 
 	protected function _prepareForm() {
 
-		$form = new Varien_Data_Form(array(
+		$form = new Varien_Data_Form([
 			'id'     => 'edit_form',
 			'action' => $this->getUrl('*/*/save'),
 			'method' => 'post'
-		));
+		]);
 
 		$form->setUseContainer(true);
 		$this->setForm($form);

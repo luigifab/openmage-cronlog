@@ -2,14 +2,14 @@
 
 <div style="margin:1em; font-size:12px; line-height:16px;" lang="pt">
 	<p>Este é o relatório {{var frequency}} em relação às execuções das tarefas cron.
-	<br />Período de <strong>{{var date_period_from}}</strong> a <strong>{{var date_period_to}}</strong>.</p>
+	<br>Período de <strong>{{var date_period_from}}</strong> a <strong>{{var date_period_to}}</strong>.</p>
 
-	<p>Sobre as <strong>{{var total_cron}}</strong> tarefas previstas:
-	<br /><span style="color:#6F6F6F;">➤ Tarefa(s) em espera: {{var total_pending}}</span>
-	<br /><span style="color:orange;">➤ Tarefa(s) em processo: {{var total_running}}</span>
-	<br /><span style="color:red;">➤ Tarefa(s) em erro: {{var total_error}}</span>
-	<br /><span style="color:black;">➤ Tarefa(s) perdida(s): {{var total_missed}}</span>
-	<br /><span style="color:green;">➤ Tarefa(s) concluída(s): {{var total_success}}</span></p>
+	<p>Sobre as <strong>{{var total_cron}}</strong> tarefas previstas:
+	<br><span style="color:#6F6F6F;">➤ Tarefa(s) em espera: {{var total_pending}}</span>
+	<br><span style="color:orange;">➤ Tarefa(s) em processo: {{var total_running}}</span>
+	<br><span style="color:#E41101;">➤ Tarefa(s) em erro: {{var total_error}}</span>
+	<br><span style="color:black;">➤ Tarefa(s) perdida(s): {{var total_missed}}</span>
+	<br><span style="color:green;">➤ Tarefa(s) concluída(s): {{var total_success}}</span></p>
 
 	{{depend list}}
 		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; line-height:1.3em; list-style:none; border-top:1px dashed #777;">
@@ -18,5 +18,5 @@
 	{{/depend}}
 
 	<p style="font-size:0.8em; line-height:1.35em; font-style:italic; color:#6F6F6F;">{{config path='design/head/default_title'}} - Relatório das tarefas cron
-	<br /><a href="{{var config}}" style="color:#6F6F6F;">{{var config}}</a><!-- maillog - <a href="#online#" style="color:#6F6F6F;">ver a versão em linha</a> #readimg# #mailid#cron# maillog --></p>
+	<br><a href="{{var config}}" style="color:#6F6F6F;">{{var config}}</a><!-- maillog - <a href="#online#" style="color:#6F6F6F;">ver a versão em linha</a> #readimg# #mailid#cron# maillog --></p>
 </div>

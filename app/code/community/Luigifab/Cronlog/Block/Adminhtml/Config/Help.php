@@ -1,9 +1,9 @@
 <?php
 /**
  * Created V/23/05/2014
- * Updated J/14/02/2019
+ * Updated J/26/09/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -21,38 +21,30 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_
 
 	public function render(Varien_Data_Form_Element_Abstract $element) {
 
-		if (($msg = $this->checkRewrites()) === true) {
-			return sprintf('<p class="box">Luigifab/%s %s <span style="float:right;"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p>',
-				'Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog');
-		}
-		else {
-			return sprintf('<p class="box">Luigifab/%s %s <span style="float:right;"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p><p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
-				'Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog',
+		$msg = $this->checkRewrites();
+		if ($msg !== true)
+			return sprintf('<p class="box">%s %s <span style="float:right;"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p>'.
+				'<p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
+				'Luigifab/Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog',
 				$this->__('INCOMPLETE MODULE INSTALLATION'),
 				$this->__('There is conflict (<em>%s</em>).', $msg));
-		}
+
+		return sprintf('<p class="box">%s %s <span style="float:right;"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p>',
+			'Luigifab/Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/magento/cronlog');
 	}
 
 	private function checkRewrites() {
 
-		$rewrites = array(
-			array('model', 'cron/observer'),
-			array('model', 'cron/schedule')
-		);
+		$rewrites = [
+			['model', 'cron/observer'],
+			['model', 'cron/schedule']
+		];
 
 		foreach ($rewrites as $rewrite) {
-			if ($rewrite[0] == 'model') {
-				if (!method_exists(Mage::getModel($rewrite[1]), 'specialCheckRewrite'))
-					return $rewrite[1];
-			}
-			else if ($rewrite[0] == 'resource') {
-				if (!method_exists(Mage::getResourceModel($rewrite[1]), 'specialCheckRewrite'))
-					return $rewrite[1];
-			}
-			else if ($rewrite[0] == 'block') {
-				if (!method_exists(Mage::getBlockSingleton($rewrite[1]), 'specialCheckRewrite'))
-					return $rewrite[1];
-			}
+			if (($rewrite[0] == 'model') && (mb_stripos(get_class(Mage::getModel($rewrite[1])), 'luigifab') === false))
+				return $rewrite[1];
+			else if (($rewrite[0] == 'block') && (mb_stripos(get_class(Mage::getBlockSingleton($rewrite[1])), 'luigifab') === false))
+				return $rewrite[1];
 		}
 
 		return true;

@@ -2,14 +2,14 @@
 
 <div style="margin:1em; font-size:12px; line-height:16px;" lang="it">
 	<p>Questo è il rapporto {{var frequency}} sull'esecuzione dei compiti cron.
-	<br />Periodo dal <strong>{{var date_period_from}}</strong> al <strong>{{var date_period_to}}</strong>.</p>
+	<br>Periodo dal <strong>{{var date_period_from}}</strong> al <strong>{{var date_period_to}}</strong>.</p>
 
 	<p>Sui <strong>{{var total_cron}}</strong> compiti previsti:
-	<br /><span style="color:#6F6F6F;">➤ Compito(i) in attesa: {{var total_pending}}</span>
-	<br /><span style="color:orange;">➤ Compito(i) in corso: {{var total_running}}</span>
-	<br /><span style="color:red;">➤ Compito(i) in errore: {{var total_error}}</span>
-	<br /><span style="color:black;">➤ Compito(i) perso(i): {{var total_missed}}</span>
-	<br /><span style="color:green;">➤ Compito(i) finito(i): {{var total_success}}</span></p>
+	<br><span style="color:#6F6F6F;">➤ Compito(i) in attesa: {{var total_pending}}</span>
+	<br><span style="color:orange;">➤ Compito(i) in corso: {{var total_running}}</span>
+	<br><span style="color:#E41101;">➤ Compito(i) in errore: {{var total_error}}</span>
+	<br><span style="color:black;">➤ Compito(i) perso(i): {{var total_missed}}</span>
+	<br><span style="color:green;">➤ Compito(i) finito(i): {{var total_success}}</span></p>
 
 	{{depend list}}
 		<ul style="margin:1.5em 0; padding:0.5em 0 0; font-size:0.9em; line-height:1.3em; list-style:none; border-top:1px dashed #777;">
@@ -18,5 +18,5 @@
 	{{/depend}}
 
 	<p style="font-size:0.8em; line-height:1.35em; font-style:italic; color:#6F6F6F;">{{config path='design/head/default_title'}} - Rapporto dei compiti cron
-	<br /><a href="{{var config}}" style="color:#6F6F6F;">{{var config}}</a><!-- maillog - <a href="#online#" style="color:#6F6F6F;">vedere la versione online</a> #readimg# #mailid#cron# maillog --></p>
+	<br><a href="{{var config}}" style="color:#6F6F6F;">{{var config}}</a><!-- maillog - <a href="#online#" style="color:#6F6F6F;">vedere la versione online</a> #readimg# #mailid#cron# maillog --></p>
 </div>

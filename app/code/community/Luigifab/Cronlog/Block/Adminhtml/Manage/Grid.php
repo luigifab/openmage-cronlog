@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated J/10/01/2019
+ * Updated D/15/09/2019
  *
- * Copyright 2012-2019 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -38,59 +38,59 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 
 	protected function _prepareColumns() {
 
-		$this->addColumn('module', array(
+		$this->addColumn('module', [
 			'header'    => $this->__('Module name'),
 			'index'     => 'module',
 			'filter'    => false,
 			'sortable'  => false
-		));
+		]);
 
-		$this->addColumn('job_code', array(
+		$this->addColumn('job_code', [
 			'header'    => $this->__('Editable job'),
 			'index'     => 'job_code',
 			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false
-		));
+		]);
 
-		$this->addColumn('cron_expr', array(
+		$this->addColumn('cron_expr', [
 			'header'    => $this->__('Configuration'),
 			'index'     => 'cron_expr',
 			'filter'    => false,
 			'sortable'  => false
-		));
+		]);
 
-		$this->addColumn('model', array(
+		$this->addColumn('model', [
 			'header'    => 'Model',
 			'index'     => 'model',
 			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false
-		));
+		]);
 
-		$this->addColumn('status', array(
+		$this->addColumn('status', [
 			'header'    => $this->__('Status'),
 			'index'     => 'status',
 			'type'      => 'options',
-			'options'   => array(
+			'options'   => [
 				'enabled'  => $this->helper('cronlog')->_('Enabled'),
 				'disabled' => $this->helper('cronlog')->_('Disabled')
-			),
+			],
 			'width'     => '120px',
 			'filter'    => false,
 			'sortable'  => false,
-			'frame_callback' => array($this, 'decorateStatus')
-		));
+			'frame_callback' => [$this, 'decorateStatus']
+		]);
 
-		$this->addColumn('action', array(
+		$this->addColumn('action', [
 			'type'      => 'action',
 			'align'     => 'center',
 			'width'     => '85px',
 			'filter'    => false,
 			'sortable'  => false,
 			'is_system' => true,
-			'frame_callback' => array($this, 'decorateLink')
-		));
+			'frame_callback' => [$this, 'decorateLink']
+		]);
 
 		return parent::_prepareColumns();
 	}
@@ -109,7 +109,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 	}
 
 	public function getMessagesBlock() {
-		return Mage::getBlockSingleton('core/template');
+		return Mage::getBlockSingleton('adminhtml/template');
 	}
 
 
@@ -119,10 +119,10 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 
 	public function decorateLink($value, $row, $column, $isExport) {
 
-		$url = $this->getUrl('*/*/save', array('code' => $row->getData('job_code')));
+		$url = $this->getUrl('*/*/save', ['code' => $row->getData('job_code')]);
 		$txt = $this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable');
 
 		if (!$row->getData('is_read_only'))
-			return sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>','$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
+			return sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>', '$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
 	}
 }
