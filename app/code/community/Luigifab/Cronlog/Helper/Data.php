@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated S/09/11/2019
+ * Updated J/23/01/2020
  *
  * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -23,8 +23,8 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		return (string) Mage::getConfig()->getModuleConfig('Luigifab_Cronlog')->version;
 	}
 
-	public function _(string $data, $a = null, $b = null) {
-		return (mb_stripos($txt = $this->__(' '.$data, $a, $b), ' ') === 0) ? $this->__($data, $a, $b) : $txt;
+	public function _(string $data, ...$values) {
+		return (mb_stripos($txt = $this->__(' '.$data, ...$values), ' ') === 0) ? $this->__($data, ...$values) : $txt;
 	}
 
 	public function escapeEntities($data, bool $quotes = false) {
@@ -52,30 +52,32 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 				$data = ($seconds > 9) ? '00:'.$data : '00:0'.$data;
 			else
 				$data = '⩽&nbsp;1';
-
-			return $data;
 		}
+
+		return empty($data) ? '' : $data;
 	}
 
 	public function getNumberToHumanSize(int $number) {
 
 		if ($number < 1) {
-			return '';
+			$data = '';
 		}
 		else if (($number / 1024) < 1024) {
-			$size = $number / 1024;
-			$size = Zend_Locale_Format::toNumber($size, ['precision' => 2]);
-			return $this->__('%s kB', str_replace(['.00', ',00'], '', $size));
+			$data = $number / 1024;
+			$data = Zend_Locale_Format::toNumber($data, ['precision' => 2]);
+			$data = $this->__('%s kB', str_replace(['.00', ',00'], '', $data));
 		}
 		else if (($number / 1024 / 1024) < 1024) {
-			$size = $number / 1024 / 1024;
-			$size = Zend_Locale_Format::toNumber($size, ['precision' => 2]);
-			return $this->__('%s MB', str_replace(['.00', ',00'], '', $size));
+			$data = $number / 1024 / 1024;
+			$data = Zend_Locale_Format::toNumber($data, ['precision' => 2]);
+			$data = $this->__('%s MB', str_replace(['.00', ',00'], '', $data));
 		}
 		else {
-			$size = $number / 1024 / 1024 / 1024;
-			$size = Zend_Locale_Format::toNumber($size, ['precision' => 2]);
-			return $this->__('%s GB', str_replace(['.00', ',00'], '', $size));
+			$data = $number / 1024 / 1024 / 1024;
+			$data = Zend_Locale_Format::toNumber($data, ['precision' => 2]);
+			$data = $this->__('%s GB', str_replace(['.00', ',00'], '', $data));
 		}
+
+		return $data;
 	}
 }

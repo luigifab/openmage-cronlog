@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated D/15/09/2019
+ * Updated J/23/01/2020
  *
  * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -122,7 +122,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 		$url = $this->getUrl('*/*/save', ['code' => $row->getData('job_code')]);
 		$txt = $this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable');
 
-		if (!$row->getData('is_read_only'))
-			return sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>', '$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
+		return $row->getData('is_read_only') ? '' : sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>',
+			'$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
 	}
 }
