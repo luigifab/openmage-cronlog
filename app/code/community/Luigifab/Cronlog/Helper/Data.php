@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/23/01/2020
+ * Updated V/17/04/2020
  *
  * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/magento/cronlog
@@ -65,17 +65,17 @@ class Luigifab_Cronlog_Helper_Data extends Mage_Core_Helper_Abstract {
 		else if (($number / 1024) < 1024) {
 			$data = $number / 1024;
 			$data = Zend_Locale_Format::toNumber($data, ['precision' => 2]);
-			$data = $this->__('%s kB', str_replace(['.00', ',00'], '', $data));
+			$data = $this->__('%s kB', preg_replace('#[.,]00[[:>:]]#', '', $data));
 		}
 		else if (($number / 1024 / 1024) < 1024) {
 			$data = $number / 1024 / 1024;
 			$data = Zend_Locale_Format::toNumber($data, ['precision' => 2]);
-			$data = $this->__('%s MB', str_replace(['.00', ',00'], '', $data));
+			$data = $this->__('%s MB', preg_replace('#[.,]00[[:>:]]#', '', $data));
 		}
 		else {
 			$data = $number / 1024 / 1024 / 1024;
 			$data = Zend_Locale_Format::toNumber($data, ['precision' => 2]);
-			$data = $this->__('%s GB', str_replace(['.00', ',00'], '', $data));
+			$data = $this->__('%s GB', preg_replace('#[.,]00[[:>:]]#', '', $data));
 		}
 
 		return $data;
