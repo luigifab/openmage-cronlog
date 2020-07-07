@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * Created W/29/02/2012
+ * Updated V/12/06/2020
+ *
+ * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://www.luigifab.fr/openmage/cronlog
+ *
+ * This program is free software, you can redistribute it or modify
+ * it under the terms of the GNU General Public License (GPL) as published
+ * by the free software foundation, either version 2 of the license, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but without any warranty, without even the implied warranty of
+ * merchantability or fitness for a particular purpose. See the
+ * GNU General Public License (GPL) for more details.
+-->
+
+<config>
+	<modules>
+		<Luigifab_Cronlog>
+			<version>4.0.0</version>
+		</Luigifab_Cronlog>
+	</modules>
+	<global>
+		<blocks>
+			<cronlog>
+				<class>Luigifab_Cronlog_Block</class>
+			</cronlog>
+		</blocks>
+		<helpers>
+			<cronlog>
+				<class>Luigifab_Cronlog_Helper</class>
+			</cronlog>
+		</helpers>
+		<models>
+			<cronlog>
+				<class>Luigifab_Cronlog_Model</class>
+			</cronlog>
+			<cron>
+				<rewrite>
+					<observer>Luigifab_Cronlog_Model_Rewrite_Observer</observer>
+					<schedule>Luigifab_Cronlog_Model_Rewrite_Schedule</schedule>
+				</rewrite>
+			</cron>
+		</models>
+		<template>
+			<email>
+				<cronlog_email_template translate="label">
+					<label>Cron jobs report</label>
+					<file>cronlog_report.html</file>
+					<type>html</type>
+				</cronlog_email_template>
+			</email>
+		</template>
+	</global>
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<Luigifab_Cronlog before="Mage_Adminhtml">Luigifab_Cronlog</Luigifab_Cronlog>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+	<adminhtml>
+		<events>
+			<admin_system_config_changed_section_cronlog>
+				<observers>
+					<cronlog>
+						<class>cronlog/observer</class>
+						<method>updateConfig</method>
+					</cronlog>
+				</observers>
+			</admin_system_config_changed_section_cronlog>
+		</events>
+		<layout>
+			<updates>
+				<cronlog>
+					<file>luigifab/cronlog.xml</file>
+				</cronlog>
+			</updates>
+		</layout>
+		<translate>
+			<modules>
+				<Luigifab_Cronlog>
+					<files>
+						<default>Luigifab_Cronlog.csv</default>
+					</files>
+				</Luigifab_Cronlog>
+			</modules>
+		</translate>
+	</adminhtml>
+	<crontab>
+		<jobs>
+			<cronlog_send_report>
+				<run>
+					<model>cronlog/observer::sendEmailReport</model>
+				</run>
+			</cronlog_send_report>
+		</jobs>
+	</crontab>
+	<default>
+		<cronlog>
+			<email>
+				<enabled>0</enabled>
+				<recipient_email>hello@example.org</recipient_email>
+				<sender_email_identity>general</sender_email_identity>
+			</email>
+		</cronlog>
+	</default>
+</config>
