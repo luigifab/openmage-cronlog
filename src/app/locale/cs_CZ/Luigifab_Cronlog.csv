@@ -1,3 +1,4 @@
+"Send an email now","Poslat email"
 "%d minute","%d minut"
 "%d minutes","%d minuta"
 "Duration","Trvání"
@@ -11,3 +12,4 @@
 "%d days (%d weeks)","%d dní (%d týdnů)"
 "%d days (%d month)","%d dní (%d měsíc)"
 "%d days (%d months)","%d dní (%d měsíců)"
+"The <em>%s</em> field is a required field.","Pole <em>%s</em> je povinné."

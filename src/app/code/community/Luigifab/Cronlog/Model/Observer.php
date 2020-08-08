@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated J/23/01/2020
+ * Updated L/13/07/2020
  *
  * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -65,7 +65,6 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$newLocale = Mage::app()->getStore()->isAdmin() ? $oldLocale : Mage::getStoreConfig('general/locale/code');
 		Mage::getSingleton('core/translate')->setLocale($newLocale)->init('adminhtml', true);
 
-		$errors    = [];
 		$frequency = Mage::getStoreConfig('cronlog/email/frequency');
 		$dateStart = Mage::getSingleton('core/locale')->date()->setHour(0)->setMinute(0)->setSecond(0);
 		$dateEnd   = Mage::getSingleton('core/locale')->date()->setHour(23)->setMinute(59)->setSecond(59);
@@ -76,8 +75,8 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 		if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY) {
 			$frequency = $this->_('monthly');
-			$dateEnd->subMonth(1)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
-			$dateStart->subMonth(1)->setMonth($dateEnd->getMonth())->setDay(1);
+			$dateStart->setDay(1)->subMonth(1);
+			$dateEnd->setDay(1)->subMonth(1)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
 		}
 		else if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
 			$frequency = $this->_('weekly');
@@ -99,6 +98,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		]);
 		$jobs->setOrder('schedule_id', 'desc');
 
+		$errors = [];
 		foreach ($jobs as $job) {
 
 			if (!in_array($job->getData('status'), ['error', 'missed']))

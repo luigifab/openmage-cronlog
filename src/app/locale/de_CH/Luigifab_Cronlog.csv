@@ -8,6 +8,7 @@
 "Table size","Tabellengröße"
 "Email reports","Berichte pro E-Mail"
 "Separate addresses by a space.","E-Mail-Adressen durch einen Abstand trennen."
+"Send an email now","Jetzt eine E-Mail senden"
 "See {{Cron jobs}}.","Siehe {{Kron-Tasks}}."
 "Manage cron jobs","Kron-Tasks verwalten"
 "New cron job","Neue Kron-Task"

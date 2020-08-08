@@ -1,5 +1,6 @@
 "Email reports","Raporty e-mailem"
 "Separate addresses by a space.","Oddziel adresy przerwą."
+"Send an email now","Wyślij E-mail teraz"
 "INCOMPLETE MODULE INSTALLATION","NIEKOMPLETNA INSTALACJA MODUŁU"
 "There is conflict (<em>%s</em>).","Pojawił się błąd (<em lang=""en"">%s</em>)."
 "%d minute","%d minuta"
@@ -19,3 +20,4 @@
 "%d days (%d weeks)","%d dni (%d tygodni)"
 "%d days (%d month)","%d dni (%d miesiąc)"
 "%d days (%d months)","%d dni (%d miesięcy)"
+"The <em>%s</em> field is a required field.","Pole <em>%s</em> jest obowiązkowe."

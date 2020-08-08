@@ -1,7 +1,7 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated M/26/05/2020
+ * Updated J/23/07/2020
  *
  * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -17,25 +17,27 @@
  * GNU General Public License (GPL) for more details.
  */
 
-chdir(dirname(__DIR__, 6)); // de lib à root
+if (PHP_SAPI != 'cli')
+	exit(-1);
+
+chdir(dirname($argv[0], 7)); // de lib à root
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
 define('MAGENTO_ROOT', getcwd());
-if ((PHP_SAPI != 'cli') || is_file('maintenance.flag') || is_file('upgrade.flag'))
+
+if (is_file('maintenance.flag') || is_file('upgrade.flag'))
 	exit(0);
-
-$id  = empty($argv[1]) ? false : (int) $argv[1];
-$dev = empty($argv[2]) ? false : true;
-
 if (is_file('includes/config.php'))
 	include('includes/config.php');
 if (is_file('app/bootstrap.php'))
 	require_once('app/bootstrap.php');
 
-require_once('app/Mage.php');
+$id  = empty($argv[1]) ? false : (int) $argv[1];
+$dev = empty($argv[2]) ? false : true;
 
 if (!empty($id)) {
+
+	require_once('app/Mage.php');
 
 	Mage::app('admin')->setUseSessionInUrl(false);
 	Mage::app()->addEventArea('crontab');

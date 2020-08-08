@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/23/06/2020
+ * Updated J/23/07/2020
  *
  * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog

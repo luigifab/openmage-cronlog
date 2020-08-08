@@ -2,11 +2,27 @@
     "type": "magento-module",
     "name": "luigifab/openmage-cronlog",
     "description": "A module to show history and configuration of cron jobs for OpenMage and Magento.",
+    "homepage": "https://github.com/luigifab/openmage-cronlog",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Fabrice Creuzot (luigifab)",
+            "homepage": "https://www.luigifab.fr",
             "email": "code@luigifab.fr"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/luigifab/openmage-cronlog/issues",
+        "docs": "https://www.luigifab.fr/openmage/cronlog"
+    },
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://www.paypal.me/luigifab"
+        },
+        {
+            "type": "other",
+            "url": "https://gandi.link/f/4b904048"
         }
     ],
     "require": {
@@ -66,6 +82,7 @@
             ["src/app/locale/pt_BR/Luigifab_Cronlog.csv", "app/locale/pt_BR/Luigifab_Cronlog.csv"],
             ["src/app/locale/pt_PT/Luigifab_Cronlog.csv", "app/locale/pt_PT/Luigifab_Cronlog.csv"],
             ["src/app/locale/ru_RU/Luigifab_Cronlog.csv", "app/locale/ru_RU/Luigifab_Cronlog.csv"],
+            ["src/app/locale/sk_SK/Luigifab_Cronlog.csv", "app/locale/sk_SK/Luigifab_Cronlog.csv"],
             ["src/app/locale/tr_TR/Luigifab_Cronlog.csv", "app/locale/tr_TR/Luigifab_Cronlog.csv"],
             ["src/app/locale/zh_CN/Luigifab_Cronlog.csv", "app/locale/zh_CN/Luigifab_Cronlog.csv"],
             ["src/app/etc/modules/Luigifab_Cronlog.xml", "app/etc/modules/Luigifab_Cronlog.xml"],
