@@ -3,17 +3,14 @@ Tracker   : https://github.com/luigifab/openmage-cronlog
 Composer  : https://packagist.org/packages/luigifab/openmage-cronlog
 Module    : Luigifab/Cronlog
 License   : GNU GPL 2+ (https://opensource.org/licenses/gpl-2.0)
-Copyright : 2012-2020 Fabrice Creuzot (luigifab) <code~luigifab~fr>
+Copyright : 2012-2021 Fabrice Creuzot (luigifab) <code~luigifab~fr>
 
 
 
 
-
-THE COMPOSER KEY FOR COMMAND LINE IS: luigifab/openmage-cronlog
-THE EXTENSION KEY FOR MAGENTO CONNECT MANAGER IS: https://www.luigifab.fr/magento/connect/luigifab/Luigifab_Cronlog
 
 IF YOU FOUND A MISTAKE OR A BUG, PLEASE, CONTACT ME (IN FRENCH OR IN ENGLISH) AT code~luigifab~fr
-CSS AND JS FILES ARE MINIFIED WITH clean-css (github.com/jakubpawlowicz/clean-css) AND uglify-js (github.com/mishoo/UglifyJS2).
+CSS AND JS FILES ARE MINIFIED WITH clean-css (github.com/jakubpawlowicz/clean-css) AND uglify-js (github.com/mishoo/UglifyJS).
 ALL FILES (INCLUDING DOCUMENTATION AND TRANSLATIONS) ARE LICENSED UNDER THE TERMS OF THE GNU GPL 2+ LICENSE.
 
 
@@ -49,6 +46,7 @@ Files and directories
 - app/locale/es_PE/template/email/cronlog_report.html
 - app/locale/es_VE/template/email/cronlog_report.html
 - app/locale/fr_CA/template/email/cronlog_report.html
+- app/locale/fr_CH/template/email/cronlog_report.html
 - app/locale/fr_FR/template/email/cronlog_report.html
 - app/locale/it_CH/template/email/cronlog_report.html
 - app/locale/it_IT/template/email/cronlog_report.html
@@ -68,6 +66,7 @@ Files and directories
 - app/locale/es_PE/Luigifab_Cronlog.csv
 - app/locale/es_VE/Luigifab_Cronlog.csv
 - app/locale/fr_CA/Luigifab_Cronlog.csv
+- app/locale/fr_CH/Luigifab_Cronlog.csv
 - app/locale/fr_FR/Luigifab_Cronlog.csv
 - app/locale/it_CH/Luigifab_Cronlog.csv
 - app/locale/it_IT/Luigifab_Cronlog.csv
@@ -79,6 +78,7 @@ Files and directories
 - app/locale/ru_RU/Luigifab_Cronlog.csv
 - app/locale/sk_SK/Luigifab_Cronlog.csv
 - app/locale/tr_TR/Luigifab_Cronlog.csv
+- app/locale/uk_UA/Luigifab_Cronlog.csv
 - app/locale/zh_CN/Luigifab_Cronlog.csv
 - app/etc/modules/Luigifab_Cronlog.xml
 - app/code/community/Luigifab/Cronlog/
@@ -90,7 +90,7 @@ Translations in de-DE (deutsch/Deutschland) by:
 - Pamela Steinborn <st.pamela~laposte~net> 2017
 - Nelly Renaud <nbrandone~gmail~com> 2017
 Translations in en-US (english/United-States) by:
-- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2020
+- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2021
 - Alexandre Laffitte <alexandre.laffitte~label-park~com> 2016
 - Philip Junietz <info~label-park~com> 2016
 - Pascale Scellier <scellier.pascale~orange~fr> 2016
@@ -99,7 +99,7 @@ Translations in es-ES (español/España) by:
 - Hélène Vergine <vergineh~gmail~com> 2017, 2020
 - Guillaume Genetet <genetet.incorporated~gmail~com> 2018 https://fr.tipeee.com/william-broome
 Translations in fr-FR (français/France) by:
-- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2020
+- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2021
 - Alexandre Laffitte <alexandre.laffitte~label-park~com> 2016
 - Philip Junietz <info~label-park~com> 2016
 - Pascale Scellier <scellier.pascale~orange~fr> 2016

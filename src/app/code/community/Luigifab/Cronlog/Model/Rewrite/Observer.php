@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated J/11/06/2020
+ * Updated V/19/06/2020
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -39,7 +39,7 @@ class Luigifab_Cronlog_Model_Rewrite_Observer extends Mage_Cron_Model_Observer {
 			return parent::cleanup();
 
 		// 24 heures = 86400 secondes
-		if (Mage::app()->loadCache(self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT) > (time() - 86400))
+		if ((int) Mage::app()->loadCache(self::CACHE_KEY_LAST_HISTORY_CLEANUP_AT) > (time() - 86400))
 			return $this;
 
 		// action

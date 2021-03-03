@@ -1,9 +1,9 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated J/23/07/2020
+ * Updated M/09/02/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -23,12 +23,9 @@ if (PHP_SAPI != 'cli')
 chdir(dirname($argv[0], 7)); // de lib à root
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-define('MAGENTO_ROOT', getcwd());
 
 if (is_file('maintenance.flag') || is_file('upgrade.flag'))
 	exit(0);
-if (is_file('includes/config.php'))
-	include('includes/config.php');
 if (is_file('app/bootstrap.php'))
 	require_once('app/bootstrap.php');
 
@@ -67,7 +64,7 @@ if (!empty($id)) {
 			$job->setData('finished_at', date('Y-m-d H:i:s'));
 			$job->setData('status', 'success');
 		}
-		catch (Exception $e) {
+		catch (Throwable $e) {
 			$job->setData('status', Mage_Cron_Model_Schedule::STATUS_ERROR);
 			$job->setData('messages', $e->__toString());
 		}

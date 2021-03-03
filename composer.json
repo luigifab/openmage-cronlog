@@ -1,7 +1,7 @@
 {
     "type": "magento-module",
     "name": "luigifab/openmage-cronlog",
-    "description": "A module to show history and configuration of cron jobs for OpenMage and Magento.",
+    "description": "A module to show history and configuration of cron jobs for OpenMage.",
     "homepage": "https://github.com/luigifab/openmage-cronlog",
     "license": "GPL-2.0-or-later",
     "authors": [
@@ -23,6 +23,10 @@
         {
             "type": "other",
             "url": "https://gandi.link/f/4b904048"
+        },
+        {
+            "type": "other",
+            "url": "https://ekwateur.fr/?parrain=EKW001147103"
         }
     ],
     "require": {
@@ -54,6 +58,7 @@
             ["src/app/locale/es_PE/template/email/cronlog_report.html", "app/locale/es_PE/template/email/cronlog_report.html"],
             ["src/app/locale/es_VE/template/email/cronlog_report.html", "app/locale/es_VE/template/email/cronlog_report.html"],
             ["src/app/locale/fr_CA/template/email/cronlog_report.html", "app/locale/fr_CA/template/email/cronlog_report.html"],
+            ["src/app/locale/fr_CH/template/email/cronlog_report.html", "app/locale/fr_CH/template/email/cronlog_report.html"],
             ["src/app/locale/fr_FR/template/email/cronlog_report.html", "app/locale/fr_FR/template/email/cronlog_report.html"],
             ["src/app/locale/it_CH/template/email/cronlog_report.html", "app/locale/it_CH/template/email/cronlog_report.html"],
             ["src/app/locale/it_IT/template/email/cronlog_report.html", "app/locale/it_IT/template/email/cronlog_report.html"],
@@ -73,6 +78,7 @@
             ["src/app/locale/es_PE/Luigifab_Cronlog.csv", "app/locale/es_PE/Luigifab_Cronlog.csv"],
             ["src/app/locale/es_VE/Luigifab_Cronlog.csv", "app/locale/es_VE/Luigifab_Cronlog.csv"],
             ["src/app/locale/fr_CA/Luigifab_Cronlog.csv", "app/locale/fr_CA/Luigifab_Cronlog.csv"],
+            ["src/app/locale/fr_CH/Luigifab_Cronlog.csv", "app/locale/fr_CH/Luigifab_Cronlog.csv"],
             ["src/app/locale/fr_FR/Luigifab_Cronlog.csv", "app/locale/fr_FR/Luigifab_Cronlog.csv"],
             ["src/app/locale/it_CH/Luigifab_Cronlog.csv", "app/locale/it_CH/Luigifab_Cronlog.csv"],
             ["src/app/locale/it_IT/Luigifab_Cronlog.csv", "app/locale/it_IT/Luigifab_Cronlog.csv"],
@@ -84,6 +90,7 @@
             ["src/app/locale/ru_RU/Luigifab_Cronlog.csv", "app/locale/ru_RU/Luigifab_Cronlog.csv"],
             ["src/app/locale/sk_SK/Luigifab_Cronlog.csv", "app/locale/sk_SK/Luigifab_Cronlog.csv"],
             ["src/app/locale/tr_TR/Luigifab_Cronlog.csv", "app/locale/tr_TR/Luigifab_Cronlog.csv"],
+            ["src/app/locale/uk_UA/Luigifab_Cronlog.csv", "app/locale/uk_UA/Luigifab_Cronlog.csv"],
             ["src/app/locale/zh_CN/Luigifab_Cronlog.csv", "app/locale/zh_CN/Luigifab_Cronlog.csv"],
             ["src/app/etc/modules/Luigifab_Cronlog.xml", "app/etc/modules/Luigifab_Cronlog.xml"],
             ["src/app/code/community/Luigifab/Cronlog/", "app/code/community/Luigifab/Cronlog/"],

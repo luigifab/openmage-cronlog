@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated J/23/01/2020
+ * Updated D/07/02/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -65,7 +65,8 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 			'index'     => 'model',
 			'width'     => '30%',
 			'filter'    => false,
-			'sortable'  => false
+			'sortable'  => false,
+			'frame_callback' => [$this, 'decorateModel']
 		]);
 
 		$this->addColumn('status', [
@@ -114,15 +115,17 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 
 
 	public function decorateStatus($value, $row, $column, $isExport) {
-		return sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
+		return $isExport ? $value : sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
+	}
+
+	public function decorateModel($value, $row, $column, $isExport) {
+		return $isExport ? $value : sprintf('%s <div>%s</div>', $value, str_replace('_Model_', '_<b>Model</b>_', $row->getData('class_name')));
 	}
 
 	public function decorateLink($value, $row, $column, $isExport) {
-
-		$url = $this->getUrl('*/*/save', ['code' => $row->getData('job_code')]);
-		$txt = $this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable');
-
 		return $row->getData('is_read_only') ? '' : sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>',
-			'$(\'cronlog_grid_rw_table\').up().up().up()', $url, $txt);
+			'$(\'cronlog_grid_rw_table\').up().up().up()',
+			$this->getUrl('*/*/save', ['code' => $row->getData('job_code')]),
+			$this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable'));
 	}
 }

@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/22/08/2015
- * Updated L/18/05/2020
+ * Updated V/12/02/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify

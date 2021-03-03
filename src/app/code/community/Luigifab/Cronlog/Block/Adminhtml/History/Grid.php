@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/17/10/2019
+ * Updated D/07/02/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -181,7 +181,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 
 	public function decorateStatus($value, $row, $column, $isExport) {
-		return sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
+		return $isExport ? $value : sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
 	}
 
 	public function decorateDuration($value, $row, $column, $isExport) {

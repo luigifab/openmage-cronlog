@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/23/07/2020
+ * Updated M/02/02/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -91,12 +91,19 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				$job->setData('job_code', $code);
 				$job->setData('created_at', date('Y-m-d H:i:s'));
 				$job->setData('scheduled_at', $dateScheduled->toString(Zend_Date::RFC_3339));
+
+				if (is_numeric($old = $this->getRequest()->getParam('id'))) {
+					$old = Mage::getModel('cron/schedule')->load($old);
+					if ($old->getData('job_code') == $code)
+						$job->setData('messages', $old->getData('messages'));
+				}
+
 				$job->save();
 
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully scheduled.', $job->getId()));
 			}
 		}
-		catch (Exception $e) {
+		catch (Throwable $e) {
 			Mage::getSingleton('adminhtml/session')->setFormData($this->getRequest()->getPost());
 			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 			$redirect = '*/*/new';
@@ -111,14 +118,19 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 		if (!empty($job->getId()) && ($job->getData('status') == 'pending')) {
 
-			exec(sprintf('php %s %d %d >/dev/null 2>&1 &',
+			$dir = Mage::getBaseDir('log');
+			if (!is_dir($dir))
+				@mkdir($dir, 0755);
+
+			exec(sprintf('php %s %d %d >> %s 2>&1 &',
 				str_replace('Cronlog/etc', 'Cronlog/lib/run.php', Mage::getModuleDir('etc', 'Luigifab_Cronlog')),
-				$job->getId(), Mage::getIsDeveloperMode() ? 1 : 0));
+				$job->getId(),
+				Mage::getIsDeveloperMode() ? 1 : 0,
+				$dir.'/cron.log'));
 
 			sleep(2);
 
-			$job->load($job->getId());
-			if ($job->getData('status') != 'pending')
+			if ($job->load($job->getId())->getData('status') != 'pending')
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully started.', $job->getId()));
 
 			$this->_redirect('*/*/view', ['id' => $job->getId()]);
@@ -143,7 +155,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully canceled.', $id));
 			}
 		}
-		catch (Exception $e) {
+		catch (Throwable $e) {
 			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 		}
 
@@ -162,7 +174,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully deleted.', $id));
 			}
 		}
-		catch (Exception $e) {
+		catch (Throwable $e) {
 			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 		}
 

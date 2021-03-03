@@ -1,9 +1,9 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated M/20/08/2019
+ * Updated S/23/01/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -23,7 +23,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Form extends Mage_Adminhtml_
 
 		$form = new Varien_Data_Form([
 			'id'     => 'edit_form',
-			'action' => $this->getUrl('*/*/save'),
+			'action' => $this->getUrl('*/*/save', ['id' => $this->getRequest()->getParam('id')]),
 			'method' => 'post'
 		]);
 

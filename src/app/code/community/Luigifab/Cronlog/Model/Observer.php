@@ -1,9 +1,9 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated D/04/10/2020
+ * Updated M/09/02/2021
  *
- * Copyright 2012-2020 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -62,10 +62,10 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 	public function sendEmailReport($cron = null) {
 
 		$oldLocale = Mage::getSingleton('core/translate')->getLocale();
-		$newLocale = Mage::app()->getStore()->isAdmin() ? $oldLocale : Mage::getStoreConfig('general/locale/code');
+		$newLocale = Mage::app()->getStore()->isAdmin() ? $oldLocale : Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE);
 		$locales   = [];
 
-		// recherche des langues et des emails
+		// recherche des langues (@todo) et des emails
 		$emails = array_filter(preg_split('#\s+#', Mage::getStoreConfig('cronlog/email/recipient_email')));
 		foreach ($emails as $email) {
 			if (!in_array($email, ['hello@example.org', 'hello@example.com', '']))
@@ -82,15 +82,15 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			// recherche des dates
 			if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_MONTHLY) {
 				$frequency = $this->_('monthly');
-				$dates = $this->getDateRange('last_month');
+				$dates = $this->getDateRange('month');
 			}
 			else if ($frequency == Mage_Adminhtml_Model_System_Config_Source_Cron_Frequency::CRON_WEEKLY) {
 				$frequency = $this->_('weekly');
-				$dates = $this->getDateRange('last_week');
+				$dates = $this->getDateRange('week');
 			}
 			else {
 				$frequency = $this->_('daily');
-				$dates = $this->getDateRange('last_day');
+				$dates = $this->getDateRange('day');
 			}
 
 			// chargement des tâches cron
@@ -144,23 +144,15 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		// permet d'obtenir des semaines du lundi au dimanche
 		$day = $dateStart->toString(Zend_Date::WEEKDAY_8601) - 1;
 
-		if ($range == 'last_month') {
+		if ($range == 'month') {
 			$dateStart->setDay(3)->subMonth(1 * $coeff)->setDay(1);
 			$dateEnd->setDay(3)->subMonth(1 * $coeff)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
 		}
-		else if ($range == 'cur_week') {
-			$dateStart->subDay($day);
-			$dateEnd->subDay(1);
-		}
-		else if ($range == 'cur_month') {
-			$dateStart->setDay(1);
-			$dateEnd->subDay(1);
-		}
-		else if ($range == 'last_week') {
+		else if ($range == 'week') {
 			$dateStart->subDay($day + 7 * $coeff);
 			$dateEnd->subDay($day + 7 * $coeff - 6);
 		}
-		else if ($range == 'last_day') {
+		else if ($range == 'day') {
 			$dateStart->subDay(1);
 			$dateEnd->subDay(1);
 		}
@@ -179,7 +171,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 	private function sendReportToRecipients(string $locale, array $emails, array $vars = []) {
 
 		$vars['config'] = $this->getEmailUrl('adminhtml/system/config');
-		$vars['config'] = mb_substr($vars['config'], 0, mb_strripos($vars['config'], '/system/config'));
+		$vars['config'] = mb_substr($vars['config'], 0, mb_strrpos($vars['config'], '/system/config'));
 
 		foreach ($emails as $email) {
 
