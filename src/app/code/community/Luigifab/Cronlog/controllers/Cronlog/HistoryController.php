@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/02/02/2021
+ * Updated V/18/06/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -103,9 +103,9 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully scheduled.', $job->getId()));
 			}
 		}
-		catch (Throwable $e) {
+		catch (Throwable $t) {
 			Mage::getSingleton('adminhtml/session')->setFormData($this->getRequest()->getPost());
-			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+			Mage::getSingleton('adminhtml/session')->addError($t->getMessage());
 			$redirect = '*/*/new';
 		}
 
@@ -155,8 +155,8 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully canceled.', $id));
 			}
 		}
-		catch (Throwable $e) {
-			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+		catch (Throwable $t) {
+			Mage::getSingleton('adminhtml/session')->addError($t->getMessage());
 		}
 
 		$this->_redirect('*/*/index');
@@ -174,8 +174,8 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully deleted.', $id));
 			}
 		}
-		catch (Throwable $e) {
-			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+		catch (Throwable $t) {
+			Mage::getSingleton('adminhtml/session')->addError($t->getMessage());
 		}
 
 		$this->_redirect('*/*/index');

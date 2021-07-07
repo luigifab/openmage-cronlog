@@ -1,7 +1,7 @@
 <?php
 /**
  * Created V/23/05/2014
- * Updated V/12/02/2021
+ * Updated L/24/05/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -23,8 +23,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_
 
 		$msg = $this->checkRewrites();
 		if ($msg !== true)
-			return sprintf('<p class="box">%s %s <span class="right"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p>'.
-				'<p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
+			return sprintf('<p class="box">%s %s <span class="right"><a href="https://www.%s">%3$s</a> | ⚠ IPv6</span></p><p class="box" style="margin-top:-5px; color:white; background-color:#E60000;"><strong>%s</strong><br />%s</p>',
 				'Luigifab/Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/openmage/cronlog',
 				$this->__('INCOMPLETE MODULE INSTALLATION'),
 				$this->__('There is conflict (<em>%s</em>).', $msg));

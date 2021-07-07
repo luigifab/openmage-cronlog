@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated M/02/02/2021
+ * Updated V/18/06/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -68,13 +68,13 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 					$job->delete();
 			}
 		}
-		catch (Throwable $e) {
-			$msg = '<li class="error-msg"><ul><li>'.$e->getMessage().'</li></ul></li>';
+		catch (Throwable $t) {
+			$msg = '<li class="error-msg"><ul><li>'.$t->getMessage().'</li></ul></li>';
 		}
 
 		Mage::getConfig()->reinit(); // très important
 
-		$msg = empty($msg) ? '' : '<div id="messages" onclick="this.parentNode.removeChild(this);"><ul class="messages">'.$msg.'</ul></div> ';
+		$msg = empty($msg) ? '' : '<div id="messages" onclick="this.remove();"><ul class="messages">'.$msg.'</ul></div> ';
 		$blk = $this->getLayout()->createBlock('cronlog/adminhtml_manage_grid')->toHtml();
 
 		$this->getResponse()->setBody($msg.$blk);

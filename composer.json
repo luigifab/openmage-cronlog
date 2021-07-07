@@ -2,6 +2,7 @@
     "type": "magento-module",
     "name": "luigifab/openmage-cronlog",
     "description": "A module to show history and configuration of cron jobs for OpenMage.",
+    "keywords": ["openmage", "openmage-module"],
     "homepage": "https://github.com/luigifab/openmage-cronlog",
     "license": "GPL-2.0-or-later",
     "authors": [

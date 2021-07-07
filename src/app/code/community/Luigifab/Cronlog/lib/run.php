@@ -1,7 +1,7 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated M/09/02/2021
+ * Updated J/01/07/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -62,11 +62,11 @@ if (!empty($id)) {
 			$job->setExecutedAt(date('Y-m-d H:i:s'))->save();
 			call_user_func_array($callback, $arguments);
 			$job->setData('finished_at', date('Y-m-d H:i:s'));
-			$job->setData('status', 'success');
+			$job->setData('status', Mage_Cron_Model_Schedule::STATUS_SUCCESS);
 		}
-		catch (Throwable $e) {
+		catch (Throwable $t) {
 			$job->setData('status', Mage_Cron_Model_Schedule::STATUS_ERROR);
-			$job->setData('messages', $e->__toString());
+			$job->setData('messages', $t->__toString());
 		}
 
 		$job->save();
