@@ -8,7 +8,7 @@
 "Table size","Taille de la table"
 "Email reports","Rapports par courriel"
 "Separate addresses by a space.","Séparer les adresses par un espace."
-"Send an email now","Envoyer un email maintenant"
+"Send an email now","Envoyer un courriel maintenant"
 "See {{Cron jobs}}.","Voir {{Tâches cron}}."
 "INCOMPLETE MODULE INSTALLATION","INSTALLATION INCOMPLÈTE DU MODULE"
 "There is conflict (<em>%s</em>).","Il y a un conflit (<em lang=""en"">%s</em>)."

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated V/30/08/2019
+ * Updated J/22/07/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -35,7 +35,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Size extends Mage_Adminhtml_Block_
 			->where('table_name = ?', $database->getTableName('cron_schedule'));
 
 		$element->setValue((float) $read->fetchOne($select));
-
 		return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $this->helper('cronlog')->getNumberToHumanSize($element->getValue()));
 	}
 }

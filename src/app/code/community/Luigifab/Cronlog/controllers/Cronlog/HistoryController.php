@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/18/06/2021
+ * Updated J/05/08/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -62,7 +62,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 	public function viewAction() {
 
-		$job = Mage::getModel('cron/schedule')->load((int) $this->getRequest()->getParam('id'));
+		$job = Mage::getModel('cron/schedule')->load((int) $this->getRequest()->getParam('id', 0));
 
 		if (!empty($job->getId())) {
 			Mage::register('current_job', $job);
@@ -92,7 +92,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				$job->setData('created_at', date('Y-m-d H:i:s'));
 				$job->setData('scheduled_at', $dateScheduled->toString(Zend_Date::RFC_3339));
 
-				if (is_numeric($old = $this->getRequest()->getParam('id'))) {
+				if (!empty($old = (int) $this->getRequest()->getParam('id', 0))) {
 					$old = Mage::getModel('cron/schedule')->load($old);
 					if ($old->getData('job_code') == $code)
 						$job->setData('messages', $old->getData('messages'));
@@ -114,7 +114,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 	public function runAction() {
 
-		$job = Mage::getModel('cron/schedule')->load((int) $this->getRequest()->getParam('id'));
+		$job = Mage::getModel('cron/schedule')->load((int) $this->getRequest()->getParam('id', 0));
 
 		if (!empty($job->getId()) && ($job->getData('status') == 'pending')) {
 

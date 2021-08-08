@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated M/09/02/2021
+ * Updated D/18/07/2021
  *
  * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -135,7 +135,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		Mage::getSingleton('core/translate')->setLocale($oldLocale)->init('adminhtml', true);
 	}
 
-	private function getDateRange(string $range, int $coeff = 1) {
+	private function getDateRange(string $range, int $coef = 1) {
 
 		$dateStart = Mage::getSingleton('core/locale')->date()->setHour(0)->setMinute(0)->setSecond(0);
 		$dateEnd   = Mage::getSingleton('core/locale')->date()->setHour(23)->setMinute(59)->setSecond(59);
@@ -145,12 +145,12 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$day = $dateStart->toString(Zend_Date::WEEKDAY_8601) - 1;
 
 		if ($range == 'month') {
-			$dateStart->setDay(3)->subMonth(1 * $coeff)->setDay(1);
-			$dateEnd->setDay(3)->subMonth(1 * $coeff)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
+			$dateStart->setDay(3)->subMonth(1 * $coef)->setDay(1);
+			$dateEnd->setDay(3)->subMonth(1 * $coef)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
 		}
 		else if ($range == 'week') {
-			$dateStart->subDay($day + 7 * $coeff);
-			$dateEnd->subDay($day + 7 * $coeff - 6);
+			$dateStart->subDay($day + 7 * $coef);
+			$dateEnd->subDay($day + 7 * $coef - 6);
 		}
 		else if ($range == 'day') {
 			$dateStart->subDay(1);
