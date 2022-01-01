@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/27/06/2015
- * Updated S/16/09/2017
+ * Updated J/04/11/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -26,6 +26,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Number extends Mage_Adminhtml_Bloc
 
 	protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element) {
 		$element->setValue(Mage::getResourceModel('cron/schedule_collection')->getSize());
-		return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $element->getValue());
+		return sprintf('<span id="%s">%s</span>', $element->getHtmlId(), $this->helper('cronlog')->getNumber($element->getValue()));
 	}
 }

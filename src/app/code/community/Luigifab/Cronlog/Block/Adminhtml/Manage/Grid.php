@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated D/07/02/2021
+ * Updated V/22/10/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -124,7 +124,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 
 	public function decorateLink($value, $row, $column, $isExport) {
 		return $row->getData('is_read_only') ? '' : sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>',
-			'$(\'cronlog_grid_rw_table\').up().up().up()',
+			'document.getElementById(\'cronlog_grid_rw_table\').parentNode.parentNode.parentNode',
 			$this->getUrl('*/*/save', ['code' => $row->getData('job_code')]),
 			$this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable'));
 	}

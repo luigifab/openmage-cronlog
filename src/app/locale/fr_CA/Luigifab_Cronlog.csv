@@ -3,7 +3,6 @@
 "History lifetime","Durée de vie de l'historique"
 "Replaces the history lifetime of the cron jobs (see {{System/Cron}}).","Remplace la durée de vie de l'historique des tâches cron (voir {{Système/Cron}})."
 "Number of jobs per page","Nombre de tâches par page"
-"Use a text filter","Utiliser un filtre texte"
 "Number of jobs","Nombre de tâches"
 "Table size","Taille de la table"
 "Email reports","Rapports par courriel"

@@ -1,9 +1,9 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated J/01/07/2021
+ * Updated J/25/11/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -40,12 +40,12 @@ if (!empty($id)) {
 	Mage::app()->addEventArea('crontab');
 	Mage::setIsDeveloperMode($dev);
 
-	$job = Mage::getModel('cron/schedule')->load($id);
-	if (!empty($job->getId()) && ($job->getData('status') == 'pending')) {
+	$cron = Mage::getModel('cron/schedule')->load($id);
+	if (!empty($cron->getId()) && ($cron->getData('status') == 'pending')) {
 
 		try {
-			// copie de Mage_Cron_Model_Observer::_processJob($job, $jobConfig, $isAlways = false) sauf les always
-			$jobConfig = Mage::getConfig()->getNode('crontab/jobs')->{$job->getData('job_code')};
+			// copie de Mage_Cron_Model_Observer::_processJob($cron, $jobConfig, $isAlways = false) sauf les always
+			$jobConfig = Mage::getConfig()->getNode('crontab/jobs')->{$cron->getData('job_code')};
 
 			if ($jobConfig->run->model) {
 				if (!preg_match(Mage_Cron_Model_Observer::REGEX_RUN_MODEL, (string) $jobConfig->run->model, $run))
@@ -53,23 +53,23 @@ if (!empty($id)) {
 				if (!($model = Mage::getModel($run[1])) || !method_exists($model, $run[2]))
 					Mage::throwException(Mage::helper('cron')->__('Invalid callback: %s::%s does not exist', $run[1], $run[2]));
 				$callback  = [$model, $run[2]];
-				$arguments = [$job];
+				$arguments = [$cron];
 			}
 			if (empty($callback)) {
 				Mage::throwException(Mage::helper('cron')->__('No callbacks found'));
 			}
 
-			$job->setExecutedAt(date('Y-m-d H:i:s'))->save();
+			$cron->setExecutedAt(date('Y-m-d H:i:s'))->save();
 			call_user_func_array($callback, $arguments);
-			$job->setData('finished_at', date('Y-m-d H:i:s'));
-			$job->setData('status', Mage_Cron_Model_Schedule::STATUS_SUCCESS);
+			$cron->setData('finished_at', date('Y-m-d H:i:s'));
+			$cron->setData('status', 'success');
 		}
 		catch (Throwable $t) {
-			$job->setData('status', Mage_Cron_Model_Schedule::STATUS_ERROR);
-			$job->setData('messages', $t->__toString());
+			$cron->setData('status', 'error');
+			$cron->setData('messages', $t->__toString());
 		}
 
-		$job->save();
+		$cron->save();
 		exit(0);
 	}
 }

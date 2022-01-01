@@ -1,9 +1,9 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated D/18/07/2021
+ * Updated J/09/12/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -62,7 +62,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 	public function sendEmailReport($cron = null) {
 
 		$oldLocale = Mage::getSingleton('core/translate')->getLocale();
-		$newLocale = Mage::app()->getStore()->isAdmin() ? $oldLocale : Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE);
+		$newLocale = Mage::app()->getStore()->isAdmin() ? $oldLocale : Mage::getStoreConfig('general/locale/code');
 		$locales   = [];
 
 		// recherche des langues (@todo) et des emails
@@ -94,13 +94,13 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			}
 
 			// chargement des tâches cron
-			$jobs = Mage::getResourceModel('cron/schedule_collection');
-			$jobs->addFieldToFilter('created_at', [
-				'datetime' => true,
-				'from' => $dates['start']->toString(Zend_Date::RFC_3339),
-				'to'   => $dates['end']->toString(Zend_Date::RFC_3339)
-			]);
-			$jobs->setOrder('schedule_id', 'desc');
+			$jobs = Mage::getResourceModel('cron/schedule_collection')
+				->addFieldToFilter('created_at', [
+					'datetime' => true,
+					'from' => $dates['start']->toString(Zend_Date::RFC_3339),
+					'to'   => $dates['end']->toString(Zend_Date::RFC_3339)
+				])
+				->setOrder('schedule_id', 'desc');
 
 			// recherche des erreurs
 			foreach ($jobs as $job) {
@@ -113,7 +113,9 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 					'<a href="'.$this->getEmailUrl('adminhtml/cronlog_history/view', ['id' => $job->getId()]).'" style="font-weight:700; color:#E41101; text-decoration:none;">'.$this->__('Job %d: %s', $job->getId(), $job->getData('job_code')).'</a>',
 					$this->_('Scheduled At: %s', $this->formatDate($job->getData('scheduled_at'))),
 					$this->__('Status: %s (%s)', $this->__(ucfirst($job->getData('status'))), $job->getData('status')),
-					'<pre lang="mul" style="margin:0.5em; font-size:0.9em; color:#767676; white-space:pre-wrap;">'.$job->getMessages().'</pre>'
+					'<pre lang="mul" style="margin:0.5em; font-size:0.9em; color:#767676; white-space:pre-wrap;">'.
+						$job->getData('messages').
+					'</pre>'
 				);
 			}
 
@@ -135,7 +137,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		Mage::getSingleton('core/translate')->setLocale($oldLocale)->init('adminhtml', true);
 	}
 
-	private function getDateRange(string $range, int $coef = 1) {
+	protected function getDateRange(string $range, int $coef = 1) {
 
 		$dateStart = Mage::getSingleton('core/locale')->date()->setHour(0)->setMinute(0)->setSecond(0);
 		$dateEnd   = Mage::getSingleton('core/locale')->date()->setHour(23)->setMinute(59)->setSecond(59);
@@ -145,8 +147,8 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		$day = $dateStart->toString(Zend_Date::WEEKDAY_8601) - 1;
 
 		if ($range == 'month') {
-			$dateStart->setDay(3)->subMonth(1 * $coef)->setDay(1);
-			$dateEnd->setDay(3)->subMonth(1 * $coef)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
+			$dateStart->setDay(3)->subMonth($coef)->setDay(1);
+			$dateEnd->setDay(3)->subMonth($coef)->setDay($dateEnd->toString(Zend_Date::MONTH_DAYS));
 		}
 		else if ($range == 'week') {
 			$dateStart->subDay($day + 7 * $coef);
@@ -160,7 +162,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 		return ['start' => $dateStart, 'end' => $dateEnd];
 	}
 
-	private function getEmailUrl(string $url, array $params = []) {
+	protected function getEmailUrl(string $url, array $params = []) {
 
 		if (Mage::getStoreConfigFlag(Mage_Core_Model_Store::XML_PATH_USE_REWRITES))
 			return preg_replace('#/[^/]+\.php\d*/#', '/', Mage::helper('adminhtml')->getUrl($url, $params));
@@ -168,7 +170,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 			return preg_replace('#/[^/]+\.php(\d*)/#', '/index.php$1/', Mage::helper('adminhtml')->getUrl($url, $params));
 	}
 
-	private function sendReportToRecipients(string $locale, array $emails, array $vars = []) {
+	protected function sendReportToRecipients(string $locale, array $emails, array $vars = []) {
 
 		$vars['config'] = $this->getEmailUrl('adminhtml/system/config');
 		$vars['config'] = mb_substr($vars['config'], 0, mb_strrpos($vars['config'], '/system/config'));

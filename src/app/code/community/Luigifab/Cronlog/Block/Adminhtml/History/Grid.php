@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/07/02/2021
+ * Updated V/05/11/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -51,8 +51,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		$this->addColumn('job_code', [
 			'header'    => $this->__('Job'),
 			'index'     => 'job_code',
-			'type'      => 'options',
 			'align'     => 'center',
+			'filter'    => 'cronlog/adminhtml_history_filter',
 			'frame_callback' => [$this, 'decorateCode']
 		]);
 
@@ -140,32 +140,23 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		// recherche des codes
 		$database = Mage::getSingleton('core/resource');
-		$read  = $database->getConnection('core_read');
+		$reader   = $database->getConnection('core_read');
 
-		$codes = $read->fetchAssoc($read->select()->distinct()->from($database->getTableName('cron_schedule'), 'job_code'));
+		$codes = $reader->fetchAssoc($reader->select()->distinct()->from($database->getTableName('cron_schedule'), 'job_code'));
 		$codes = array_keys($codes);
 		$codes = array_combine($codes, $codes);
 
 		ksort($codes);
+		$this->getColumn('job_code')->setData('options', $codes);
 
-		// mode texte ou mode liste déroulante
-		// mode texte si configuré ou si la recherche n'est pas dans la liste déroulante, sinon mode liste
+		// mode texte et mode liste déroulante, 2 en 1
 		$filter = $this->getParam($this->getVarNameFilter(), null);
 		if (is_string($filter) || !empty($this->_defaultFilter))
 			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));
 
-		if (Mage::getStoreConfigFlag('cronlog/general/textmode') || (!empty($filter['job_code']) && !in_array($filter['job_code'], $codes))) {
-			// remplace la colonne existante
-			$this->addColumnAfter('job_code', [
-				'header'    => $this->__('Job'),
-				'index'     => 'job_code',
-				'align'     => 'center',
-				'frame_callback' => [$this, 'decorateCode']
-			], 'schedule_id');
-		}
-		else {
-			$this->getColumn('job_code')->setData('options', $codes);
-		}
+		$this->getColumn('job_code')->getFilter()
+			->setData('current_filter',  empty($filter['job_code']) ? null : $filter['job_code'])
+			->setData('current_in_list', empty($filter['job_code']) ? false : in_array($filter['job_code'], $codes));
 
 		return parent::_prepareColumns();
 	}

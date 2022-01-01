@@ -1,9 +1,9 @@
 <?php
 /**
  * Created V/23/05/2014
- * Updated L/24/05/2021
+ * Updated J/30/09/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -32,7 +32,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Help extends Mage_Adminhtml_Block_
 			'Luigifab/Cronlog', $this->helper('cronlog')->getVersion(), 'luigifab.fr/openmage/cronlog');
 	}
 
-	private function checkRewrites() {
+	protected function checkRewrites() {
 
 		$rewrites = [
 			['model' => 'cron/observer'],

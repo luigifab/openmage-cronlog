@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/09/06/2020
+ * Updated V/15/10/2021
  *
- * Copyright 2012-2021 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -23,13 +23,13 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		parent::__construct();
 
-		$job     = Mage::registry('current_job');
-		$params  = ['id' => $job->getId()];
+		$cron    = Mage::registry('current_job');
+		$params  = ['id' => $cron->getId()];
 		$confirm = $this->helper('cronlog')->escapeEntities($this->__('Are you sure?'), true);
 
 		$this->_controller = 'adminhtml_history';
 		$this->_blockGroup = 'cronlog';
-		$this->_headerText = $this->__('Cron job number %d - %s', $job->getId(), $job->getData('job_code'));
+		$this->_headerText = $this->__('Cron job number %d - %s', $cron->getId(), $cron->getData('job_code'));
 
 		$this->_removeButton('add');
 
@@ -47,14 +47,14 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 		$this->_addButton('restart', [
 			'label'   => $this->__('Restart the job'),
-			'onclick' => "setLocation('".$this->getUrl('*/*/new', ['id' => $job->getId(), 'code' => $job->getData('job_code')])."');",
+			'onclick' => "setLocation('".$this->getUrl('*/*/new', ['id' => $cron->getId(), 'code' => $cron->getData('job_code')])."');",
 			'class'   => 'add'
 		]);
 
-		if ($job->getData('status') == 'pending') {
+		if ($cron->getData('status') == 'pending') {
 			$this->_addButton('run', [
 				'label'   => $this->__('Run the job'),
-				'onclick' => "confirmSetLocation('".$confirm."', '".$this->getUrl('*/*/run', ['id' => $job->getId()])."');",
+				'onclick' => "confirmSetLocation('".$confirm."', '".$this->getUrl('*/*/run', ['id' => $cron->getId()])."');",
 				'class'   => 'save'
 			]);
 		}
@@ -62,48 +62,48 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$job   = Mage::registry('current_job');
-		$class = 'class="cronlog-status grid-'.$job->getData('status').'"';
+		$cron  = Mage::registry('current_job');
+		$class = 'class="cronlog-status grid-'.$cron->getData('status').'"';
 		$help  = $this->helper('cronlog');
 
 		// status
-		if (in_array($job->getData('status'), ['success', 'error']))
-			$status = $this->helper('cronlog')->_(ucfirst($job->getData('status')));
+		if (in_array($cron->getData('status'), ['success', 'error']))
+			$status = $this->helper('cronlog')->_(ucfirst($cron->getData('status')));
 		else
-			$status = $this->__(ucfirst($job->getData('status')));
+			$status = $this->__(ucfirst($cron->getData('status')));
 
 		// html
 		$html   = [];
 		$html[] = '<div class="content">';
 		$html[] = '<div>';
 		$html[] = '<ul>';
-		$html[] = '<li>'.$help->_('Created At: %s', $help->formatDate($job->getData('created_at'))).'</li>';
+		$html[] = '<li>'.$help->_('Created At: %s', $help->formatDate($cron->getData('created_at'))).'</li>';
 
-		if (!in_array($job->getData('finished_at'), ['', '0000-00-00 00:00:00', null])) {
+		if (!in_array($cron->getData('finished_at'), ['', '0000-00-00 00:00:00', null])) {
 
-			$html[] = '<li>'.$help->_('Scheduled At: %s', $help->formatDate($job->getData('scheduled_at'))).'</li>';
-			$html[] = '<li><strong>'.$help->_('Executed At: %s', $help->formatDate($job->getData('executed_at'))).'</strong></li>';
-			$html[] = '<li>'.$help->_('Finished At: %s', $help->formatDate($job->getData('finished_at'))).'</li>';
+			$html[] = '<li>'.$help->_('Scheduled At: %s', $help->formatDate($cron->getData('scheduled_at'))).'</li>';
+			$html[] = '<li><strong>'.$help->_('Executed At: %s', $help->formatDate($cron->getData('executed_at'))).'</strong></li>';
+			$html[] = '<li>'.$help->_('Finished At: %s', $help->formatDate($cron->getData('finished_at'))).'</li>';
 
-			$duration = $help->getHumanDuration($job->getData('executed_at'), $job->getData('finished_at'));
+			$duration = $help->getHumanDuration($cron->getData('executed_at'), $cron->getData('finished_at'));
 			if (!empty($duration))
 				$html[] = '<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}
-		else if (in_array($job->getData('executed_at'), ['', '0000-00-00 00:00:00', null])) {
-			$html[] = '<li><strong>'.$help->_('Scheduled At: %s', $help->formatDate($job->getData('scheduled_at'))).'</strong></li>';
+		else if (in_array($cron->getData('executed_at'), ['', '0000-00-00 00:00:00', null])) {
+			$html[] = '<li><strong>'.$help->_('Scheduled At: %s', $help->formatDate($cron->getData('scheduled_at'))).'</strong></li>';
 		}
 		else {
-			$html[] = '<li>'.$help->_('Scheduled At: %s', $help->formatDate($job->getData('scheduled_at'))).'</li>';
-			$html[] = '<li><strong>'.$help->_('Executed At: %s', $help->formatDate($job->getData('executed_at'))).'</strong></li>';
+			$html[] = '<li>'.$help->_('Scheduled At: %s', $help->formatDate($cron->getData('scheduled_at'))).'</li>';
+			$html[] = '<li><strong>'.$help->_('Executed At: %s', $help->formatDate($cron->getData('executed_at'))).'</strong></li>';
 		}
 
 		$html[] = '</ul>';
 		$html[] = '<ul>';
 		$html[] = '<li><strong>'.$this->__('Status: <span %s>%s</span>', $class, $status).'</strong></li>';
-		$html[] = '<li>'.$this->__('Code: %s', $job->getData('job_code')).'</li>';
+		$html[] = '<li>'.$this->__('Code: %s', $cron->getData('job_code')).'</li>';
 		$html[] = '</ul>';
 		$html[] = '</div>';
-		$html[] = '<pre lang="mul">'.$help->escapeEntities($job->getMessages()).'</pre>';
+		$html[] = '<pre lang="mul">'.$help->escapeEntities($cron->getData('messages')).'</pre>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);

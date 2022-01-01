@@ -33,6 +33,12 @@
         "ext-json": "*",
         "ext-curl": "*"
     },
+    "replace": {
+        "fbrnc/aoe_scheduler": "*",
+        "aoepeople/aoe_scheduler": "*",
+        "openmage-module-fostering/aoe_scheduler": "*",
+        "openmage-module-fostering/centerkom_scheduler": "*"
+    },
     "minimum-stability": "dev",
     "extra": {
         "map": [
