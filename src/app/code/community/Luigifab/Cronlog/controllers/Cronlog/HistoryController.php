@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/15/10/2021
+ * Updated J/27/01/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -75,11 +75,11 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 
 	public function saveAction() {
 
-		$redirect = '*/*/index';
-
 		try {
-			if (!Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
-
+			if (Mage::getSingleton('admin/session')->isFirstPageAfterLogin()) {
+				$this->_redirect('*/*/new');
+			}
+			else {
 				if (empty($code = $this->getRequest()->getPost('job_code')))
 					Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'job_code'));
 
@@ -99,17 +99,19 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 				}
 
 				$cron->save();
-
 				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Job number %d has been successfully scheduled.', $cron->getId()));
+
+				if (empty($this->getRequest()->getParam('back')))
+					$this->_redirect('*/*/view', ['id' => $cron->getId()]);
+				else
+					$this->_redirect('*/*/new', ['code' => $code]);
 			}
 		}
 		catch (Throwable $t) {
 			Mage::getSingleton('adminhtml/session')->setFormData($this->getRequest()->getPost());
 			Mage::getSingleton('adminhtml/session')->addError($t->getMessage());
-			$redirect = '*/*/new';
+			$this->_redirect('*/*/new');
 		}
-
-		$this->_redirect($redirect);
 	}
 
 	public function runAction() {

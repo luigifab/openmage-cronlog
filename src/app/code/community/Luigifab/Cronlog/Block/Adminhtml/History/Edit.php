@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated J/05/08/2021
+ * Updated D/26/12/2021
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -31,7 +31,15 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit extends Mage_Adminhtml_Block
 		$this->_removeButton('delete');
 		$this->_updateButton('save', 'label', $this->__('Add'));
 
-		if (!empty($id = (int) $this->getRequest()->getParam('id', 0)) && !empty($this->getRequest()->getParam('code')))
+		if (!empty($id = (int) $this->getRequest()->getParam('id', 0)) && !empty($this->getRequest()->getParam('code'))) {
 			$this->_updateButton('back', 'onclick', "setLocation('".$this->getUrl('*/*/view', ['id' => $id])."');");
+		}
+		else {
+			$this->_addButton('save_and_continue', [
+				'label'   => $this->__('Add and Continue'),
+				'onclick' => "editForm.submit(document.getElementById('edit_form').getAttribute('action') + 'back/new/');",
+				'class'   => 'save'
+			], 1);
+		}
 	}
 }

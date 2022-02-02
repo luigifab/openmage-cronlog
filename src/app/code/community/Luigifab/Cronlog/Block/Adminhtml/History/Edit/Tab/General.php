@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated M/20/08/2019
+ * Updated D/26/12/2021
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -36,10 +36,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 		return true;
 	}
 
-
 	protected function _prepareForm() {
 
-		// formulaire
 		$form = new Varien_Data_Form();
 		$this->setForm($form);
 
@@ -52,7 +50,10 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 			'name'     => 'job_code',
 			'class'    => 'required-entry',
 			'required' => true,
-			'values'   => Mage::getSingleton('cronlog/source_jobs')->toOptionArray()
+			'values'   => array_merge(
+				[['value' => '', 'label' => '']],
+				Mage::getSingleton('cronlog/source_jobs')->toOptionArray()
+			)
 		]);
 
 		$fieldset->addField('scheduled_at', 'select', [
@@ -71,9 +72,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 			]
 		]);
 
-		// sélection par défaut
 		$session = Mage::getSingleton('adminhtml/session')->getFormData();
-
 		if (is_array($session) && !empty($session['job_code']) && !empty($session['scheduled_at']))
 			$form->setValues($session);
 		else if (!empty($this->getRequest()->getParam('code')))
