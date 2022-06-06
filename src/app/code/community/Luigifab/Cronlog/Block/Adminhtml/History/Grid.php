@@ -1,7 +1,7 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/05/11/2021
+ * Updated V/20/05/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -39,13 +39,24 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		return parent::_prepareCollection();
 	}
 
+	protected function _addColumnFilterToCollection($column) {
+
+		if (($column->getId() == 'job_code') && !empty($words = $column->getFilter()->getData('search_messages'))) {
+			$words = array_filter(explode(' ', $words));
+			foreach ($words as $word)
+				$this->getCollection()->addFieldToFilter('messages', ['like' => '%'.$word.'%']);
+		}
+
+		return parent::_addColumnFilterToCollection($column);
+	}
+
 	protected function _prepareColumns() {
 
 		$this->addColumn('schedule_id', [
 			'header'    => $this->__('Id'),
 			'index'     => 'schedule_id',
 			'align'     => 'center',
-			'width'     => '80px'
+			'width'     => '80px',
 		]);
 
 		$this->addColumn('job_code', [
@@ -53,7 +64,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'index'     => 'job_code',
 			'align'     => 'center',
 			'filter'    => 'cronlog/adminhtml_history_filter',
-			'frame_callback' => [$this, 'decorateCode']
+			'frame_callback' => [$this, 'decorateCode'],
 		]);
 
 		$this->addColumn('created_at', [
@@ -63,7 +74,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => [$this, 'decorateDate']
+			'frame_callback' => [$this, 'decorateDate'],
 		]);
 
 		$this->addColumn('scheduled_at', [
@@ -73,7 +84,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => [$this, 'decorateDate']
+			'frame_callback' => [$this, 'decorateDate'],
 		]);
 
 		$this->addColumn('executed_at', [
@@ -83,7 +94,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => [$this, 'decorateDate']
+			'frame_callback' => [$this, 'decorateDate'],
 		]);
 
 		$this->addColumn('finished_at', [
@@ -93,7 +104,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'format'    => Mage::getSingleton('core/locale')->getDateTimeFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
 			'align'     => 'center',
 			'width'     => '150px',
-			'frame_callback' => [$this, 'decorateDate']
+			'frame_callback' => [$this, 'decorateDate'],
 		]);
 
 		$this->addColumn('duration', [
@@ -103,7 +114,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 			'width'     => '60px',
 			'filter'    => false,
 			'sortable'  => false,
-			'frame_callback' => [$this, 'decorateDuration']
+			'frame_callback' => [$this, 'decorateDuration'],
 		]);
 
 		$this->addColumn('status', [
@@ -115,10 +126,10 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				'running' => $this->__('Running'),
 				'error'   => $this->helper('cronlog')->_('Error'),
 				'missed'  => $this->__('Missed'),
-				'success' => $this->helper('cronlog')->_('Success')
+				'success' => $this->helper('cronlog')->_('Success'),
 			],
 			'width'     => '125px',
-			'frame_callback' => [$this, 'decorateStatus']
+			'frame_callback' => [$this, 'decorateStatus'],
 		]);
 
 		$this->addColumn('action', [
@@ -128,14 +139,14 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 				[
 					'caption' => $this->__('View'),
 					'url'     => ['base' => '*/*/view'],
-					'field'   => 'id'
-				]
+					'field'   => 'id',
+				],
 			],
 			'align'     => 'center',
 			'width'     => '55px',
 			'filter'    => false,
 			'sortable'  => false,
-			'is_system' => true
+			'is_system' => true,
 		]);
 
 		// recherche des codes
@@ -156,7 +167,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 
 		$this->getColumn('job_code')->getFilter()
 			->setData('current_filter',  empty($filter['job_code']) ? null : $filter['job_code'])
-			->setData('current_in_list', empty($filter['job_code']) ? false : in_array($filter['job_code'], $codes));
+			->setData('current_in_list', empty($filter['job_code']) ? false : in_array($filter['job_code'], $codes))
+			->setData('search_messages', empty($filter['job_code_msg']) ? false : $filter['job_code_msg']);
 
 		return parent::_prepareColumns();
 	}

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created V/05/11/2021
- * Updated V/05/11/2021
+ * Updated V/27/03/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -21,9 +21,14 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Filter extends Mage_Adminhtml_Blo
 
 	public function getHtml() {
 
-		$value = $this->getData('current_in_list') ? '' : $this->getEscapedValue();
+		$value  = $this->getData('current_in_list') ? '' : $this->getEscapedValue();
+		$search = $this->getData('search_messages');
+
 		return str_replace('<select', '<select onchange="this.parentNode.querySelector(\'input\').value = \'\';"', parent::getHtml()).
-			'<div class="field-100" style="margin-top:3px;"><input type="text" name="'.$this->_getHtmlName().'" id="'.$this->_getHtmlId().'_txt" value="'.$value.'" class="input-text no-changes" /></div>';
+			'<div style="display:flex; margin-top:3px; overflow:hidden;">'.
+				'<input type="text" name="'.$this->_getHtmlName().'" id="'.$this->_getHtmlId().'_txt" value="'.$value.'" class="input-text no-changes" placeholder="code" style="margin-right:3px; width:50%;" />'.
+				'<input type="text" name="'.$this->_getHtmlName().'_msg" id="'.$this->_getHtmlId().'_msg" value="'.$search.'" class="input-text no-changes" placeholder="message" style="width:50%;" />'.
+			'</div>';
 	}
 
 	public function getCondition() {

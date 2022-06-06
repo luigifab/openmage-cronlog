@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated D/07/02/2021
+ * Updated S/19/02/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -42,7 +42,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 			'header'    => $this->__('Module name'),
 			'index'     => 'module',
 			'filter'    => false,
-			'sortable'  => false
+			'sortable'  => false,
 		]);
 
 		$this->addColumn('job_code', [
@@ -50,14 +50,14 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 			'index'     => 'job_code',
 			'width'     => '30%',
 			'filter'    => false,
-			'sortable'  => false
+			'sortable'  => false,
 		]);
 
 		$this->addColumn('cron_expr', [
 			'header'    => $this->__('Configuration'),
 			'index'     => 'cron_expr',
 			'filter'    => false,
-			'sortable'  => false
+			'sortable'  => false,
 		]);
 
 		$this->addColumn('model', [
@@ -66,7 +66,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false,
-			'frame_callback' => [$this, 'decorateModel']
+			'frame_callback' => [$this, 'decorateModel'],
 		]);
 
 		$this->addColumn('status', [
@@ -75,12 +75,12 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 			'type'      => 'options',
 			'options'   => [
 				'enabled'  => $this->helper('cronlog')->_('Enabled'),
-				'disabled' => $this->helper('cronlog')->_('Disabled')
+				'disabled' => $this->helper('cronlog')->_('Disabled'),
 			],
 			'width'     => '120px',
 			'filter'    => false,
 			'sortable'  => false,
-			'frame_callback' => [$this, 'decorateStatus']
+			'frame_callback' => [$this, 'decorateStatus'],
 		]);
 
 		$this->addColumn('action', [
@@ -89,7 +89,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 			'width'     => '85px',
 			'filter'    => false,
 			'sortable'  => false,
-			'is_system' => true
+			'is_system' => true,
 		]);
 
 		return parent::_prepareColumns();

@@ -1,6 +1,6 @@
 /**
  * Created W/29/02/2012
- * Updated M/09/02/2021
+ * Updated J/26/05/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -19,6 +19,7 @@
 /* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& global &&& */
 body.adminhtml-cronlog-manage-index h3.icon-head, body.adminhtml-cronlog-history-index h3.icon-head,
 body.adminhtml-cronlog-history-view h3.icon-head, body.adminhtml-cronlog-history-new h3.icon-head {
+	min-height:19px; padding-left:22px;
 	background:url("../../../images/fam_calendar.gif") no-repeat left center;
 }
 

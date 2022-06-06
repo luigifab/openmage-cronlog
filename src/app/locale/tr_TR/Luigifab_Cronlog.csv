@@ -1,6 +1,7 @@
 "%d minute","%d dakika"
 "%d minutes","%d dakika"
 "Duration","Süre"
+" Error","Hata"
 "Duration: %s","Süre : %s"
 "Status: <span %s>%s</span>","Durum : <span %s>%s</span>"
 " monthly","ayda bir"

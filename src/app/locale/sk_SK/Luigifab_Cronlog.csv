@@ -1,6 +1,7 @@
 "%d minute","%d minúta"
 "%d minutes","%d minút"
 "Duration","Trvanie"
+" Error","Chyba"
 "Duration: %s","Trvanie: %s"
 "Status: <span %s>%s</span>","Stav: <span %s>%s</span>"
 " monthly","mesačne"

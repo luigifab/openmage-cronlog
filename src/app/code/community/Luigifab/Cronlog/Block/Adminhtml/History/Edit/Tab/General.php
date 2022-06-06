@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated D/26/12/2021
+ * Updated S/19/02/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -53,7 +53,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 			'values'   => array_merge(
 				[['value' => '', 'label' => '']],
 				Mage::getSingleton('cronlog/source_jobs')->toOptionArray()
-			)
+			),
 		]);
 
 		$fieldset->addField('scheduled_at', 'select', [
@@ -68,8 +68,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 				['value' => 15, 'label' => $this->__('%d minutes', 15)],
 				['value' => 30, 'label' => $this->__('%d minutes', 30)],
 				['value' => 45, 'label' => $this->__('%d minutes', 45)],
-				['value' => 60, 'label' => $this->__('%d minutes', 60)]
-			]
+				['value' => 60, 'label' => $this->__('%d minutes', 60)],
+			],
 		]);
 
 		$session = Mage::getSingleton('adminhtml/session')->getFormData();

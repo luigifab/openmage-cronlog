@@ -1,4 +1,5 @@
 "Duration","Тривалість"
+" Error","Помилка"
 "Duration: %s","Тривалість: %s"
 "Status: <span %s>%s</span>","Статус: <span %s>%s</span>"
 "%s kB","%s кБ"
@@ -8,3 +9,4 @@
 " weekly","щотижнево"
 " daily","щоденно"
 "Status: %s (%s)","Статус: %s (<span lang=""en"">%s</span>)"
+"%d days","%d днів"

@@ -1,6 +1,7 @@
 "%d minute","%d минута"
 "%d minutes","%d минут"
 "Duration","Длительность"
+" Error","Ошибка"
 "Duration: %s","Длительность: %s"
 "Status: <span %s>%s</span>","Статус: <span %s>%s</span>"
 "%s kB","%s Кб"

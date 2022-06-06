@@ -1,4 +1,5 @@
 "Duration","長さ"
+" Error","エラー"
 "Duration: %s","長さ：%s"
 "Status: <span %s>%s</span>","状態：<span %s>%s</span>"
 "%s kB","%s ko"
