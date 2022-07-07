@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/19/02/2022
+ * Updated D/26/06/2022
  *
  * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://www.luigifab.fr/openmage/cronlog
@@ -46,9 +46,8 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 		]);
 
 		$this->addColumn('job_code', [
-			'header'    => $this->__('Read-only job'),
+			'header'    => $this->__('Job'),
 			'index'     => 'job_code',
-			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false,
 		]);
@@ -63,7 +62,6 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Gridro extends Mage_Adminhtml_Bloc
 		$this->addColumn('model', [
 			'header'    => 'Model',
 			'index'     => 'model',
-			'width'     => '30%',
 			'filter'    => false,
 			'sortable'  => false,
 			'frame_callback' => [$this, 'decorateModel'],
