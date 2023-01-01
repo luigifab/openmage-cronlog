@@ -3,8 +3,8 @@
  * Created W/29/02/2012
  * Updated M/28/02/2017
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -27,7 +27,7 @@
 				<Mage_Adminhtml />
 				<Mage_Cron />
 			</depends>
-			<!-- see https://www.luigifab.fr/openmage/modules for more information -->
+			<!-- see https://github.com/luigifab/openmage-modules for more information -->
 			<update>https://www.luigifab.fr/openmage/rss.xml</update>
 		</Luigifab_Cronlog>
 	</modules>

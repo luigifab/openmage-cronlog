@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated M/20/08/2019
+ * Updated D/11/12/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -32,7 +32,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History extends Mage_Adminhtml_Block_Widg
 		$this->_addButton('config', [
 			'label'   => $this->__('Manage cron jobs'),
 			'onclick' => "setLocation('".$this->getUrl('*/cronlog_manage/index')."');",
-			'class'   => 'go'
+			'class'   => 'go',
 		]);
 	}
 }

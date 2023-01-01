@@ -1,10 +1,10 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated J/25/11/2021
+ * Updated S/30/07/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -20,7 +20,7 @@
 if (PHP_SAPI != 'cli')
 	exit(-1);
 
-chdir(dirname($argv[0], 7)); // de lib à root
+chdir(dirname($argv[0], 7)); // root
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/15/10/2021
+ * Updated D/11/12/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -36,26 +36,26 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$this->_addButton('back', [
 			'label'   => $this->__('Back'),
 			'onclick' => "setLocation('".$this->getUrl('*/*/index')."');",
-			'class'   => 'back'
+			'class'   => 'back',
 		]);
 
 		$this->_addButton('delete', [
 			'label'   => $this->__('Delete'),
 			'onclick' => "deleteConfirm('".$confirm."', '".$this->getUrl('*/*/delete', $params)."');",
-			'class'   => 'delete'
+			'class'   => 'delete',
 		]);
 
 		$this->_addButton('restart', [
 			'label'   => $this->__('Restart the job'),
 			'onclick' => "setLocation('".$this->getUrl('*/*/new', ['id' => $cron->getId(), 'code' => $cron->getData('job_code')])."');",
-			'class'   => 'add'
+			'class'   => 'add',
 		]);
 
 		if ($cron->getData('status') == 'pending') {
 			$this->_addButton('run', [
 				'label'   => $this->__('Run the job'),
 				'onclick' => "confirmSetLocation('".$confirm."', '".$this->getUrl('*/*/run', ['id' => $cron->getId()])."');",
-				'class'   => 'save'
+				'class'   => 'save',
 			]);
 		}
 	}
@@ -110,6 +110,6 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 	}
 
 	protected function _prepareLayout() {
-		//return parent::_prepareLayout();
+		// nothing to do
 	}
 }

@@ -27,7 +27,7 @@
 " Success","Terminée"
 "Cron job number %d - %s","Tâche cron numéro %d - %s"
 "Restart the job","Relancer la tâche"
-"Run the job","Exécuter la tache"
+"Run the job","Exécuter la tâche"
 " Created At: %s","Créée le : %s"
 " Scheduled At: %s","Programmée le : %s"
 " Executed At: %s","Exécutée le : %s"

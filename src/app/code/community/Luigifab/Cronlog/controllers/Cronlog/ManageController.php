@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated V/18/06/2021
+ * Updated S/19/11/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -28,9 +28,8 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 	}
 
 	public function loadLayout($ids = null, $generateBlocks = true, $generateXml = true) {
-		$this->_title($this->__('Tools'))->_title($this->__('Cron jobs'));
 		parent::loadLayout($ids, $generateBlocks, $generateXml);
-		$this->_setActiveMenu('tools/cronlog');
+		$this->_title($this->__('Tools'))->_title($this->__('Cron jobs'))->_setActiveMenu('tools/cronlog');
 		return $this;
 	}
 

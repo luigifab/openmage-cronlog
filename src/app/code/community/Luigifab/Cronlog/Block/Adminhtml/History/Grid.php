@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated V/20/05/2022
+ * Updated L/26/12/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -160,7 +160,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Grid extends Mage_Adminhtml_Block
 		ksort($codes);
 		$this->getColumn('job_code')->setData('options', $codes);
 
-		// mode texte et mode liste déroulante, 2 en 1
+		// texte ou liste déroulante, 2 en 1
 		$filter = $this->getParam($this->getVarNameFilter(), null);
 		if (is_string($filter) || !empty($this->_defaultFilter))
 			$filter = array_merge($this->_defaultFilter, $this->helper('adminhtml')->prepareFilterString($filter));

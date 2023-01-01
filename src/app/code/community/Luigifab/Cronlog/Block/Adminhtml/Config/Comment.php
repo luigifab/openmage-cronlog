@@ -1,10 +1,10 @@
 <?php
 /**
  * Created S/22/08/2015
- * Updated M/28/09/2021
+ * Updated D/06/11/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -21,7 +21,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Config_Comment extends Mage_Adminhtml_Blo
 
 	public function render(Varien_Data_Form_Element_Abstract $element) {
 
-		if (stripos($element->getHtmlId(), 'cronlog_') !== false) {
+		if (str_contains($element->getHtmlId(), 'cronlog')) {
 			$html = parent::render($element);
 			$html = str_replace(['{{', '}}'], ['<a href="'.$this->getUrl('*/system_config/edit', ['section' => 'system']).'">', '</a>'], $html);
 		}

@@ -1,10 +1,10 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated J/27/01/2022
+ * Updated S/19/11/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -40,9 +40,8 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 	}
 
 	public function loadLayout($ids = null, $generateBlocks = true, $generateXml = true) {
-		$this->_title($this->__('Tools'))->_title($this->__('Cron jobs'));
 		parent::loadLayout($ids, $generateBlocks, $generateXml);
-		$this->_setActiveMenu('tools/cronlog');
+		$this->_title($this->__('Tools'))->_title($this->__('Cron jobs'))->_setActiveMenu('tools/cronlog');
 		return $this;
 	}
 
@@ -108,8 +107,7 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 			}
 		}
 		catch (Throwable $t) {
-			Mage::getSingleton('adminhtml/session')->setFormData($this->getRequest()->getPost());
-			Mage::getSingleton('adminhtml/session')->addError($t->getMessage());
+			Mage::getSingleton('adminhtml/session')->addError($t->getMessage())->setFormData($this->getRequest()->getPost());
 			$this->_redirect('*/*/new');
 		}
 	}
@@ -124,7 +122,8 @@ class Luigifab_Cronlog_Cronlog_HistoryController extends Mage_Adminhtml_Controll
 			if (!is_dir($dir))
 				@mkdir($dir, 0755);
 
-			exec(sprintf('php %s %d %d >> %s 2>&1 &',
+			exec(sprintf('%s %s %d %d >> %s 2>&1 &',
+				'php'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
 				str_replace('Cronlog/etc', 'Cronlog/lib/run.php', Mage::getModuleDir('etc', 'Luigifab_Cronlog')),
 				$cron->getId(),
 				Mage::getIsDeveloperMode() ? 1 : 0,

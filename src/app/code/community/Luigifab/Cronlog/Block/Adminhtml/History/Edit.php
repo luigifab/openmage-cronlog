@@ -1,10 +1,10 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated D/26/12/2021
+ * Updated D/11/12/2022
  *
- * Copyright 2012-2022 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
- * https://www.luigifab.fr/openmage/cronlog
+ * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
  * it under the terms of the GNU General Public License (GPL) as published
@@ -37,8 +37,8 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit extends Mage_Adminhtml_Block
 		else {
 			$this->_addButton('save_and_continue', [
 				'label'   => $this->__('Add and Continue'),
-				'onclick' => "editForm.submit(document.getElementById('edit_form').getAttribute('action') + 'back/new/');",
-				'class'   => 'save'
+				'onclick' => "editForm.submit(editForm.validator.form.getAttribute('action') + 'back/new/');",
+				'class'   => 'save',
 			], 1);
 		}
 	}
