@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated S/19/02/2022
+ * Updated S/14/01/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -25,7 +25,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 	}
 
 	public function getTabTitle() {
-		return null;
+		return '';
 	}
 
 	public function isHidden() {

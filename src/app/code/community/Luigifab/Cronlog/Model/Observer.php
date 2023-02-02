@@ -1,7 +1,7 @@
 <?php
 /**
  * Created J/17/05/2012
- * Updated V/15/04/2022
+ * Updated J/05/01/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -167,7 +167,7 @@ class Luigifab_Cronlog_Model_Observer extends Luigifab_Cronlog_Helper_Data {
 
 	protected function getEmailUrl(string $url, array $params = []) {
 
-		if (Mage::getStoreConfigFlag(Mage_Core_Model_Store::XML_PATH_USE_REWRITES))
+		if (Mage::getStoreConfigFlag('web/seo/use_rewrites'))
 			return preg_replace('#/[^/]+\.php\d*/#', '/', Mage::helper('adminhtml')->getUrl($url, $params));
 		else
 			return preg_replace('#/[^/]+\.php(\d*)/#', '/index.php$1/', Mage::helper('adminhtml')->getUrl($url, $params));
