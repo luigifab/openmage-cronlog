@@ -1,7 +1,7 @@
 <?php
 /**
  * Created D/31/08/2014
- * Updated V/22/01/2021
+ * Updated V/27/01/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -19,19 +19,25 @@
 
 class Luigifab_Cronlog_Model_Source_Lifetime {
 
+	protected $_options;
+
 	public function toOptionArray() {
 
-		$help = Mage::helper('cronlog');
-		return [
-			['value' => 5 * 24 * 60,  'label' => $help->__('%d days', 5)], // 5+
-			['value' => 7 * 24 * 60,  'label' => $help->__('%d days', 7)], // 5+
-			['value' => 14 * 24 * 60, 'label' => $help->_('%d days (%d weeks)',  14, 2)], // 2-4
-			['value' => 28 * 24 * 60, 'label' => $help->_('%d days (%d weeks)',  28, 4)], // 2-4
-			//                                       ->__('%d days (%d weeks)')           // 5+
-			['value' => 31 * 24 * 60, 'label' => $help->__('%d days (%d month)', 31, 1)], // 1
-			['value' => 62 * 24 * 60, 'label' => $help->_('%d days (%d months)', 62, 2)], // 2-4
-			['value' => 93 * 24 * 60, 'label' => $help->_('%d days (%d months)', 93, 3)]  // 2-4
-			//                                       ->__('%d days (%d months)')          // 5+
-		];
+		if (empty($this->_options)) {
+			$help = Mage::helper('cronlog');
+			$this->_options = [
+				['value' => 5 * 24 * 60,  'label' => $help->__('%d days', 5)], // 5+
+				['value' => 7 * 24 * 60,  'label' => $help->__('%d days', 7)], // 5+
+				['value' => 14 * 24 * 60, 'label' => $help->_('%d days (%d weeks)',  14, 2)], // 2-4
+				['value' => 28 * 24 * 60, 'label' => $help->_('%d days (%d weeks)',  28, 4)], // 2-4
+				// translate.php                         ->__('%d days (%d weeks)')           // 5+
+				['value' => 31 * 24 * 60, 'label' => $help->__('%d days (%d month)', 31, 1)], // 1
+				['value' => 62 * 24 * 60, 'label' => $help->_('%d days (%d months)', 62, 2)], // 2-4
+				['value' => 93 * 24 * 60, 'label' => $help->_('%d days (%d months)', 93, 3)]  // 2-4
+				// translate.php                         ->__('%d days (%d months)')          // 5+
+			];
+		}
+
+		return $this->_options;
 	}
 }

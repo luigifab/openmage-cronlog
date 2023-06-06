@@ -1,7 +1,7 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated S/30/07/2022
+ * Updated V/19/05/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -17,13 +17,12 @@
  * GNU General Public License (GPL) for more details.
  */
 
-if (PHP_SAPI != 'cli')
-	exit(-1);
-
 chdir(dirname($argv[0], 7)); // root
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+if (PHP_SAPI != 'cli')
+	exit(-1);
 if (is_file('maintenance.flag') || is_file('upgrade.flag'))
 	exit(0);
 if (is_file('app/bootstrap.php'))
