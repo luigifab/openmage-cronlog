@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated S/19/11/2022
+ * Updated L/05/06/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -61,7 +61,7 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 				$jobs = Mage::getResourceModel('cron/schedule_collection')
 					->addFieldToFilter('job_code', $code)
 					->addFieldToFilter('status', 'pending')
-					->load(); // pour getIterator
+					->load(); // for getIterator
 
 				foreach ($jobs->getIterator() as $job)
 					$job->delete();

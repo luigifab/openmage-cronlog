@@ -1,7 +1,7 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated V/19/06/2020
+ * Updated L/05/06/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -46,7 +46,7 @@ class Luigifab_Cronlog_Model_Rewrite_Observer extends Mage_Cron_Model_Observer {
 		$jobs = Mage::getResourceModel('cron/schedule_collection')
 			->addFieldToFilter('status', ['eq' => 'success'])
 			->addFieldToFilter('scheduled_at', ['lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.$val.' MINUTE)')])
-			->load(); // pour getIterator
+			->load(); // for getIterator
 
 		foreach ($jobs->getIterator() as $job)
 			$job->delete();
@@ -54,7 +54,7 @@ class Luigifab_Cronlog_Model_Rewrite_Observer extends Mage_Cron_Model_Observer {
 		$jobs = Mage::getResourceModel('cron/schedule_collection')
 			->addFieldToFilter('status', ['neq' => 'success'])
 			->addFieldToFilter('scheduled_at', ['lt' => new Zend_Db_Expr('DATE_SUB(UTC_TIMESTAMP(), INTERVAL '.(3 * $val).' MINUTE)')])
-			->load(); // pour getIterator
+			->load(); // for getIterator
 
 		foreach ($jobs->getIterator() as $job)
 			$job->delete();

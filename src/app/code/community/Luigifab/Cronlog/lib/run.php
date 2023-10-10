@@ -1,7 +1,7 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated V/19/05/2023
+ * Updated M/03/10/2023
  *
  * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
@@ -61,7 +61,7 @@ if (!empty($id)) {
 			$cron->setExecutedAt(date('Y-m-d H:i:s'))->save();
 			call_user_func_array($callback, $arguments);
 			$cron->setData('finished_at', date('Y-m-d H:i:s'));
-			$cron->setData('status', 'success');
+			$cron->setData('status', ($cron->getIsError() === true) ? 'error' : 'success'); // PR 3310
 		}
 		catch (Throwable $t) {
 			$cron->setData('status', 'error');
