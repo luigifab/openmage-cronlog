@@ -1,9 +1,9 @@
 <?php
 /**
  * Created D/10/02/2013
- * Updated S/14/01/2023
+ * Updated S/09/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -42,7 +42,7 @@ class Luigifab_Cronlog_Block_Adminhtml_History_Edit_Tab_General extends Mage_Adm
 		$this->setForm($form);
 
 		$fieldset = $form->addFieldset('general_form', [
-			'legend'   => $this->__('Job')
+			'legend'   => $this->__('Job'),
 		]);
 
 		$fieldset->addField('job_code', 'select', [

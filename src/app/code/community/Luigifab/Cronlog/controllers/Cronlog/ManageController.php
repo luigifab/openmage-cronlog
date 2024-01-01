@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated L/05/06/2023
+ * Updated S/02/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -40,10 +40,8 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 	public function saveAction() {
 
 		try {
-			if (empty($code = $this->getRequest()->getParam('code')))
-				Mage::throwException($this->__('The <em>%s</em> field is a required field.', 'code'));
-
-			if (is_string(Mage::getStoreConfig('crontab/jobs/'.$code.'/schedule/disabled'))) {
+			$code = $this->getRequest()->getParam('code');
+			if (!empty(Mage::getStoreConfig('crontab/jobs/'.$code.'/schedule/disabled'))) {
 
 				$txt = $this->__('Job <strong>%s</strong> has been successfully <strong>enabled</strong>.', $code);
 				$msg = '<li class="success-msg"><ul><li>'.$txt.'</li></ul></li>';
@@ -51,7 +49,8 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 				Mage::getModel('core/config')->deleteConfig('crontab/jobs/'.$code.'/schedule/disabled');
 				Mage::log(strip_tags($txt), Zend_Log::INFO, 'cronlog.log');
 			}
-			else {
+			else if (!empty(Mage::getConfig()->getNode('crontab/jobs/'.$code.'/run/model'))) {
+
 				$txt = $this->__('Job <strong>%s</strong> has been successfully <strong>disabled</strong>.', $code);
 				$msg = '<li class="success-msg"><ul><li>'.$txt.'</li></ul></li>';
 
@@ -71,11 +70,11 @@ class Luigifab_Cronlog_Cronlog_ManageController extends Mage_Adminhtml_Controlle
 			$msg = '<li class="error-msg"><ul><li>'.$t->getMessage().'</li></ul></li>';
 		}
 
-		Mage::getConfig()->reinit(); // très important
+		Mage::getConfig()->reinit();
 
-		$msg = empty($msg) ? '' : '<div id="messages" onclick="this.remove();"><ul class="messages">'.$msg.'</ul></div> ';
-		$blk = $this->getLayout()->createBlock('cronlog/adminhtml_manage_grid')->toHtml();
+		$msg  = empty($msg) ? '' : '<div id="messages" onclick="this.remove();"><ul class="messages">'.$msg.'</ul></div> ';
+		$grid = $this->getLayout()->createBlock('cronlog/adminhtml_manage_grid')->toHtml();
 
-		$this->getResponse()->setBody($msg.$blk);
+		$this->getResponse()->setBody($msg.$grid);
 	}
 }

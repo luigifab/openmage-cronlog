@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated D/11/12/2022
+ * Updated D/03/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -34,5 +34,24 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage extends Mage_Adminhtml_Block_Widge
 			'onclick' => "setLocation('".$this->getUrl('*/cronlog_history/index')."');",
 			'class'   => 'back',
 		]);
+	}
+
+	protected function _prepareLayout() {
+
+		parent::_prepareLayout();
+
+		$this->setChild(
+			'grid_ro',
+			$this->getLayout()->createBlock(
+				$this->_blockGroup.'/'.$this->_controller.'_grid',
+				$this->_controller.'.grid_ro'
+			)->setNameInLayout('grid_ro')->setSaveParametersInSession(true)
+		);
+
+		return $this;
+    }
+
+    public function getGridHtml() {
+		return $this->getChildHtml('grid').'</div><div>'.$this->getChildHtml('grid_ro');
 	}
 }

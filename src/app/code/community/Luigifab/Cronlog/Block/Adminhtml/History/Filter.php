@@ -3,7 +3,7 @@
  * Created V/05/11/2021
  * Updated V/27/03/2022
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify

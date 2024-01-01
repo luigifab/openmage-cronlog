@@ -1,9 +1,9 @@
 <?php
 /**
  * Created S/31/05/2014
- * Updated D/26/06/2022
+ * Updated D/03/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -23,7 +23,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 
 		parent::__construct();
 
-		$this->setId('cronlog_grid_rw');
+		$this->setId('cronlog_grid');
 
 		$this->setUseAjax(true);
 		$this->setSaveParametersInSession(false);
@@ -32,7 +32,16 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 	}
 
 	protected function _prepareCollection() {
-		$this->setCollection(Mage::getModel('cronlog/source_jobs')->getCollection('rw'));
+
+		if (str_contains($this->getNameInLayout(), '_ro')) {
+			$this->setId('cronlog_grid_ro');
+			$this->setCollection(Mage::getModel('cronlog/source_jobs')->getCollection('ro'));
+		}
+		else {
+			$this->setId('cronlog_grid_rw');
+			$this->setCollection(Mage::getModel('cronlog/source_jobs')->getCollection('rw'));
+		}
+
 		return parent::_prepareCollection();
 	}
 
@@ -88,7 +97,7 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 			'filter'    => false,
 			'sortable'  => false,
 			'is_system' => true,
-			'frame_callback' => [$this, 'decorateLink'],
+			'frame_callback' => str_contains($this->getNameInLayout(), '_ro') ? null : [$this, 'decorateLink'],
 		]);
 
 		return parent::_prepareColumns();
@@ -96,6 +105,10 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 
 
 	public function getRowClass($row) {
+
+		if (str_contains($this->getNameInLayout(), '_ro'))
+			return ($row->getData('status') == 'disabled') ? 'readonly disabled' : 'readonly';
+
 		return ($row->getData('status') == 'disabled') ? 'disabled' : '';
 	}
 
@@ -116,14 +129,31 @@ class Luigifab_Cronlog_Block_Adminhtml_Manage_Grid extends Mage_Adminhtml_Block_
 		return $isExport ? $value : sprintf('<span class="cronlog-status grid-%s">%s</span>', $row->getData('status'), $value);
 	}
 
-	public function decorateModel($value, $row, $column, $isExport) {
-		return $isExport ? $value : sprintf('%s <div>%s</div>', $value, str_replace('_Model_', '_<b>Model</b>_', $row->getData('class_name')));
-	}
-
 	public function decorateLink($value, $row, $column, $isExport) {
-		return $row->getData('is_read_only') ? '' : sprintf('<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>',
+
+		if ($isExport || $row->getData('is_read_only'))
+			return '';
+
+		return sprintf(
+			'<button type="button" onclick="new Ajax.Updater(%s, \'%s\')">%s</button>',
 			'document.getElementById(\'cronlog_grid_rw_table\').parentNode.parentNode.parentNode',
 			$this->getUrl('*/*/save', ['code' => $row->getData('job_code')]),
-			$this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable'));
+			$this->__(($row->getData('status') == 'disabled') ? 'Enable' : 'Disable')
+		);
+	}
+
+	public function decorateModel($value, $row, $column, $isExport) {
+
+		if ($isExport)
+			return $value;
+
+		$class = str_replace('_Model_', '_<b>Model</b>_', $row->getData('class_name'));
+		$file  = $row->getData('ofe_file');
+		if (empty($file))
+			return sprintf('%s <div>%s</div>', $value, $class);
+
+		// @see https://github.com/luigifab/webext-openfileeditor
+		$line = $row->getData('ofe_line');
+		return sprintf('%s <div><span class="openfileeditor" data-file="%s" data-line="%d">%s</span></div>', $value, $file, $line, $class);
 	}
 }

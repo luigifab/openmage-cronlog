@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Created W/29/02/2012
- * Updated J/18/06/2020
+ * Updated S/16/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -18,7 +18,7 @@
 -->
 
 <layout version="0.1.0">
-	<adminhtml_system_config_edit>
+	<adminhtml_cronlog>
 		<reference name="head">
 			<action method="addItem">
 				<type>skin_css</type>
@@ -26,42 +26,32 @@
 				<params>media="screen, projection"</params>
 			</action>
 		</reference>
+	</adminhtml_cronlog>
+
+	<adminhtml_system_config_edit>
+		<update handle="adminhtml_cronlog" />
 	</adminhtml_system_config_edit>
 
+	<adminhtml_cronlog_history_preview>
+		<update handle="adminhtml_cronlog" />
+	</adminhtml_cronlog_history_preview>
+
 	<adminhtml_cronlog_history_index>
-		<reference name="head">
-			<action method="addItem">
-				<type>skin_css</type>
-				<name>css/luigifab/cronlog/styles.min.css</name>
-				<params>media="screen, projection"</params>
-			</action>
-		</reference>
+		<update handle="adminhtml_cronlog" />
 		<reference name="content">
 			<block type="cronlog/adminhtml_history" name="cronlog_history" />
 		</reference>
 	</adminhtml_cronlog_history_index>
 
 	<adminhtml_cronlog_history_view>
-		<reference name="head">
-			<action method="addItem">
-				<type>skin_css</type>
-				<name>css/luigifab/cronlog/styles.min.css</name>
-				<params>media="screen, projection"</params>
-			</action>
-		</reference>
+		<update handle="adminhtml_cronlog" />
 		<reference name="content">
 			<block type="cronlog/adminhtml_history_view" name="cronlog_history_view" />
 		</reference>
 	</adminhtml_cronlog_history_view>
 
 	<adminhtml_cronlog_history_new>
-		<reference name="head">
-			<action method="addItem">
-				<type>skin_css</type>
-				<name>css/luigifab/cronlog/styles.min.css</name>
-				<params>media="screen, projection"</params>
-			</action>
-		</reference>
+		<update handle="adminhtml_cronlog" />
 		<reference name="left">
 			<block type="cronlog/adminhtml_history_edit_tabs" name="cronlog_tabs">
 				<action method="addTab">
@@ -76,16 +66,9 @@
 	</adminhtml_cronlog_history_new>
 
 	<adminhtml_cronlog_manage_index>
-		<reference name="head">
-			<action method="addItem">
-				<type>skin_css</type>
-				<name>css/luigifab/cronlog/styles.min.css</name>
-				<params>media="screen, projection"</params>
-			</action>
-		</reference>
+		<update handle="adminhtml_cronlog" />
 		<reference name="content">
-			<block type="cronlog/adminhtml_manage" name="cronlog_manage_rw" />
-			<block type="cronlog/adminhtml_manage_gridro" name="cronlog_manage_ro" />
+			<block type="cronlog/adminhtml_manage" name="cronlog_manage" />
 		</reference>
 	</adminhtml_cronlog_manage_index>
 </layout>

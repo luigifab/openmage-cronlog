@@ -1,9 +1,9 @@
 <?php
 /**
  * Created L/25/05/2020
- * Updated M/03/10/2023
+ * Updated J/28/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -19,7 +19,7 @@
 
 chdir(dirname($argv[0], 7)); // root
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', (PHP_VERSION_ID < 80100) ? '1' : 1);
 
 if (PHP_SAPI != 'cli')
 	exit(-1);
@@ -29,12 +29,11 @@ if (is_file('app/bootstrap.php'))
 	require_once('app/bootstrap.php');
 
 $id  = empty($argv[1]) ? false : (int) $argv[1];
-$dev = empty($argv[2]) ? false : true;
+$dev = !empty($argv[2]);
 
 if (!empty($id)) {
 
 	require_once('app/Mage.php');
-
 	Mage::app('admin')->setUseSessionInUrl(false);
 	Mage::app()->addEventArea('crontab');
 	Mage::setIsDeveloperMode($dev);
@@ -43,20 +42,23 @@ if (!empty($id)) {
 	if (!empty($cron->getId()) && ($cron->getData('status') == 'pending')) {
 
 		try {
-			// copie de Mage_Cron_Model_Observer::_processJob($cron, $jobConfig, $isAlways = false) sauf les always
+			// copy of Mage_Cron_Model_Observer::_processJob($cron, $jobConfig, $isAlways = false) without always
 			$jobConfig = Mage::getConfig()->getNode('crontab/jobs')->{$cron->getData('job_code')};
+			if (!empty($jobConfig->run->model)) {
 
-			if ($jobConfig->run->model) {
-				if (!preg_match(Mage_Cron_Model_Observer::REGEX_RUN_MODEL, (string) $jobConfig->run->model, $run))
+				if (preg_match(Mage_Cron_Model_Observer::REGEX_RUN_MODEL, (string) $jobConfig->run->model, $run) !== 1)
 					Mage::throwException(Mage::helper('cron')->__('Invalid model/method definition, expecting "model/class::method".'));
-				if (!($model = Mage::getModel($run[1])) || !method_exists($model, $run[2]))
+
+				$model = Mage::getModel($run[1]);
+				if (!$model || !method_exists($model, $run[2]))
 					Mage::throwException(Mage::helper('cron')->__('Invalid callback: %s::%s does not exist', $run[1], $run[2]));
+
 				$callback  = [$model, $run[2]];
 				$arguments = [$cron];
 			}
-			if (empty($callback)) {
+
+			if (empty($callback))
 				Mage::throwException(Mage::helper('cron')->__('No callbacks found'));
-			}
 
 			$cron->setExecutedAt(date('Y-m-d H:i:s'))->save();
 			call_user_func_array($callback, $arguments);
@@ -65,7 +67,8 @@ if (!empty($id)) {
 		}
 		catch (Throwable $t) {
 			$cron->setData('status', 'error');
-			$cron->setData('messages', $t->__toString());
+			$cron->setData('messages', get_class($t).': '.$t->getMessage()."\n".
+				$t->getTraceAsString()."\n".'  thrown in '.$t->getFile().' on line '.$t->getLine());
 		}
 
 		$cron->save();

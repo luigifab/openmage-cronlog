@@ -1,9 +1,9 @@
 <?php
 /**
  * Created W/29/02/2012
- * Updated D/11/12/2022
+ * Updated D/03/12/2023
  *
- * Copyright 2012-2023 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
+ * Copyright 2012-2024 | Fabrice Creuzot (luigifab) <code~luigifab~fr>
  * https://github.com/luigifab/openmage-cronlog
  *
  * This program is free software, you can redistribute it or modify
@@ -62,13 +62,13 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 
 	public function getGridHtml() {
 
-		$cron  = Mage::registry('current_job');
-		$class = 'class="cronlog-status grid-'.$cron->getData('status').'"';
-		$help  = $this->helper('cronlog');
+		$cron   = Mage::registry('current_job');
+		$class  = 'class="cronlog-status grid-'.$cron->getData('status').'"';
+		$helper = $this->helper('cronlog');
 
 		// status
 		if (in_array($cron->getData('status'), ['success', 'error']))
-			$status = $this->helper('cronlog')->_(ucfirst($cron->getData('status')));
+			$status = $helper->_(ucfirst($cron->getData('status')));
 		else
 			$status = $this->__(ucfirst($cron->getData('status')));
 
@@ -77,24 +77,24 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$html[] = '<div class="content">';
 		$html[] = '<div>';
 		$html[] = '<ul>';
-		$html[] = '<li>'.$help->_('Created At: %s', $help->formatDate($cron->getData('created_at'))).'</li>';
+		$html[] = '<li>'.$helper->_('Created At: %s', $helper->formatDate($cron->getData('created_at'))).'</li>';
 
 		if (!in_array($cron->getData('finished_at'), ['', '0000-00-00 00:00:00', null])) {
 
-			$html[] = '<li>'.$help->_('Scheduled At: %s', $help->formatDate($cron->getData('scheduled_at'))).'</li>';
-			$html[] = '<li><strong>'.$help->_('Executed At: %s', $help->formatDate($cron->getData('executed_at'))).'</strong></li>';
-			$html[] = '<li>'.$help->_('Finished At: %s', $help->formatDate($cron->getData('finished_at'))).'</li>';
+			$html[] = '<li>'.$helper->_('Scheduled At: %s', $helper->formatDate($cron->getData('scheduled_at'))).'</li>';
+			$html[] = '<li><strong>'.$helper->_('Executed At: %s', $helper->formatDate($cron->getData('executed_at'))).'</strong></li>';
+			$html[] = '<li>'.$helper->_('Finished At: %s', $helper->formatDate($cron->getData('finished_at'))).'</li>';
 
-			$duration = $help->getHumanDuration($cron->getData('executed_at'), $cron->getData('finished_at'));
+			$duration = $helper->getHumanDuration($cron->getData('executed_at'), $cron->getData('finished_at'));
 			if (!empty($duration))
 				$html[] = '<li>'.$this->__('Duration: %s', $duration).'</li>';
 		}
 		else if (in_array($cron->getData('executed_at'), ['', '0000-00-00 00:00:00', null])) {
-			$html[] = '<li><strong>'.$help->_('Scheduled At: %s', $help->formatDate($cron->getData('scheduled_at'))).'</strong></li>';
+			$html[] = '<li><strong>'.$helper->_('Scheduled At: %s', $helper->formatDate($cron->getData('scheduled_at'))).'</strong></li>';
 		}
 		else {
-			$html[] = '<li>'.$help->_('Scheduled At: %s', $help->formatDate($cron->getData('scheduled_at'))).'</li>';
-			$html[] = '<li><strong>'.$help->_('Executed At: %s', $help->formatDate($cron->getData('executed_at'))).'</strong></li>';
+			$html[] = '<li>'.$helper->_('Scheduled At: %s', $helper->formatDate($cron->getData('scheduled_at'))).'</li>';
+			$html[] = '<li><strong>'.$helper->_('Executed At: %s', $helper->formatDate($cron->getData('executed_at'))).'</strong></li>';
 		}
 
 		$html[] = '</ul>';
@@ -103,7 +103,22 @@ class Luigifab_Cronlog_Block_Adminhtml_History_View extends Mage_Adminhtml_Block
 		$html[] = '<li>'.$this->__('Code: %s', $cron->getData('job_code')).'</li>';
 		$html[] = '</ul>';
 		$html[] = '</div>';
-		$html[] = '<pre lang="mul">'.$help->escapeEntities($cron->getData('messages')).'</pre>';
+
+		$value = $cron->getData('messages');
+		if (!empty($value)) {
+
+			$value = $helper->escapeEntities($cron->getData('messages'));
+
+			// @see https://github.com/luigifab/webext-openfileeditor
+			$value = preg_replace_callback('#(\#\d+ )([^(]+)\((\d+)\): #', static function ($data) {
+				return $data[1].'<span class="openfileeditor" data-line="'.$data[3].'">'.$data[2].'</span>('.$data[3].'): ';
+			}, $value);
+			$value = preg_replace_callback('#  thrown in (.+) on line (\d+)#', static function ($data) {
+				return '  thrown in <span class="openfileeditor" data-line="'.$data[2].'">'.$data[1].'</span> on line '.$data[2];
+			}, $value);
+		}
+
+		$html[] = '<pre lang="mul">'.$value.'</pre>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);

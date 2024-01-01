@@ -1,17 +1,17 @@
 Docs      : https://www.luigifab.fr/openmage/cronlog
 Tracker   : https://github.com/luigifab/openmage-cronlog
 Composer  : https://packagist.org/packages/luigifab/openmage-cronlog
-Module    : Luigifab/Cronlog
-License   : GNU GPL 2+ (https://opensource.org/licenses/gpl-2.0)
-Copyright : 2012-2023 Fabrice Creuzot (luigifab) <code~luigifab~fr>
+Module    : Luigifab/Cronlog (original)
+License   : GNU GPL 2.0+ (https://opensource.org/licenses/gpl-2.0)
+Copyright : 2012-2024 Fabrice Creuzot (luigifab) <code~luigifab~fr>
 
 
 
 
 
-IF YOU FOUND A MISTAKE OR A BUG, PLEASE CONTACT ME (IN FRENCH OR IN ENGLISH).
-CSS AND JS FILES ARE MINIFIED WITH clean-css (github.com/jakubpawlowicz/clean-css) AND uglify-js (github.com/mishoo/uglifyjs).
-ALL FILES (INCLUDING DOCUMENTATION AND TRANSLATIONS) ARE LICENSED UNDER THE TERMS OF THE GNU GPL 2+ LICENSE.
+CSS AND JS FILES ARE MINIFIED WITH clean-css (github.com/jakubpawlowicz/clean-css) AND uglify-js (github.com/mishoo/uglifyjs)
+CSV AND HTML FILES ARE GENERATED WITH translator (https://github.com/luigifab/translator)
+ALL FILES ARE LICENSED UNDER THE TERMS OF THE GNU GPL 2.0+ LICENSE
 
 
 
@@ -23,7 +23,9 @@ Event
 - crontab   | always                                      | cron/observer::dispatchAlways  (indirect)
 - crontab   | default                                     | cron/observer::dispatch        (indirect)
 Cron
-- cronlog_send_report | cronlog/observer::sendEmailReport
+- cronlog_send_report | cronlog/report::send
+Frontend routes
+- none
 Database
 - none
 Files and directories
@@ -87,13 +89,16 @@ Files and directories
 - app/code/community/Luigifab/Cronlog/
 - app/design/adminhtml/default/default/layout/luigifab/cronlog.xml
 - skin/adminhtml/default/default/css/luigifab/cronlog/
+Depends (with php exec)
+- command -v
+- php .../Cronlog/lib/run.php
 
 
 Translations in de-DE (deutsch/Deutschland) by:
 - Pamela Steinborn <st.pamela~laposte~net> 2017
 - Nelly Renaud <nbrandone~gmail~com> 2017
 Translations in en-US (english/United-States) by:
-- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2023
+- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2024
 - Alexandre Laffitte <alexandre.laffitte~label-park~com> 2016
 - Philip Junietz <info~label-park~com> 2016
 - Pascale Scellier <scellier.pascale~orange~fr> 2016
@@ -102,7 +107,7 @@ Translations in es-ES (español/España) by:
 - Hélène Vergine <vergineh~gmail~com> 2017, 2020
 - Guillaume Genetet <genetet.incorporated~gmail~com> 2018 https://fr.tipeee.com/william-broome
 Translations in fr-FR (français/France) by:
-- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2023
+- Fabrice Creuzot (luigifab) <code~luigifab~fr> 2012-2024
 - Alexandre Laffitte <alexandre.laffitte~label-park~com> 2016
 - Philip Junietz <info~label-park~com> 2016
 - Pascale Scellier <scellier.pascale~orange~fr> 2016
